@@ -8,7 +8,7 @@ function navHtml(c, lang) {
   const current = LANGS.find(l => l.code === lang);
   return `
 <nav class="site-nav glass">
-  <a href="/${lang}/" class="brand"><span class="dot"></span>Svitlo<b>Chain</b></a>
+  <a href="/${lang}/" class="brand"><img class="logo" src="/assets/images/logo.jpg" alt="Svitlo Chain">Svitlo<b>Chain</b></a>
   <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" onclick="document.getElementById('nav-links').classList.toggle('open');this.setAttribute('aria-expanded', document.getElementById('nav-links').classList.contains('open'))">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
   </button>
@@ -26,13 +26,22 @@ function navHtml(c, lang) {
 function heroHtml(c) {
   return `
 <section class="hero atmosphere">
-  <div class="wrap">
-    <div class="eyebrow">${esc(c.hero.eyebrow)}</div>
-    <h1>${esc(c.hero.title)}</h1>
-    <p class="lede">${esc(c.hero.lede)}</p>
-    <div class="cta-row">
-      <a href="#contact" class="btn btn-primary">${esc(c.hero.ctaPrimary)}</a>
-      <a href="#developers" class="btn btn-glass glass-sm">${esc(c.hero.ctaGlass)}</a>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <div class="eyebrow">${esc(c.hero.eyebrow)}</div>
+      <h1>${esc(c.hero.title)}</h1>
+      <p class="lede">${esc(c.hero.lede)}</p>
+      <div class="cta-row">
+        <a href="#contact" class="btn btn-primary">${esc(c.hero.ctaPrimary)}</a>
+        <a href="#developers" class="btn btn-glass glass-sm">${esc(c.hero.ctaGlass)}</a>
+      </div>
+    </div>
+    <div class="hero-scene" aria-hidden="true">
+      <span class="hero-orb hero-orb-1"></span>
+      <span class="hero-orb hero-orb-2"></span>
+      <div class="hero-glass-card">
+        <img src="/assets/images/hero-sphere.jpg" alt="">
+      </div>
     </div>
   </div>
 </section>`;
@@ -79,6 +88,7 @@ function developersHtml(c) {
   return `
 <section id="developers">
   <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/bg-laptop-desk.jpg')"></div>
     <div class="section-head">
       <div class="eyebrow">${esc(c.developers.eyebrow)}</div>
       <h2>${esc(c.developers.title)}</h2>
@@ -106,6 +116,7 @@ function gpuOwnersHtml(c) {
   return `
 <section id="gpu-owners">
   <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/bg-gaming-pc.jpg')"></div>
     <div class="section-head">
       <div class="eyebrow">${esc(c.gpuOwners.eyebrow)}</div>
       <h2>${esc(c.gpuOwners.title)}</h2>
@@ -206,6 +217,7 @@ function tokenHtml(c) {
   return `
 <section id="token">
   <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/bg-circuit-devices-1.jpg')"></div>
     <div class="section-head">
       <div class="eyebrow">${esc(t.eyebrow)}</div>
       <h2>${esc(t.title)}</h2>
@@ -258,6 +270,7 @@ function roadmapHtml(c) {
   return `
 <section id="roadmap">
   <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/banner-phoenix-dawn.jpg')"></div>
     <div class="section-head"><div class="eyebrow">${esc(r.eyebrow)}</div><h2>${esc(r.title)}</h2><p>${r.body}</p></div>
     <div class="timeline">
       <div class="timeline-items">${items}</div>
@@ -291,6 +304,7 @@ function statsHtml(c) {
   return `
 <section id="stats" class="atmosphere">
   <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/banner-comet-icefield.jpg')"></div>
     <div class="section-head center"><div class="eyebrow">${esc(s.eyebrow)}</div><h2>${esc(s.title)}</h2><p class="center">${s.body}</p></div>
     <div class="grid grid-4">${items}</div>
   </div>
@@ -348,6 +362,7 @@ function ctaHtml(c) {
   return `
 <section id="cta" class="atmosphere tight">
   <div class="wrap center" style="max-width:640px">
+    <div class="section-banner" style="background-image:url('/assets/images/banner-cosmic-lotus.jpg');height:180px"></div>
     <h2>${esc(c.cta.title)}</h2>
     <p class="lede center">${c.cta.body}</p>
     <div class="cta-row" style="justify-content:center">

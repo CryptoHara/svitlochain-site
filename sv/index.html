@@ -16,7 +16,7 @@ try {
 <body>
 
 <nav class="site-nav glass">
-  <a href="/sv/" class="brand"><span class="dot"></span>Svitlo<b>Chain</b></a>
+  <a href="/sv/" class="brand"><img class="logo" src="/assets/images/logo.jpg" alt="Svitlo Chain">Svitlo<b>Chain</b></a>
   <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" onclick="document.getElementById('nav-links').classList.toggle('open');this.setAttribute('aria-expanded', document.getElementById('nav-links').classList.contains('open'))">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
   </button>
@@ -31,13 +31,22 @@ try {
 </nav>
 
 <section class="hero atmosphere">
-  <div class="wrap">
-    <div class="eyebrow">Layer-1-blockchain</div>
-    <h1>Svitlo Chain: decentraliserad GPU-cloud</h1>
-    <p class="lede">Bryt dig fri från molnjättarnas monopolmakt. Hyr lediga GPU:er eller sätt upp din egen hårdvara och tjäna äkta inkomst — driven av AI, säkrad av blockchain.</p>
-    <div class="cta-row">
-      <a href="#contact" class="btn btn-primary">Bli leverantör</a>
-      <a href="#developers" class="btn btn-glass glass-sm">Kom igång med utveckling</a>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <div class="eyebrow">Layer-1-blockchain</div>
+      <h1>Svitlo Chain: decentraliserad GPU-cloud</h1>
+      <p class="lede">Bryt dig fri från molnjättarnas monopolmakt. Hyr lediga GPU:er eller sätt upp din egen hårdvara och tjäna äkta inkomst — driven av AI, säkrad av blockchain.</p>
+      <div class="cta-row">
+        <a href="#contact" class="btn btn-primary">Bli leverantör</a>
+        <a href="#developers" class="btn btn-glass glass-sm">Kom igång med utveckling</a>
+      </div>
+    </div>
+    <div class="hero-scene" aria-hidden="true">
+      <span class="hero-orb hero-orb-1"></span>
+      <span class="hero-orb hero-orb-2"></span>
+      <div class="hero-glass-card">
+        <img src="/assets/images/hero-sphere.jpg" alt="">
+      </div>
     </div>
   </div>
 </section>
@@ -70,6 +79,7 @@ try {
 
 <section id="developers">
   <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/bg-laptop-desk.jpg')"></div>
     <div class="section-head">
       <div class="eyebrow">Så här fungerar det</div>
       <h2>För AI-utvecklare och byggare</h2>
@@ -166,6 +176,7 @@ print(<span class="fn">f</span><span class="str">"Jobb-ID: {current_job.id}, Nuv
 
 <section id="gpu-owners">
   <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/bg-gaming-pc.jpg')"></div>
     <div class="section-head">
       <div class="eyebrow">Så fungerar det</div>
       <h2>För GPU-ägare</h2>
@@ -333,6 +344,7 @@ svitlo-node start</div>
 
 <section id="token">
   <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/bg-circuit-devices-1.jpg')"></div>
     <div class="section-head">
       <div class="eyebrow">Tokenomics</div>
       <h2>SVIT-koinen: Tre pelare för nytta</h2>
@@ -396,6 +408,7 @@ svitlo-node start</div>
 
 <section id="roadmap">
   <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/banner-phoenix-dawn.jpg')"></div>
     <div class="section-head"><div class="eyebrow">Färdplan</div><h2>Vår färdplan: Framtiden för Svitlo Chain</h2><p>Svitlo Chain utvecklas kontinuerligt för att möta den växande efterfrågan på decentraliserad GPU-beräkningskraft. Vår färdplan fokuserar på strategisk tillväxt och att leverera värde till både leverantörer och utvecklare.</p></div>
     <div class="timeline">
       <div class="timeline-items">
@@ -418,6 +431,7 @@ svitlo-node start</div>
 
 <section id="stats" class="atmosphere">
   <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/banner-comet-icefield.jpg')"></div>
     <div class="section-head center"><div class="eyebrow">I siffror</div><h2>Svitlo Chain i siffror: Plattformens styrka</h2><p class="center">Svitlo Chain fortsätter att växa exponentiellt och driver framtiden för decentraliserad AI-beräkning. Här är en glimt av plattformens imponerande räckvidd och effektivitet, som erbjuder en kostnadseffektiv lösning jämfört med traditionella molnleverantörer.</p></div>
     <div class="grid grid-4">
     <div class="card glass stat-glass">
@@ -505,6 +519,7 @@ svitlo-node start</div>
 
 <section id="cta" class="atmosphere tight">
   <div class="wrap center" style="max-width:640px">
+    <div class="section-banner" style="background-image:url('/assets/images/banner-cosmic-lotus.jpg');height:180px"></div>
     <h2>Redo att ansluta dig till den decentraliserade GPU-revolutionen?</h2>
     <p class="lede center">Oavsett om du vill tjäna pengar på din lediga datorkraft eller söker billig, skalbar AI-beräkning, erbjuder Svitlo Chain den perfekta lösningen. Börja bygga din framtid eller monetisera din befintliga maskinvara på några minuter.</p>
     <div class="cta-row" style="justify-content:center">
