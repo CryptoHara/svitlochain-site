@@ -9,12 +9,16 @@ function navHtml(c, lang) {
   return `
 <nav class="site-nav glass">
   <a href="/${lang}/" class="brand"><span class="dot"></span>Svitlo<b>Chain</b></a>
-  <div class="links">
+  <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" onclick="document.getElementById('nav-links').classList.toggle('open');this.setAttribute('aria-expanded', document.getElementById('nav-links').classList.contains('open'))">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div class="links" id="nav-links">
     ${links}
     <div class="lang-switch" id="lang-switch">
       <button type="button" onclick="document.getElementById('lang-switch').classList.toggle('open')">${current.flag} ${current.code.toUpperCase()} <span aria-hidden="true">▾</span></button>
       <ul>${langItems}</ul>
     </div>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" onclick="window.__toggleTheme()"><span class="theme-icon-light">☀️</span><span class="theme-icon-dark">🌙</span></button>
   </div>
 </nav>`;
 }
@@ -394,6 +398,12 @@ export function renderPage(c, lang) {
 <title>${esc(c.meta.title)}</title>
 <meta name="description" content="${esc(c.meta.description)}">
 <link rel="stylesheet" href="/assets/platform.css">
+<script>
+try {
+  var t = localStorage.getItem('svitlo-theme');
+  if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+} catch (e) {}
+</script>
 </head>
 <body>
 ${navHtml(c, lang)}
@@ -418,7 +428,20 @@ ${footerHtml(c, lang)}
 document.addEventListener('click', (e) => {
   const sw = document.getElementById('lang-switch');
   if (sw && !sw.contains(e.target)) sw.classList.remove('open');
+  const nav = document.getElementById('nav-links');
+  const toggle = document.getElementById('nav-toggle');
+  if (nav && nav.classList.contains('open') && !nav.contains(e.target) && !toggle.contains(e.target)) {
+    nav.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
 });
+window.__toggleTheme = function() {
+  var cur = document.documentElement.getAttribute('data-theme');
+  var isDark = cur ? cur === 'dark' : window.matchMedia('(prefers-color-scheme:dark)').matches;
+  var next = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('svitlo-theme', next); } catch (e) {}
+};
 try { localStorage.setItem('svitlo-lang', '${lang}'); } catch (e) {}
 </script>
 </body>

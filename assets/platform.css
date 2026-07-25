@@ -158,6 +158,44 @@ img,svg{max-width:100%;display:block;}
 .lang-switch li a:hover{background:var(--s2);}
 .lang-switch li a.current{color:var(--brown);font-weight:700;}
 
+.nav-toggle{
+  display:none;background:none;border:none;cursor:pointer;padding:6px;
+  color:var(--ink);margin-left:auto;
+}
+.nav-toggle svg{width:22px;height:22px;display:block;}
+
+.theme-toggle{
+  display:flex;align-items:center;justify-content:center;
+  width:34px;height:34px;border-radius:50%;border:1px solid var(--bd2);
+  background:var(--s1);cursor:pointer;font-size:15px;line-height:1;flex:none;
+}
+.theme-icon-dark{display:none;}
+:root[data-theme="dark"] .theme-icon-light{display:none;}
+:root[data-theme="dark"] .theme-icon-dark{display:inline;}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .theme-icon-light{display:none;}
+  :root:not([data-theme="light"]) .theme-icon-dark{display:inline;}
+}
+
+@media (max-width:760px){
+  .site-nav{padding:12px 16px;}
+  .nav-toggle{display:flex;align-items:center;}
+  .site-nav .links{
+    display:none;position:absolute;left:12px;right:12px;top:calc(100% + 10px);
+    flex-direction:column;align-items:stretch;gap:2px;
+    background:var(--s1);border:1px solid var(--bd2);border-radius:16px;
+    padding:10px;box-shadow:0 20px 48px -16px rgba(0,0,0,.25);
+  }
+  .site-nav .links.open{display:flex;}
+  .site-nav .links a{padding:10px 12px;border-radius:10px;}
+  .site-nav .links a:hover{background:var(--s2);}
+  .lang-switch{width:100%;}
+  .lang-switch button{width:100%;justify-content:center;}
+  .lang-switch ul{position:static;margin-top:6px;box-shadow:none;width:100%;}
+  .theme-toggle{width:100%;border-radius:10px;justify-content:center;gap:8px;}
+  .theme-toggle::after{content:'Tema';font-size:13px;font-weight:600;color:var(--ink-m);}
+}
+
 /* ── Section rhythm ─────────────────────────────────────────────────── */
 section{padding:88px 0;scroll-margin-top:88px;}
 section.tight{padding:56px 0;}
@@ -266,6 +304,7 @@ table.data tr:last-child td{border-bottom:none;}
 .faq-item{padding:20px 0;border-bottom:1px solid var(--bd);}
 .faq-item:last-child{border-bottom:none;}
 .faq-item h3{margin-bottom:8px;}
+.faq-item p{max-width:none;}
 .glossary-item{padding:16px 0;border-bottom:1px solid var(--bd);}
 .glossary-term{font-weight:700;color:var(--ink);margin-bottom:4px;}
 .glossary-term .native{font-weight:400;color:var(--ink-m);font-size:.9em;}
