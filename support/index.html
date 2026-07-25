@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support — Svitlo Wallet</title>
+<meta name="description" content="Support and frequently asked questions for the Svitlo Wallet app.">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="/" class="brand">Svitlo<span>Chain</span></a>
+  <div class="links">
+    <a href="/privacy/">Privacy</a>
+    <a href="/support/" class="current">Support</a>
+  </div>
+</nav>
+
+<div class="shell" style="grid-template-columns:minmax(0,700px);justify-content:start;">
+  <header class="doc-head" style="grid-column:1;margin:0 0 8px;">
+    <div class="eyebrow">Svitlo Wallet</div>
+    <h1>Support</h1>
+    <p class="lede" style="margin-top:6px">Questions about using Svitlo Wallet, or something not working right — start here.</p>
+  </header>
+
+  <main style="grid-column:1;">
+    <div class="card">
+      <h3>I lost my recovery phrase or password</h3>
+      <p>Svitlo Wallet is non-custodial — your recovery phrase and password never leave your device, and we don't keep a copy anywhere. This means <strong>we cannot recover your wallet for you</strong>. If both are lost, the funds at that address are permanently inaccessible. This is true of every non-custodial wallet, not specific to Svitlo — back up your recovery phrase somewhere safe as soon as you create a wallet.</p>
+    </div>
+
+    <div class="card">
+      <h3>How do I restore my wallet on a new device?</h3>
+      <p>Open Svitlo Wallet, choose <strong>Restore wallet</strong>, and enter your 12 or 24-word recovery phrase exactly as it was given to you, in order. Set a new local password for this device — it doesn't need to match the password you used before, since the password only encrypts the keystore on that specific device.</p>
+    </div>
+
+    <div class="card">
+      <h3>My balance isn't updating / the app says the node is offline</h3>
+      <p>Svitlo Wallet needs a working connection to a Svitlo Chain RPC node to show live balances and broadcast transactions. Check <strong>Settings → Node URL</strong> — the default points at the public Svitlo Chain node. If you've changed this to a custom node (for example, one on your own local network), confirm that node is actually running and reachable from your device.</p>
+    </div>
+
+    <div class="card">
+      <h3>I sent a transaction to the wrong address</h3>
+      <p>Transactions on Svitlo Chain are final once confirmed — there is no way for us, or anyone, to reverse a transaction after it's broadcast. Always double check the recipient address before confirming a send.</p>
+    </div>
+
+    <div class="card">
+      <h3>Is Svitlo Wallet free?</h3>
+      <p>Yes. Svitlo Wallet has no purchase price and no in-app purchases. Network transactions carry a small flat fee paid in SVIT, set by the Svitlo Chain protocol itself, not by the wallet app.</p>
+    </div>
+
+    <div class="card">
+      <h3>Still stuck?</h3>
+      <p>Email <a href="mailto:mencher59@gmail.com">mencher59@gmail.com</a> with a description of what happened, your platform (iOS/Android/macOS/Windows/Linux), and the app version — found in <strong>Settings → About</strong>. Never share your recovery phrase or password with anyone, including anyone claiming to be Svitlo support — we will never ask for either.</p>
+    </div>
+  </main>
+</div>
+
+<footer class="site-footer">
+  <span>© 2026 Svitlo Chain. Svitlo Wallet is non-custodial software provided as-is.</span>
+  <span><a href="/privacy/">Privacy Policy</a></span>
+</footer>
+
+</body>
+</html>
