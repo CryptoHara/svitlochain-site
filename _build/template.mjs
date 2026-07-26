@@ -374,7 +374,7 @@ function contactHtml(c) {
   const items = c.contact.items.map(i => `
     <div class="card" style="display:flex;gap:14px;align-items:flex-start">
       <div style="font-size:20px">${i.icon}</div>
-      <div><h3>${esc(i.title)}</h3><p style="margin-top:4px;font-size:13.5px">${i.href ? `<a href="${i.href}">${i.body}</a>` : i.body}</p></div>
+      <div><h3>${esc(i.title)}</h3><p style="margin-top:4px;font-size:13.5px">${i.href ? `<a href="${i.href}"${i.href.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${i.body}</a>` : i.body}</p></div>
     </div>`).join('');
   return `
 <section id="contact">
