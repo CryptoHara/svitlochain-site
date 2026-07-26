@@ -231,13 +231,8 @@ p.lede{font-size:17.5px;color:var(--ink-m);max-width:60ch;}
     linear-gradient(180deg, rgba(6,9,22,.32) 0%, rgba(6,9,22,.62) 100%),
     url('/assets/images/hero-cosmic-bg.jpg');
   background-repeat:no-repeat;
-  background-size:100% 100%, 132%;
-  background-position:50% 50%, 48% 45%;
-  animation:heroBgDrift 46s ease-in-out infinite alternate;
-}
-@keyframes heroBgDrift{
-  0%{background-position:50% 50%, 46% 42%;}
-  100%{background-position:50% 50%, 56% 58%;}
+  background-size:100% 100%, cover;
+  background-position:50% 50%, center;
 }
 .hero-copy{
   position:relative;z-index:2;max-width:680px;
@@ -256,9 +251,19 @@ p.lede{font-size:17.5px;color:var(--ink-m);max-width:60ch;}
 .hero-spheres{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;}
 .hero-sphere{
   position:absolute;border-radius:50%;
-  background-image:url('/assets/images/glass-sphere.jpg');
-  background-size:165%;background-position:center;
-  box-shadow:0 20px 50px -10px rgba(0,0,0,.5), 0 0 40px rgba(140,190,255,.25);
+  /* Lit-globe shading (soft highlight top-left, shadow bottom-right) layered
+     over the real glass-sphere photo gives a "planet" read instead of a
+     flat orb; the outer glow doubles as an atmosphere halo. */
+  background-image:
+    radial-gradient(circle at 30% 26%, rgba(255,255,255,.45) 0%, transparent 42%),
+    radial-gradient(circle at 72% 78%, rgba(0,0,0,.45) 0%, transparent 58%),
+    url('/assets/images/glass-sphere.jpg');
+  background-size:100%, 100%, 165%;
+  background-position:center, center, center;
+  box-shadow:
+    0 20px 50px -10px rgba(0,0,0,.5),
+    0 0 26px 2px rgba(140,190,255,.3),
+    0 0 55px 10px rgba(140,190,255,.16);
 }
 .hero-sphere.s1{width:130px;height:130px;top:14%;right:8%;animation:heroDrift1 24s ease-in-out infinite;filter:hue-rotate(0deg) saturate(1.05);}
 .hero-sphere.s2{width:78px;height:78px;top:58%;right:6%;animation:heroDrift2 19s ease-in-out infinite;filter:hue-rotate(55deg) saturate(1.15);}
@@ -269,9 +274,9 @@ p.lede{font-size:17.5px;color:var(--ink-m);max-width:60ch;}
 @keyframes heroDrift3{0%,100%{transform:translate(0,0);}50%{transform:translate(-16px,-20px);}}
 @media (max-width:900px){
   .hero{padding:64px 0 80px;}
-  .hero-sphere.s1{width:60px;height:60px;top:4%;right:6%;}
+  .hero-sphere.s1{width:60px;height:60px;top:12%;right:6%;}
   .hero-sphere.s2{display:none;}
-  .hero-sphere.s3{width:36px;height:36px;top:4%;right:26%;}
+  .hero-sphere.s3{width:36px;height:36px;top:13%;right:26%;}
   .hero-sphere.s4{display:none;}
 }
 .btn{
