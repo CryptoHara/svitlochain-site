@@ -25,23 +25,20 @@ function navHtml(c, lang) {
 
 function heroHtml(c) {
   return `
-<section class="hero atmosphere">
-  <div class="wrap hero-grid">
-    <div class="hero-copy">
-      <div class="eyebrow">${esc(c.hero.eyebrow)}</div>
-      <h1>${esc(c.hero.title)}</h1>
-      <p class="lede">${esc(c.hero.lede)}</p>
-      <div class="cta-row">
-        <a href="#contact" class="btn btn-primary">${esc(c.hero.ctaPrimary)}</a>
-        <a href="#developers" class="btn btn-glass glass-sm">${esc(c.hero.ctaGlass)}</a>
-      </div>
-    </div>
-    <div class="hero-scene" aria-hidden="true">
-      <span class="hero-orb hero-orb-1"></span>
-      <span class="hero-orb hero-orb-2"></span>
-      <div class="hero-glass-card">
-        <img src="/assets/images/hero-sphere.jpg" alt="">
-      </div>
+<section class="hero hero-cosmic">
+  <div class="hero-spheres" aria-hidden="true">
+    <span class="hero-sphere s1"></span>
+    <span class="hero-sphere s2"></span>
+    <span class="hero-sphere s3"></span>
+    <span class="hero-sphere s4"></span>
+  </div>
+  <div class="wrap hero-copy">
+    <div class="eyebrow">${esc(c.hero.eyebrow)}</div>
+    <h1>${esc(c.hero.title)}</h1>
+    <p class="lede">${esc(c.hero.lede)}</p>
+    <div class="cta-row">
+      <a href="#contact" class="btn btn-primary">${esc(c.hero.ctaPrimary)}</a>
+      <a href="#developers" class="btn btn-glass glass-sm">${esc(c.hero.ctaGlass)}</a>
     </div>
   </div>
 </section>`;
