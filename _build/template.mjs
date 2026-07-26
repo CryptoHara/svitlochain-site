@@ -37,8 +37,8 @@ function heroHtml(c) {
     <h1>${esc(c.hero.title)}</h1>
     <p class="lede">${esc(c.hero.lede)}</p>
     <div class="cta-row">
-      <a href="#contact" class="btn btn-primary">${esc(c.hero.ctaPrimary)}</a>
-      <a href="#developers" class="btn btn-glass glass-sm">${esc(c.hero.ctaGlass)}</a>
+      <a href="/platform/" class="btn btn-primary">${esc(c.hero.ctaPrimary)}</a>
+      <a href="/platform/" class="btn btn-glass glass-sm">${esc(c.hero.ctaGlass)}</a>
     </div>
   </div>
 </section>`;
@@ -210,7 +210,7 @@ function tokenHtml(c) {
       <p style="margin-top:8px">${card.body}</p>
     </div>`).join('');
   const infraCards = t.infraCards.map(card => `
-    <div class="card card-accent"><h3>${esc(card.title)}</h3><p style="margin-top:8px">${card.body}</p></div>`).join('');
+    <div class="card card-accent"><h3>${esc(card.title)}</h3><p style="margin-top:8px">${card.body}</p>${card.href ? `<a href="${esc(card.href)}" class="btn btn-glass glass-sm" style="margin-top:14px">${esc(card.linkLabel || 'Learn more')} →</a>` : ''}</div>`).join('');
   return `
 <section id="token">
   <div class="wrap">
@@ -363,8 +363,8 @@ function ctaHtml(c) {
     <h2>${esc(c.cta.title)}</h2>
     <p class="lede center">${c.cta.body}</p>
     <div class="cta-row" style="justify-content:center">
-      <a href="#contact" class="btn btn-primary">${esc(c.cta.ctaPrimary)}</a>
-      <a href="#developers" class="btn btn-glass glass-sm">${esc(c.cta.ctaGlass)}</a>
+      <a href="/platform/" class="btn btn-primary">${esc(c.cta.ctaPrimary)}</a>
+      <a href="/platform/" class="btn btn-glass glass-sm">${esc(c.cta.ctaGlass)}</a>
     </div>
   </div>
 </section>`;

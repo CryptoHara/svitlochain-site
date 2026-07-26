@@ -234,7 +234,7 @@ svitlo-node start`,
     infraBody: 'Utöver den direkta nyttan bygger Svitlo Chain vidare på en egen infrastruktur som stärker ekosystemet och gör användningen av SVIT smidigare.',
     infraCards: [
       { title: 'L1-blockkedja för SVIT', body: 'SVIT är den native coinen i Svitlo Chains egen L1-blockkedja, med en total emission på 1 miljard coins. Den fungerar som ryggraden i ekosystemets säkerhet, transaktionsflöde, staking, bränning och långsiktiga kapitalisering. All aktivitet kopplas direkt till SVIT:s värde och hållbarhet.' },
-      { title: 'Svitlo Wallet', body: 'Svitlo Wallet är en enkel plånbok för att lagra, skicka och använda SVIT i hela Svitlo Chain-ekosystemet.' },
+      { title: 'Svitlo Wallet', body: 'Svitlo Wallet är en enkel plånbok för att lagra, skicka och använda SVIT i hela Svitlo Chain-ekosystemet.', href: '/wallet/', linkLabel: 'Läs mer' },
     ],
   },
   enterprise: {

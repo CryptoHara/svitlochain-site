@@ -234,7 +234,7 @@ svitlo-node start`,
     infraBody: 'Beyond direct utility, Svitlo Chain builds on its own infrastructure that strengthens the ecosystem and makes using SVIT smoother.',
     infraCards: [
       { title: 'L1 blockchain for SVIT', body: 'SVIT is the native coin of Svitlo Chain’s own L1 blockchain, with a total emission of 1 billion coins. It serves as the backbone of the ecosystem’s security, transaction flow, staking, burning, and long-term capitalization. All activity links directly to SVIT’s value and sustainability.' },
-      { title: 'Svitlo Wallet', body: 'Svitlo Wallet is a simple wallet for storing, sending, and using SVIT across the entire Svitlo Chain ecosystem.' },
+      { title: 'Svitlo Wallet', body: 'Svitlo Wallet is a simple wallet for storing, sending, and using SVIT across the entire Svitlo Chain ecosystem.', href: '/wallet/', linkLabel: 'Learn more' },
     ],
   },
   enterprise: {
