@@ -2,6 +2,19 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- Published copy (svitlochain.com/app/) -- locked to the known default
+     public relay rather than the source wallet-web's broader `https:`
+     connect-src, since this deployment's visitors are expected to use the
+     default relay (nodeUrl()'s fallback), not an arbitrary self-hosted
+     node. If you repoint Settings' RPC URL at a custom domain, add it here
+     too or requests will be CSP-blocked. frame-ancestors 'none' also
+     closes the clickjacking vector (page can't be iframed at all).
+     'unsafe-inline' is unavoidable given this file's extensive inline
+     onclick="..." handlers -- the actual XSS mitigation is
+     escapeHtml()/the delegated listener in renderMarkets(), this CSP is
+     defense-in-depth on top of that (specifically: it blocks a successful
+     XSS from exfiltrating the stolen keystore anywhere off-allowlist). -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://coin-images.coingecko.com; connect-src 'self' https://dares-suffering-swimwear.ngrok-free.dev https://api.coingecko.com; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; manifest-src 'self'; worker-src 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#6B4226" id="meta-theme">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -764,6 +777,14 @@ const BIP39=["abandon","ability","able","about","above","absent","absorb","abstr
 // Clickable <div>s (role="button") don't fire onclick on Enter/Space the way
 // a real <button> does natively -- this makes them keyboard-operable too.
 function kbdActivate(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();e.currentTarget.click();}}
+// Third-party API data (CoinGecko coin name/symbol/image) must never be spliced
+// raw into innerHTML or an inline onclick="..." string -- a coin name containing
+// a quote or angle bracket would otherwise break out of the HTML attribute or
+// the JS string literal. Escape for HTML/attribute contexts; renderMarkets()
+// additionally avoids inline-onclick argument-passing entirely for this data
+// (see its data-buy-* + delegated listener below) rather than relying on
+// escaping alone.
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function toHex(b){return Array.from(b).map(x=>x.toString(16).padStart(2,'0')).join('');}
 function fromHex(h){return new Uint8Array(h.match(/.{2}/g).map(b=>parseInt(b,16)));}
 function u64LE(n){const b=new Uint8Array(8);const v=BigInt(n);for(let i=0;i<8;i++)b[i]=Number((v>>(BigInt(i)*8n))&0xFFn);return b;}
@@ -1345,18 +1366,29 @@ function renderMarkets(coins){
     const chg=c.price_change_percentage_24h||0;
     const cls=chg>=0?'up':'dn';
     const sign=chg>=0?'+':'';
-    const imgHtml=c.image?`<img src="${c.image}" alt="${c.symbol}" onerror="this.style.display='none';this.nextSibling.style.display='flex'"><span style="display:none;align-items:center;justify-content:center;width:100%;height:100%;font-size:.5625rem;font-weight:700">${(c.symbol||'').slice(0,3).toUpperCase()}</span>`:`<span style="align-items:center;justify-content:center;width:100%;height:100%;font-size:.5625rem;font-weight:700;display:flex">${(c.symbol||'').slice(0,3).toUpperCase()}</span>`;
-    return`<tr data-name="${(c.name||'').toLowerCase()}" data-sym="${(c.symbol||'').toLowerCase()}">
+    const name=escapeHtml(c.name||'');
+    const symUp=escapeHtml((c.symbol||'').toUpperCase());
+    const symShort=escapeHtml((c.symbol||'').slice(0,3).toUpperCase());
+    const img=c.image?escapeHtml(c.image):'';
+    const imgHtml=img?`<img src="${img}" alt="${symUp}" onerror="this.style.display='none';this.nextSibling.style.display='flex'"><span style="display:none;align-items:center;justify-content:center;width:100%;height:100%;font-size:.5625rem;font-weight:700">${symShort}</span>`:`<span style="align-items:center;justify-content:center;width:100%;height:100%;font-size:.5625rem;font-weight:700;display:flex">${symShort}</span>`;
+    return`<tr data-name="${escapeHtml((c.name||'').toLowerCase())}" data-sym="${escapeHtml((c.symbol||'').toLowerCase())}">
       <td class="mkt-rank">${i+2}</td>
-      <td><div class="mkt-coin"><div class="mkt-ico">${imgHtml}</div><div><div class="mkt-cname">${c.name}</div><div class="mkt-csym">${c.symbol}</div></div></div></td>
+      <td><div class="mkt-coin"><div class="mkt-ico">${imgHtml}</div><div><div class="mkt-cname">${name}</div><div class="mkt-csym">${symUp}</div></div></div></td>
       <td class="mkt-price">$${fmtPrice(c.current_price)}</td>
       <td class="mkt-chg ${cls}">${sign}${chg.toFixed(2)}%</td>
       <td class="mkt-mcap">${fmtMcap(c.market_cap)}</td>
-      <td class="mkt-acts"><button class="btn btn-xs btn-primary" onclick="openBuyFor('${c.id}','${c.symbol?.toUpperCase()}','${c.name}')">Buy</button><button class="btn btn-xs btn-ghost" onclick="switchTab('send')">Send</button></td>
+      <td class="mkt-acts"><button class="btn btn-xs btn-primary" data-buy-id="${escapeHtml(c.id||'')}" data-buy-sym="${symUp}" data-buy-name="${name}">Buy</button><button class="btn btn-xs btn-ghost" onclick="switchTab('send')">Send</button></td>
     </tr>`;
   }).join('');
   document.getElementById('mkt-tbody').innerHTML=svitRow+rows;
 }
+// Delegated listener instead of inline onclick with interpolated CoinGecko
+// data -- dataset access decodes HTML entities but never re-parses as JS, so
+// this is safe regardless of what CoinGecko returns in a coin's name/symbol.
+document.getElementById('mkt-tbody').addEventListener('click',e=>{
+  const btn=e.target.closest('[data-buy-id]');
+  if(btn)openBuyFor(btn.dataset.buyId,btn.dataset.buySym,btn.dataset.buyName);
+});
 
 function filterMarkets(q){
   q=q.toLowerCase().trim();

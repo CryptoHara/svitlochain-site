@@ -1,7 +1,7 @@
-// Svitlo Wallet — Service Worker v4
+// Svitlo Wallet — Service Worker v5
 // Strategy: cache-first for app shell, network-first for RPC calls.
 
-const CACHE_NAME = 'svitlo-wallet-v4';
+const CACHE_NAME = 'svitlo-wallet-v5';
 const APP_SHELL = [
   './index.html',
   './manifest.json',
