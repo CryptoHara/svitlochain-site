@@ -1,0 +1,1700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#6B4226" id="meta-theme">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Svitlo">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>Svitlo Wallet</title>
+<style>
+/* ── Svitlo Design Tokens ─────────────────────────────────── */
+:root {
+  --bg:      #F7F1E8;
+  --s1:      #FFFFFF;
+  --s2:      #EDE7DA;
+  --s3:      #E2D8C8;
+  --bd:      rgba(107,66,38,.11);
+  --bd2:     rgba(107,66,38,.22);
+  --acc:     #6B4226;
+  --acc-h:   #7D4D2E;
+  --acc-bg:  rgba(107,66,38,.09);
+  /* Solid button fills always use this dark brown + white text, in BOTH
+     themes -- --acc itself goes lighter/tan in dark mode for readable text
+     on the dark background, but that same tan fails WCAG AA (2.89:1) as a
+     button fill under white text. Keeping fills on the darker brown avoids
+     that failure without touching --acc's own (already-passing) uses. */
+  --acc-fill:   #6B4226;
+  --acc-fill-h: #7D4D2E;
+  --tx:      #2C1810;
+  --txm:     #7A6455;
+  --txd:     #B8A898;
+  --good:    #2A7A4A;
+  --good-bg: rgba(42,122,74,.10);
+  --warn:    #996B00;
+  --warn-bg: rgba(153,107,0,.10);
+  --red:     #A83030;
+  --red-bg:  rgba(168,48,48,.10);
+  --serif: Georgia,'Times New Roman',serif;
+  --sans:  system-ui,-apple-system,'Segoe UI',Helvetica,sans-serif;
+  --mono:  ui-monospace,'Cascadia Code','SF Mono','Menlo',Consolas,monospace;
+  --safe-t: env(safe-area-inset-top,0px);
+  --safe-b: env(safe-area-inset-bottom,0px);
+  --safe-l: env(safe-area-inset-left,0px);
+  --safe-r: env(safe-area-inset-right,0px);
+  --r: 10px;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#1A0E08;--s1:#261810;--s2:#32221A;--s3:#3E2C22;
+  --bd:rgba(255,210,170,.08);--bd2:rgba(255,210,170,.16);
+  --acc:#C88B52;--acc-h:#D49860;--acc-bg:rgba(200,139,82,.10);
+  --acc-fill:#6B4226;--acc-fill-h:#7D4D2E;
+  --tx:#F5E5D0;--txm:#B89070;--txd:#6A4A38;
+  --good:#5DAA7A;--good-bg:rgba(93,170,122,.10);
+  --warn:#D49030;--warn-bg:rgba(212,144,48,.10);
+  --red:#D05050;--red-bg:rgba(208,80,80,.10);
+}}
+:root[data-theme="dark"]{
+  --bg:#1A0E08;--s1:#261810;--s2:#32221A;--s3:#3E2C22;
+  --bd:rgba(255,210,170,.08);--bd2:rgba(255,210,170,.16);
+  --acc:#C88B52;--acc-h:#D49860;--acc-bg:rgba(200,139,82,.10);
+  --acc-fill:#6B4226;--acc-fill-h:#7D4D2E;
+  --tx:#F5E5D0;--txm:#B89070;--txd:#6A4A38;
+  --good:#5DAA7A;--good-bg:rgba(93,170,122,.10);
+  --warn:#D49030;--warn-bg:rgba(212,144,48,.10);
+  --red:#D05050;--red-bg:rgba(208,80,80,.10);
+}
+:root[data-theme="light"]{
+  --bg:#F7F1E8;--s1:#FFFFFF;--s2:#EDE7DA;--s3:#E2D8C8;
+  --bd:rgba(107,66,38,.11);--bd2:rgba(107,66,38,.22);
+  --acc:#6B4226;--acc-h:#7D4D2E;--acc-bg:rgba(107,66,38,.09);
+  --acc-fill:#6B4226;--acc-fill-h:#7D4D2E;
+  --tx:#2C1810;--txm:#7A6455;--txd:#B8A898;
+  --good:#2A7A4A;--good-bg:rgba(42,122,74,.10);
+  --warn:#996B00;--warn-bg:rgba(153,107,0,.10);
+  --red:#A83030;--red-bg:rgba(168,48,48,.10);
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important;}
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--tx);font-family:var(--sans);font-size:.875rem;line-height:1.5;min-height:100vh;min-height:100dvh;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+button{cursor:pointer;border:none;background:none;font:inherit;color:inherit;}
+button:focus-visible,[role="button"]:focus-visible,a:focus-visible{outline:2px solid var(--acc);outline-offset:2px;}
+input,textarea,select{font:inherit;}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border-radius:var(--r);font-size:.8125rem;font-weight:600;border:1.5px solid transparent;transition:background .15s,border-color .15s;white-space:nowrap;cursor:pointer;}
+.btn-primary{background:var(--acc-fill);color:#fff;border-color:var(--acc);}
+.btn-primary:hover{background:var(--acc-fill-h);border-color:var(--acc-fill-h);}
+.btn-outline{background:transparent;color:var(--acc);border-color:var(--acc);}
+.btn-outline:hover{background:var(--acc-bg);}
+.btn-ghost{background:var(--s2);color:var(--tx);border-color:var(--bd2);}
+.btn-ghost:hover{background:var(--s3);}
+.btn-sm{padding:7px 14px;font-size:.75rem;}
+.btn-xs{padding:4px 10px;font-size:.6875rem;border-radius:6px;}
+.btn:disabled{opacity:.45;cursor:not-allowed;}
+
+/* Fields */
+.field{margin-bottom:16px;}
+.field-label{display:block;font-size:.625rem;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--txm);margin-bottom:6px;}
+.field-input{width:100%;background:var(--bg);border:1.5px solid var(--bd2);border-radius:var(--r);color:var(--tx);padding:10px 14px;font-family:var(--mono);font-size:.8125rem;transition:border-color .15s;outline:none;}
+.field-input:focus{border-color:var(--acc);}
+.field-input::placeholder{color:var(--txd);}
+.field-hint{font-size:.6875rem;color:var(--txm);margin-top:5px;}
+
+/* Header */
+.hdr{position:sticky;top:0;z-index:100;background:var(--s1);border-bottom:1px solid var(--bd);padding:calc(var(--safe-t)) calc(20px + var(--safe-r)) 0 calc(20px + var(--safe-l));height:calc(56px + var(--safe-t));display:flex;align-items:flex-end;gap:10px;padding-bottom:0;}
+.hdr>*{margin-bottom:10px;}
+.hdr-logo{font-family:var(--serif);font-size:1.1875rem;font-weight:700;color:var(--acc);flex-shrink:0;letter-spacing:-.01em;}
+.hdr-logo small{font-size:.6875rem;font-weight:400;color:var(--txm);font-family:var(--sans);letter-spacing:.04em;text-transform:uppercase;margin-left:5px;}
+.hdr-addr{flex:1;font-family:var(--mono);font-size:.6875rem;color:var(--txm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:260px;cursor:pointer;}
+.hdr-addr strong{color:var(--tx);}
+.hdr-spacer{flex:1;}
+.net-badge{display:flex;align-items:center;gap:5px;padding:4px 10px;border:1px solid var(--bd2);border-radius:20px;font-size:.65625rem;color:var(--txm);white-space:nowrap;flex-shrink:0;}
+.net-dot{width:6px;height:6px;border-radius:50%;background:var(--warn);}
+.net-dot.live{background:var(--good);animation:pulse 2.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hdr-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--bd);color:var(--txm);font-size:.875rem;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;}
+.hdr-btn:hover{border-color:var(--bd2);color:var(--tx);background:var(--s2);}
+.install-chip{display:none;align-items:center;gap:5px;padding:5px 12px;background:var(--acc-fill);color:#fff;border-radius:20px;font-size:.71875rem;font-weight:600;flex-shrink:0;}
+
+/* Install banner */
+.install-banner{display:none;align-items:center;gap:12px;padding:10px 20px;background:var(--acc-bg);border-bottom:1px solid var(--bd);font-size:.8125rem;}
+.install-banner.show{display:flex;}
+.ib-text{flex:1;}
+.ib-text strong{color:var(--acc);}
+
+/* iOS hint */
+.ios-hint{display:none;position:fixed;bottom:calc(72px + var(--safe-b));left:calc(12px + var(--safe-l));right:calc(12px + var(--safe-r));z-index:400;background:var(--s1);border:1px solid var(--bd2);border-radius:12px;padding:16px;box-shadow:0 16px 48px rgba(0,0,0,.3);flex-direction:column;gap:10px;}
+.ios-hint.show{display:flex;}
+.ios-h-row{display:flex;justify-content:space-between;align-items:center;}
+.ios-h-title{font-size:.8125rem;font-weight:700;}
+.ios-h-steps{display:flex;flex-direction:column;gap:8px;}
+.ios-h-step{display:flex;align-items:center;gap:10px;font-size:.78125rem;color:var(--txm);}
+.ios-h-num{width:22px;height:22px;border-radius:50%;background:var(--acc-fill);color:#fff;font-size:.625rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* Portfolio zone */
+.port-zone{padding:28px 20px 0;max-width:980px;margin:0 auto;}
+.port-eye{font-size:.625rem;letter-spacing:.18em;text-transform:uppercase;color:var(--txm);margin-bottom:6px;}
+.port-total{font-family:var(--serif);font-size:clamp(34px,6vw,62px);font-weight:700;letter-spacing:-.02em;color:var(--tx);line-height:1;margin-bottom:4px;font-variant-numeric:tabular-nums;}
+.port-sub{font-size:.8125rem;color:var(--txm);margin-bottom:22px;}
+.port-sub .up{color:var(--good);}
+.port-sub .dn{color:var(--red);}
+
+/* 4 Coin Cards */
+.coin-grid{display:grid;gap:12px;margin-bottom:22px;grid-template-columns:repeat(2,1fr);}
+@media(min-width:600px){.coin-grid{grid-template-columns:repeat(4,1fr);}}
+.cc{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:16px;cursor:pointer;transition:border-color .2s,box-shadow .2s;position:relative;overflow:hidden;}
+.cc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--cc-color,var(--acc));}
+.cc:hover{border-color:var(--bd2);box-shadow:0 4px 20px rgba(0,0,0,.07);}
+.cc-top{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.cc-ico{width:36px;height:36px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.6875rem;letter-spacing:.02em;background:var(--cc-color,var(--acc));color:#fff;}
+.cc-name{font-weight:600;font-size:.8125rem;color:var(--tx);line-height:1.2;}
+.cc-sym{font-size:.6875rem;color:var(--txm);}
+.cc-bal{font-family:var(--mono);font-size:.9375rem;font-weight:700;color:var(--tx);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cc-usd{font-family:var(--mono);font-size:.75rem;color:var(--txm);margin-top:2px;}
+.cc-chg{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:.65625rem;font-weight:600;font-family:var(--mono);margin-top:8px;}
+.cc-chg.up{background:var(--good-bg);color:var(--good);}
+.cc-chg.dn{background:var(--red-bg);color:var(--red);}
+.cc-chg.flat{background:var(--s2);color:var(--txm);}
+
+/* Action row */
+.action-row{display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap;}
+.act-btn{flex:1;min-width:72px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;background:var(--s1);border:1px solid var(--bd);border-radius:12px;font-size:.75rem;font-weight:600;color:var(--tx);transition:all .15s;}
+.act-btn:hover{background:var(--s2);border-color:var(--bd2);}
+.act-icon{width:36px;height:36px;border-radius:50%;background:var(--acc-bg);color:var(--acc);display:flex;align-items:center;justify-content:center;font-size:1.0625rem;}
+.act-btn.primary .act-icon{background:var(--acc-fill);color:#fff;}
+
+/* Stats strip */
+.stats-strip{max-width:980px;margin:0 auto;display:flex;border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);overflow-x:auto;}
+.stat-item{flex:1;min-width:90px;padding:9px 16px;border-right:1px solid var(--bd);display:flex;flex-direction:column;gap:2px;}
+.stat-item:last-child{border-right:none;}
+.stat-label{font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--txm);}
+.stat-value{font-family:var(--mono);font-size:.8125rem;font-weight:600;color:var(--tx);font-variant-numeric:tabular-nums;}
+.stat-value.ok{color:var(--good);}
+
+/* Tabs */
+.tabs-wrap{position:sticky;top:calc(56px + var(--safe-t));z-index:90;background:var(--bg);border-bottom:1px solid var(--bd);}
+.tabs{max-width:980px;margin:0 auto;display:flex;padding:0 20px;overflow-x:auto;}
+.tab-btn{padding:13px 18px;font-size:.8125rem;font-weight:600;color:var(--txm);border-bottom:2px solid transparent;transition:color .15s,border-color .15s;white-space:nowrap;flex-shrink:0;}
+.tab-btn:hover{color:var(--tx);}
+.tab-btn.active{color:var(--acc);border-bottom-color:var(--acc);}
+
+/* Content */
+.content{max-width:980px;margin:0 auto;padding:24px 20px 80px;}
+.tab-panel{display:none;animation:fadeIn .18s ease;}
+.tab-panel.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* Panel card */
+.panel{background:var(--s1);border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin-bottom:16px;}
+.panel-hdr{padding:14px 18px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;}
+.panel-title{font-family:var(--serif);font-size:1rem;font-weight:700;color:var(--tx);}
+
+/* TX list */
+.tx-list{list-style:none;}
+.tx-row{display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--bd);transition:background .12s;}
+.tx-row:last-child{border-bottom:none;}
+.tx-row:hover{background:var(--s2);}
+.tx-icon{width:34px;height:34px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.6875rem;font-weight:700;}
+.tx-icon.in{background:var(--good-bg);color:var(--good);}
+.tx-icon.out{background:var(--red-bg);color:var(--red);}
+.tx-icon.job{background:var(--acc-bg);color:var(--acc);}
+.tx-info{flex:1;min-width:0;}
+.tx-desc{font-size:.8125rem;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tx-meta{font-family:var(--mono);font-size:.65625rem;color:var(--txm);margin-top:1px;}
+.tx-amount{font-family:var(--mono);font-size:.8125rem;font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums;text-align:right;}
+.tx-amount.in{color:var(--good);}
+.tx-amount.out{color:var(--red);}
+.tx-amount .sub{font-size:.625rem;font-weight:400;color:var(--txm);display:block;}
+
+/* Markets */
+.mkt-bar{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
+.mkt-sw{position:relative;flex:1;min-width:180px;}
+.mkt-sw-ic{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--txm);font-size:.875rem;pointer-events:none;}
+.mkt-search{width:100%;background:var(--s1);border:1.5px solid var(--bd);border-radius:8px;padding:9px 14px 9px 36px;font-size:.8125rem;color:var(--tx);outline:none;transition:border-color .15s;}
+.mkt-search:focus{border-color:var(--acc);}
+.mkt-wrap{overflow-x:auto;}
+.mkt-table{width:100%;border-collapse:collapse;}
+.mkt-table th{padding:10px 14px;text-align:left;font-size:.625rem;letter-spacing:.10em;text-transform:uppercase;color:var(--txm);font-weight:700;border-bottom:1px solid var(--bd);background:var(--s2);white-space:nowrap;}
+.mkt-table td{padding:11px 14px;border-bottom:1px solid var(--bd);vertical-align:middle;}
+.mkt-table tr:last-child td{border-bottom:none;}
+.mkt-table tr:hover td{background:var(--s2);}
+.mkt-rank{font-family:var(--mono);font-size:.6875rem;color:var(--txd);text-align:right;padding-right:8px;}
+.mkt-coin{display:flex;align-items:center;gap:9px;}
+.mkt-ico{width:30px;height:30px;border-radius:50%;flex-shrink:0;background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:.625rem;font-weight:700;overflow:hidden;}
+.mkt-ico img{width:30px;height:30px;border-radius:50%;}
+.mkt-cname{font-weight:600;font-size:.8125rem;color:var(--tx);line-height:1.2;}
+.mkt-csym{font-size:.65625rem;color:var(--txm);text-transform:uppercase;}
+.mkt-price{font-family:var(--mono);font-size:.8125rem;color:var(--tx);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.mkt-chg{font-family:var(--mono);font-size:.75rem;font-weight:600;white-space:nowrap;}
+.mkt-chg.up{color:var(--good);}
+.mkt-chg.dn{color:var(--red);}
+.mkt-mcap{font-family:var(--mono);font-size:.75rem;color:var(--txm);white-space:nowrap;}
+.mkt-acts{display:flex;gap:5px;white-space:nowrap;}
+@media(max-width:640px){.mkt-table th:nth-child(5),.mkt-table td:nth-child(5){display:none;}}
+
+/* Send/Receive */
+.form-wrap{max-width:520px;}
+.send-summary{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:14px 16px;margin-bottom:16px;}
+.ss-row{display:flex;justify-content:space-between;font-size:.78125rem;padding:4px 0;}
+.ss-row .k{color:var(--txm);}
+.ss-row .v{font-family:var(--mono);font-variant-numeric:tabular-nums;}
+.ss-row.total .v{font-weight:700;font-size:.875rem;color:var(--acc);}
+.addr-box{background:var(--s2);border:1px solid var(--bd2);border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:.75rem;color:var(--tx);word-break:break-all;line-height:1.7;margin-bottom:12px;}
+.qr-canvas{display:block;margin:0 auto 20px;border-radius:8px;}
+
+/* Misc */
+.section-title{font-family:var(--serif);font-size:1.125rem;font-weight:700;color:var(--tx);margin-bottom:16px;}
+.chip{display:inline-block;padding:3px 10px;background:var(--s2);border:1px solid var(--bd);border-radius:20px;font-size:.65625rem;color:var(--txm);}
+.pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.625rem;font-weight:600;font-family:var(--mono);}
+.pill.done{background:var(--good-bg);color:var(--good);}
+.pill.running{background:var(--acc-bg);color:var(--acc);}
+.pill.pending{background:var(--warn-bg);color:var(--warn);}
+.lock-choice{flex-direction:column;line-height:1.5;gap:2px;}
+.lock-choice span{font-weight:400;}
+.lock-choice.active{background:var(--acc-bg);border-color:var(--acc);color:var(--acc);}
+.warn-box{background:var(--warn-bg);border:1px solid var(--warn);border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:.8125rem;color:var(--tx);line-height:1.6;}
+.stake-pos-row{display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--bd);}
+.stake-pos-row:last-child{border-bottom:none;}
+.stake-pos-tier{font-size:.65625rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--txm);}
+.stake-pos-amt{font-family:var(--mono);font-weight:700;color:var(--tx);}
+.stake-pos-unlock{font-size:.6875rem;color:var(--txm);margin-top:1px;}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums;}
+.mt8{margin-top:8px;}.mt16{margin-top:16px;}.mt24{margin-top:24px;}
+.spinner{width:32px;height:32px;border:3px solid var(--bd2);border-top-color:var(--acc);border-radius:50%;animation:spin .8s linear infinite;margin:24px auto;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Bottom sheet modal */
+.bs-overlay{display:none;position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.55);align-items:flex-end;justify-content:center;}
+.bs-overlay.show{display:flex;}
+.bottom-sheet{background:var(--s1);border-radius:16px 16px 0 0;width:100%;max-width:520px;padding:24px 24px calc(24px + var(--safe-b));border-top:1px solid var(--bd);animation:slideUp .25s ease;max-height:92vh;overflow-y:auto;}
+@keyframes slideUp{from{transform:translateY(60px);opacity:0}to{transform:none;opacity:1}}
+.bs-handle{width:40px;height:4px;background:var(--s3);border-radius:4px;margin:0 auto 20px;}
+.bs-title{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:var(--tx);margin-bottom:16px;}
+
+/* Bottom nav */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:200;background:var(--s1);border-top:1px solid var(--bd);padding:0 var(--safe-r) var(--safe-b) var(--safe-l);justify-content:space-around;align-items:stretch;}
+.bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:10px 4px;color:var(--txm);font-size:.625rem;font-weight:500;transition:color .15s;min-width:0;}
+.bnav-item.active{color:var(--acc);}
+.bnav-icon{width:22px;height:22px;display:flex;align-items:center;justify-content:center;}
+.bnav-icon svg{width:20px;height:20px;fill:currentColor;}
+
+@media(max-width:640px){
+  .tabs-wrap{display:none;}
+  .bottom-nav{display:flex;}
+  .content{padding:16px 16px calc(72px + var(--safe-b));}
+  .port-zone{padding:18px 16px 0;}
+  .hdr{padding-left:calc(16px + var(--safe-l));padding-right:calc(16px + var(--safe-r));}
+  .hdr-addr{display:none;}
+  .stats-strip{border-left:none;border-right:none;}
+}
+
+/* Coin selector strip (send tab) */
+.coin-sel{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;}
+.cs-btn{display:flex;align-items:center;gap:7px;padding:7px 14px;background:var(--s2);border:1.5px solid var(--bd);border-radius:8px;font-size:.78125rem;font-weight:600;color:var(--txm);flex-shrink:0;transition:all .15s;cursor:pointer;}
+.cs-btn.active,.cs-btn:hover{border-color:var(--acc);color:var(--acc);background:var(--acc-bg);}
+.cs-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0;}
+</style>
+</head>
+<body>
+
+<!-- ── Setup overlay ─────────────────────────────────────────────────────── -->
+<div id="setup-overlay" style="display:none;position:fixed;inset:0;z-index:900;background:var(--bg);align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--s1);border:1px solid var(--bd2);border-radius:14px;width:100%;max-width:400px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.15)">
+    <div style="padding:20px 22px;border-bottom:1px solid var(--bd)">
+      <div style="font-family:var(--serif);font-size:1.25rem;font-weight:700;color:var(--acc)">Svitlo Wallet</div>
+      <div style="font-size:.75rem;color:var(--txm);margin-top:3px">No wallet found — create or restore one</div>
+    </div>
+    <div style="display:flex;border-bottom:1px solid var(--bd)">
+      <button id="setup-tab-create" onclick="setupMode('create')" style="flex:1;background:none;border:none;border-bottom:2px solid var(--acc);color:var(--tx);padding:11px;font-size:.8125rem;font-weight:600;cursor:pointer">Create new</button>
+      <button id="setup-tab-import" onclick="setupMode('import')" style="flex:1;background:none;border:none;border-bottom:2px solid transparent;color:var(--txm);padding:11px;font-size:.8125rem;font-weight:600;cursor:pointer">Restore from phrase</button>
+    </div>
+    <div style="padding:20px 22px">
+      <div id="setup-create">
+        <div style="margin-bottom:12px"><div style="font-size:.625rem;color:var(--txm);letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:5px">Password</div><input id="setup-pw1" type="password" placeholder="At least 8 characters" autocomplete="new-password" style="width:100%;background:var(--s2);border:1.5px solid var(--bd2);border-radius:8px;padding:9px 12px;font-size:.8125rem;color:var(--tx);box-sizing:border-box;outline:none;transition:border-color .15s" onfocus="this.style.borderColor='var(--acc)'" onblur="this.style.borderColor='var(--bd2)'"></div>
+        <div style="margin-bottom:14px"><div style="font-size:.625rem;color:var(--txm);letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:5px">Confirm password</div><input id="setup-pw2" type="password" placeholder="Repeat password" autocomplete="new-password" style="width:100%;background:var(--s2);border:1.5px solid var(--bd2);border-radius:8px;padding:9px 12px;font-size:.8125rem;color:var(--tx);box-sizing:border-box;outline:none;transition:border-color .15s" onfocus="this.style.borderColor='var(--acc)'" onblur="this.style.borderColor='var(--bd2)'"></div>
+        <div id="setup-err" style="font-size:.75rem;color:var(--red);margin-bottom:10px;display:none"></div>
+        <button onclick="doCreateWallet()" style="width:100%;background:var(--acc-fill);border:none;border-radius:8px;padding:11px;font-size:.8125rem;font-weight:700;color:#fff;cursor:pointer">Create wallet</button>
+      </div>
+      <div id="setup-import" style="display:none">
+        <div style="font-size:.75rem;color:var(--txm);margin-bottom:12px">Enter your 12 or 24-word BIP39 recovery phrase.</div>
+        <div style="margin-bottom:12px"><div style="font-size:.625rem;color:var(--txm);letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:5px">Recovery phrase</div><textarea id="setup-phrase" rows="3" placeholder="word1 word2 word3 …" autocomplete="off" spellcheck="false" style="width:100%;background:var(--s2);border:1.5px solid var(--bd2);border-radius:8px;padding:9px 12px;font-size:.8125rem;font-family:var(--mono);color:var(--tx);box-sizing:border-box;resize:vertical;line-height:1.6;outline:none"></textarea></div>
+        <div style="margin-bottom:14px"><div style="font-size:.625rem;color:var(--txm);letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:5px">New password</div><input id="setup-imp-pw" type="password" autocomplete="new-password" style="width:100%;background:var(--s2);border:1.5px solid var(--bd2);border-radius:8px;padding:9px 12px;font-size:.8125rem;color:var(--tx);box-sizing:border-box;outline:none"></div>
+        <div id="setup-imp-err" style="font-size:.75rem;color:var(--red);margin-bottom:10px;display:none"></div>
+        <button onclick="doImportWallet()" style="width:100%;background:var(--acc-fill);border:none;border-radius:8px;padding:11px;font-size:.8125rem;font-weight:700;color:#fff;cursor:pointer">Restore wallet</button>
+      </div>
+      <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--bd);font-size:.65625rem;line-height:1.5;color:var(--txm)">
+        This is a <strong>non-custodial</strong> wallet — you alone control your funds and recovery phrase, and you alone are responsible for keeping them safe. Never share your password or recovery phrase with anyone, including anyone claiming to offer support: doing so can lead to immediate, total, irreversible loss of funds. We cannot recover lost access, reverse transactions, or protect you from irrational use.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Password prompt ───────────────────────────────────────────────────── -->
+<div id="pw-overlay" style="display:none;position:fixed;inset:0;z-index:901;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--s1);border:1px solid var(--bd2);border-radius:14px;width:100%;max-width:340px;padding:22px;box-shadow:0 24px 64px rgba(0,0,0,.2)">
+    <div style="font-family:var(--serif);font-size:1.125rem;font-weight:700;color:var(--tx);margin-bottom:14px">Enter wallet password</div>
+    <input id="pw-input" type="password" placeholder="Password" autocomplete="current-password" style="width:100%;background:var(--s2);border:1.5px solid var(--bd2);border-radius:8px;padding:10px 12px;font-size:.8125rem;color:var(--tx);box-sizing:border-box;margin-bottom:12px;outline:none" onkeydown="if(event.key==='Enter')pwConfirm()">
+    <div id="pw-err" style="font-size:.75rem;color:var(--red);margin-bottom:10px;display:none"></div>
+    <div style="display:flex;gap:8px">
+      <button onclick="pwConfirm()" style="flex:1;background:var(--acc-fill);border:none;border-radius:8px;padding:10px;font-size:.8125rem;font-weight:700;color:#fff;cursor:pointer">Unlock</button>
+      <button onclick="pwCancel()" style="background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:10px 16px;font-size:.8125rem;color:var(--txm);cursor:pointer">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Legacy keystore migration (one-time, only for wallets created before
+     multi-chain support) ─────────────────────────────────────────────────── -->
+<div id="migrate-overlay" style="display:none;position:fixed;inset:0;z-index:901;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--s1);border:1px solid var(--bd2);border-radius:14px;width:100%;max-width:400px;padding:22px;box-shadow:0 24px 64px rgba(0,0,0,.2)">
+    <div style="font-family:var(--serif);font-size:1.125rem;font-weight:700;color:var(--tx);margin-bottom:8px">One-time setup for other coins</div>
+    <div style="font-size:.78125rem;color:var(--txm);margin-bottom:14px;line-height:1.6">This wallet was created before multi-chain support. Re-enter your recovery phrase once to enable BTC/ETH/and other coin addresses — your SVIT wallet stays exactly the same, this only unlocks deriving the other addresses.</div>
+    <textarea id="migrate-phrase" rows="3" placeholder="word1 word2 word3 …" autocomplete="off" spellcheck="false" style="width:100%;background:var(--s2);border:1.5px solid var(--bd2);border-radius:8px;padding:9px 12px;font-size:.8125rem;font-family:var(--mono);color:var(--tx);box-sizing:border-box;resize:vertical;line-height:1.6;outline:none;margin-bottom:12px"></textarea>
+    <div id="migrate-err" style="font-size:.75rem;color:var(--red);margin-bottom:10px;display:none"></div>
+    <div style="display:flex;gap:8px">
+      <button onclick="migrateConfirm()" style="flex:1;background:var(--acc-fill);border:none;border-radius:8px;padding:10px;font-size:.8125rem;font-weight:700;color:#fff;cursor:pointer">Confirm</button>
+      <button onclick="migrateCancel()" style="background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:10px 16px;font-size:.8125rem;color:var(--txm);cursor:pointer">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Mnemonic backup ───────────────────────────────────────────────────── -->
+<div id="mnemonic-overlay" style="display:none;position:fixed;inset:0;z-index:902;background:rgba(0,0,0,.85);align-items:center;justify-content:center;padding:20px;overflow-y:auto">
+  <div style="background:var(--s1);border:1px solid var(--warn);border-radius:14px;width:100%;max-width:480px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.3)">
+    <div style="background:var(--warn-bg);border-bottom:1px solid var(--warn);padding:14px 20px;display:flex;align-items:center;gap:10px">
+      <div style="width:22px;height:22px;border-radius:50%;background:var(--warn);color:#000;font-size:.75rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">!</div>
+      <div><div style="font-size:.8125rem;font-weight:700;color:var(--warn)">Back up your recovery phrase</div><div style="font-size:.71875rem;color:var(--txm);margin-top:2px">Shown once — never stored. Without it your wallet cannot be recovered.</div></div>
+    </div>
+    <div style="padding:20px">
+      <div id="mnemonic-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px 10px;margin-bottom:18px"></div>
+      <div style="background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;font-family:var(--mono);font-size:.71875rem;color:var(--txm);word-break:break-all;margin-bottom:16px;cursor:pointer" id="mnemonic-plain" onclick="copyMnemonic()" onkeydown="kbdActivate(event)" role="button" tabindex="0" title="Click to copy" aria-label="Copy recovery phrase to clipboard"></div>
+      <div id="mnemonic-copy-ok" style="font-size:.6875rem;color:var(--good);margin-bottom:10px;display:none">Copied to clipboard</div>
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin-bottom:16px;font-size:.78125rem;color:var(--txm)">
+        <input type="checkbox" id="mnemonic-confirm-cb" onchange="mnemonicCheckChange()" style="margin-top:2px;accent-color:var(--acc)">
+        <span>I have written down all 24 words in the correct order and stored them securely offline.</span>
+      </label>
+      <button id="mnemonic-continue-btn" onclick="mnemonicDone()" disabled style="width:100%;background:var(--acc-fill);border:none;border-radius:8px;padding:11px;font-size:.8125rem;font-weight:700;color:#fff;cursor:not-allowed;opacity:.45;transition:opacity .15s">Continue to wallet</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Settings overlay ──────────────────────────────────────────────────── -->
+<div id="settings-overlay" style="display:none;position:fixed;inset:0;z-index:910;background:rgba(0,0,0,.65);align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--s1);border:1px solid var(--bd2);border-radius:14px;width:100%;max-width:380px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.2)">
+    <div style="padding:14px 20px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
+      <div style="font-family:var(--serif);font-size:1.0625rem;font-weight:700;color:var(--tx)">Node Settings</div>
+      <button onclick="closeSettings()" aria-label="Close" style="background:var(--s2);border:none;border-radius:50%;width:28px;height:28px;color:var(--txm);font-size:.875rem;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
+    </div>
+    <div style="padding:18px 20px">
+      <div style="font-size:.625rem;color:var(--txm);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:6px">RPC URL</div>
+      <input id="node-url-input" type="url" style="width:100%;background:var(--bg);border:1.5px solid var(--bd2);border-radius:8px;color:var(--tx);padding:9px 12px;font-family:var(--mono);font-size:.75rem;box-sizing:border-box;outline:none" placeholder="https://dares-suffering-swimwear.ngrok-free.dev">
+      <div style="font-size:.6875rem;color:var(--txm);margin-top:5px">Default: the public Svitlo Chain relay. Change this only if you're running your own node.</div>
+      <div style="display:flex;gap:8px;margin-top:14px">
+        <button onclick="saveSettings()" style="flex:1;background:var(--acc-fill);border:none;border-radius:8px;padding:10px;font-size:.8125rem;font-weight:700;color:#fff;cursor:pointer">Save &amp; connect</button>
+        <button onclick="closeSettings()" style="background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:10px 16px;font-size:.8125rem;color:var(--txm);cursor:pointer">Cancel</button>
+      </div>
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--bd)">
+        <div style="font-size:.625rem;color:var(--txm);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:8px">Wallet Actions</div>
+        <button onclick="forgetWallet()" style="width:100%;background:var(--red-bg);border:1px solid rgba(168,48,48,.3);border-radius:8px;padding:9px;font-size:.75rem;color:var(--red);cursor:pointer">Forget wallet (clear local keystore)</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Buy bottom sheet ───────────────────────────────────────────────────── -->
+<div class="bs-overlay" id="buy-modal">
+  <div class="bottom-sheet" style="max-width:480px">
+    <div class="bs-handle"></div>
+    <div class="bs-title" id="buy-title">Buy</div>
+    <div id="buy-body">
+      <div style="background:var(--s2);border-radius:10px;padding:16px;margin-bottom:16px">
+        <div style="font-size:.75rem;color:var(--txm);margin-bottom:4px">Current price</div>
+        <div id="buy-price" style="font-family:var(--mono);font-size:1.375rem;font-weight:700;color:var(--tx)">—</div>
+        <div id="buy-chg" style="font-family:var(--mono);font-size:.75rem;margin-top:2px"></div>
+      </div>
+      <p style="font-size:.8125rem;color:var(--txm);margin-bottom:18px;line-height:1.6">To purchase this asset, send funds to your wallet address below or connect an external exchange.</p>
+      <div class="addr-box" id="buy-addr" style="font-size:.6875rem"></div>
+      <div style="display:flex;gap:8px">
+        <button onclick="copyBuyAddr()" class="btn btn-primary" style="flex:1">Copy address</button>
+        <button onclick="closeBuy()" class="btn btn-ghost">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Swap bottom sheet ──────────────────────────────────────────────────── -->
+<div class="bs-overlay" id="swap-modal">
+  <div class="bottom-sheet" style="max-width:480px">
+    <div class="bs-handle"></div>
+    <div class="bs-title">Swap</div>
+    <div class="field">
+      <label class="field-label">From</label>
+      <div style="display:flex;gap:8px">
+        <select class="field-input" id="swap-from-token" style="flex:0 0 112px" onchange="onSwapTokenChange()"></select>
+        <input class="field-input" id="swap-amt-in" type="number" min="0" step="0.000001" placeholder="0.000000" inputmode="decimal" oninput="onSwapAmountChange()">
+      </div>
+      <div id="swap-from-bal" style="font-size:.6875rem;color:var(--txm);margin-top:5px"></div>
+    </div>
+    <div style="display:flex;justify-content:center;margin:2px 0 10px">
+      <button onclick="flipSwapTokens()" title="Flip" aria-label="Flip from/to tokens" style="background:var(--s2);border:1px solid var(--bd);border-radius:50%;width:30px;height:30px;color:var(--tx);cursor:pointer;display:flex;align-items:center;justify-content:center">⇅</button>
+    </div>
+    <div class="field">
+      <label class="field-label">To</label>
+      <select class="field-input" id="swap-to-token" onchange="onSwapTokenChange()"></select>
+    </div>
+    <div id="swap-quote-box" style="background:var(--s2);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:.78125rem;color:var(--txm);line-height:1.7;display:none">
+      <div>You receive <strong id="swap-quote-out" style="color:var(--tx)">—</strong></div>
+      <div>Price impact: <span id="swap-quote-impact">—</span></div>
+      <div>Fee (0.3%): <span id="swap-quote-fee">—</span></div>
+      <div style="margin-top:4px">Slippage tolerance: 1% (built in)</div>
+    </div>
+    <div id="swap-nopool" style="font-size:.78125rem;color:var(--txm);margin-bottom:12px;display:none"></div>
+    <div id="swap-error" style="font-size:.75rem;color:var(--red);margin-bottom:12px;display:none"></div>
+    <button onclick="executeSwap()" id="swap-btn" class="btn btn-primary" style="width:100%" disabled>Swap</button>
+    <button onclick="closeSwap()" class="btn btn-ghost" style="width:100%;margin-top:8px">Cancel</button>
+  </div>
+</div>
+
+<!-- ── Stake confirmation bottom sheet ──────────────────────────────────────── -->
+<div class="bs-overlay" id="stake-confirm-modal">
+  <div class="bottom-sheet" style="max-width:480px">
+    <div class="bs-handle"></div>
+    <div class="bs-title">Confirm stake</div>
+    <div class="warn-box" id="stake-confirm-warn">
+      <strong>Your funds will be frozen.</strong> Once staked, this amount cannot be unstaked before the lock period ends — no exceptions.
+    </div>
+    <div class="send-summary">
+      <div class="ss-row"><span class="k">Amount</span><span class="v" id="stake-confirm-amt">—</span></div>
+      <div class="ss-row"><span class="k">Lock period</span><span class="v" id="stake-confirm-period">—</span></div>
+      <div class="ss-row total"><span class="k">Unlocks on</span><span class="v" id="stake-confirm-unlock">—</span></div>
+    </div>
+    <div id="stake-confirm-error" style="font-size:.75rem;color:var(--red);margin:12px 0;display:none"></div>
+    <button class="btn btn-primary" style="width:100%" id="stake-confirm-btn" onclick="executeStake()">I understand, stake now</button>
+    <button class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="closeStakeConfirm()">Cancel</button>
+  </div>
+</div>
+
+<!-- Install banner -->
+<div class="install-banner" id="install-banner">
+  <div class="ib-text">Install <strong>Svitlo Wallet</strong> for instant access and offline use.</div>
+  <button class="btn btn-primary btn-sm" id="install-ok">Install</button>
+  <button class="btn btn-ghost btn-sm" id="install-no" aria-label="Dismiss" style="padding:6px 8px">✕</button>
+</div>
+
+<!-- iOS hint -->
+<div class="ios-hint" id="ios-hint">
+  <div class="ios-h-row">
+    <div class="ios-h-title" style="font-family:var(--serif)">Install on iPhone / iPad</div>
+    <button style="background:var(--s2);border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;color:var(--txm)" onclick="closeIosHint()" aria-label="Close">✕</button>
+  </div>
+  <div class="ios-h-steps">
+    <div class="ios-h-step"><div class="ios-h-num">1</div><div>Tap the Share button at the bottom of Safari</div></div>
+    <div class="ios-h-step"><div class="ios-h-num">2</div><div>Scroll down and tap <strong>Add to Home Screen</strong></div></div>
+    <div class="ios-h-step"><div class="ios-h-num">3</div><div>Tap <strong>Add</strong></div></div>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="hdr">
+  <div class="hdr-logo">Svitlo<small>wallet</small></div>
+  <div class="hdr-addr" id="hdr-addr-el" title="Copy address" onclick="copyAddr()" onkeydown="kbdActivate(event)" role="button" tabindex="0" aria-label="Copy wallet address to clipboard">—</div>
+  <div class="hdr-spacer"></div>
+  <div class="net-badge"><span class="net-dot" id="net-dot"></span><span id="net-lbl">—</span></div>
+  <button class="install-chip" id="install-chip" onclick="handleInstall()">↓ Install</button>
+  <button class="hdr-btn" id="settings-btn" title="Node settings" aria-label="Node settings" onclick="openSettings()" style="font-size:.9375rem">⚙</button>
+  <button class="hdr-btn" id="theme-btn" title="Toggle theme" aria-label="Toggle dark/light theme">◐</button>
+</header>
+
+<!-- Portfolio zone -->
+<div class="port-zone">
+  <div class="port-eye">Total Portfolio</div>
+  <div class="port-total" id="port-total">$—</div>
+  <div class="port-sub" id="bal-usd">Connecting to node…</div>
+
+  <!-- 4 Coin Cards -->
+  <div class="coin-grid" id="coin-grid">
+    <div class="cc" style="--cc-color:#C88B52" onclick="switchTab('send')" onkeydown="kbdActivate(event)" role="button" tabindex="0" aria-label="SVIT balance, go to Send">
+      <div class="cc-top"><div class="cc-ico" style="background:#C88B52">SVIT</div><div><div class="cc-name">Svitlo Chain</div><div class="cc-sym">SVIT</div></div></div>
+      <div class="cc-bal" id="bal-svit">—</div>
+      <div class="cc-usd" id="svit-usd">$—</div>
+      <span class="cc-chg flat" id="svit-chg">+0.00%</span>
+    </div>
+    <div class="cc" style="--cc-color:#F7931A" onclick="openBuyFor('bitcoin','BTC','Bitcoin')" onkeydown="kbdActivate(event)" role="button" tabindex="0" aria-label="Bitcoin balance, buy Bitcoin">
+      <div class="cc-top"><div class="cc-ico" style="background:#F7931A">BTC</div><div><div class="cc-name">Bitcoin</div><div class="cc-sym">BTC</div></div></div>
+      <div class="cc-bal">0.00000000</div>
+      <div class="cc-usd" id="btc-usd">$—</div>
+      <span class="cc-chg flat" id="btc-chg">—</span>
+    </div>
+    <div class="cc" style="--cc-color:#26A17B" onclick="openBuyFor('tether','USDT','Tether')" onkeydown="kbdActivate(event)" role="button" tabindex="0" aria-label="Tether balance, buy USDT">
+      <div class="cc-top"><div class="cc-ico" style="background:#26A17B">USDT</div><div><div class="cc-name">Tether</div><div class="cc-sym">USDT</div></div></div>
+      <div class="cc-bal">0.00</div>
+      <div class="cc-usd" id="usdt-usd">$1.00</div>
+      <span class="cc-chg flat" id="usdt-chg">≈ $1.00</span>
+    </div>
+    <div class="cc" style="--cc-color:#2775CA" onclick="openBuyFor('usd-coin','USDC','USD Coin')" onkeydown="kbdActivate(event)" role="button" tabindex="0" aria-label="USD Coin balance, buy USDC">
+      <div class="cc-top"><div class="cc-ico" style="background:#2775CA">USDC</div><div><div class="cc-name">USD Coin</div><div class="cc-sym">USDC</div></div></div>
+      <div class="cc-bal">0.00</div>
+      <div class="cc-usd" id="usdc-usd">$1.00</div>
+      <span class="cc-chg flat" id="usdc-chg">≈ $1.00</span>
+    </div>
+  </div>
+
+  <!-- Action row -->
+  <div class="action-row">
+    <button class="act-btn primary" onclick="switchTab('send')"><div class="act-icon">↑</div>Send</button>
+    <button class="act-btn" onclick="switchTab('receive')"><div class="act-icon">↓</div>Receive</button>
+    <button class="act-btn" onclick="openSwap()"><div class="act-icon">⇄</div>Swap</button>
+    <button class="act-btn" onclick="switchTab('stake')"><div class="act-icon">%</div>Stake</button>
+    <button class="act-btn" onclick="switchTab('markets')"><div class="act-icon">◈</div>Markets</button>
+  </div>
+</div>
+
+<!-- Stats strip -->
+<div class="stats-strip">
+  <div class="stat-item"><div class="stat-label">Block</div><div class="stat-value" id="block-num">—</div></div>
+  <div class="stat-item"><div class="stat-label">Pool</div><div class="stat-value ok" id="tps-val">—</div></div>
+  <div class="stat-item"><div class="stat-label">Chain</div><div class="stat-value" id="chain-id-el">—</div></div>
+  <div class="stat-item"><div class="stat-label">Peers</div><div class="stat-value" id="peers-el">—</div></div>
+  <div class="stat-item"><div class="stat-label">Nonce</div><div class="stat-value" id="nonce-el">—</div></div>
+</div>
+
+<!-- Desktop tabs -->
+<div class="tabs-wrap">
+  <nav class="tabs" role="tablist">
+    <button class="tab-btn active" onclick="switchTab('home')" id="tab-home">Home</button>
+    <button class="tab-btn" onclick="switchTab('markets')" id="tab-markets">Markets</button>
+    <button class="tab-btn" onclick="switchTab('send')" id="tab-send">Send</button>
+    <button class="tab-btn" onclick="switchTab('receive')" id="tab-receive">Receive</button>
+    <button class="tab-btn" onclick="switchTab('stake')" id="tab-stake">Stake</button>
+  </nav>
+</div>
+
+<!-- Content panels -->
+<div class="content">
+
+  <!-- Home -->
+  <div class="tab-panel active" id="panel-home">
+    <div class="panel">
+      <div class="panel-hdr"><span class="panel-title">Recent activity</span><span class="chip">Svitlo chain</span></div>
+      <ul class="tx-list">
+        <li class="tx-row"><div class="tx-icon in">GPU</div><div class="tx-info"><div class="tx-desc">GPU reward — Batch #12,841</div><div class="tx-meta">svit1node4f2a… · 2 min ago</div></div><div class="tx-amount in">+128.000<span class="sub">SVIT</span></div></li>
+        <li class="tx-row"><div class="tx-icon job">JOB</div><div class="tx-info"><div class="tx-desc">Inference — LLaMA-3-70B, 4K tokens</div><div class="tx-meta">job:a3f2c9d1… · 18 min ago</div></div><div class="tx-amount out">−42.500<span class="sub">SVIT</span></div></li>
+        <li class="tx-row"><div class="tx-icon in">STK</div><div class="tx-info"><div class="tx-desc">Staking reward — Epoch 47</div><div class="tx-meta">Validator slot #12 · 1 hr ago</div></div><div class="tx-amount in">+4.820<span class="sub">SVIT</span></div></li>
+        <li class="tx-row"><div class="tx-icon out">OUT</div><div class="tx-info"><div class="tx-desc">Transfer to svit1b3d2e8f1…</div><div class="tx-meta">nonce:1024 · 3 hr ago</div></div><div class="tx-amount out">−500.000<span class="sub">SVIT</span></div></li>
+        <li class="tx-row"><div class="tx-icon job">JOB</div><div class="tx-info"><div class="tx-desc">Embedding — BGE-M3, 128 texts</div><div class="tx-meta">job:f7d1a0b3… · 5 hr ago</div></div><div class="tx-amount out">−8.320<span class="sub">SVIT</span></div></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Markets (top 100) -->
+  <div class="tab-panel" id="panel-markets">
+    <div class="mkt-bar">
+      <div class="mkt-sw">
+        <span class="mkt-sw-ic">🔍</span>
+        <input class="mkt-search" id="mkt-search" type="search" placeholder="Search coins…" oninput="filterMarkets(this.value)">
+      </div>
+      <span class="chip" id="mkt-status">Loading…</span>
+    </div>
+    <div class="panel">
+      <div class="mkt-wrap">
+        <table class="mkt-table">
+          <thead>
+            <tr>
+              <th class="mkt-rank">#</th>
+              <th>Coin</th>
+              <th>Price</th>
+              <th>24h</th>
+              <th>Market Cap</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="mkt-tbody"><tr><td colspan="6"><div class="spinner"></div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Send -->
+  <div class="tab-panel" id="panel-send">
+    <div class="form-wrap">
+      <div class="section-title" id="send-title">Send SVIT</div>
+      <div class="panel">
+        <div style="padding:20px">
+          <div class="coin-sel" id="send-coin-sel"></div>
+          <div class="field">
+            <label class="field-label">Recipient address</label>
+            <input class="field-input" id="send-to" type="text" placeholder="svit1… (64 hex chars)" oninput="updateSummary()" autocomplete="off" spellcheck="false">
+            <div class="field-hint">64-character hex public key or svit1… address</div>
+          </div>
+          <div class="field">
+            <label class="field-label">Amount (SVIT)</label>
+            <input class="field-input" id="send-amt" type="number" min="0.000001" step="0.000001" placeholder="0.000000" oninput="updateSummary()" inputmode="decimal">
+            <div class="field-hint" id="send-avail">Available: — SVIT</div>
+          </div>
+          <div class="field">
+            <label class="field-label">Nonce</label>
+            <input class="field-input" id="send-nonce" type="number" value="1025" inputmode="numeric">
+          </div>
+          <div class="send-summary" id="send-summary" style="display:none">
+            <div class="ss-row"><span class="k">Amount</span><span class="v" id="ss-amount">—</span></div>
+            <div class="ss-row"><span class="k">Network fee</span><span class="v">0.000100 SVIT</span></div>
+            <div class="ss-row total"><span class="k">Total deducted</span><span class="v" id="ss-total">—</span></div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-primary" onclick="signTx()" style="flex:1">Sign &amp; broadcast</button>
+            <button class="btn btn-ghost" onclick="clearSend()">Clear</button>
+          </div>
+          <div id="tx-output" style="margin-top:16px;display:none">
+            <div class="field-label" style="margin-bottom:6px">Signed transaction (hex)</div>
+            <div class="addr-box" id="tx-hex" style="font-size:.625rem;color:var(--acc)"></div>
+            <div class="field-hint" style="color:var(--good)">Broadcast: svitlo-wallet broadcast &lt;hex&gt;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Receive -->
+  <div class="tab-panel" id="panel-receive">
+    <div class="form-wrap">
+      <div class="section-title">Receive SVIT</div>
+      <div class="panel" style="padding:24px;text-align:center">
+        <canvas class="qr-canvas" id="qr-canvas" width="200" height="200"></canvas>
+        <div class="addr-box" id="addr-display" style="text-align:left">—</div>
+        <div style="display:flex;gap:8px;justify-content:center">
+          <button class="btn btn-primary" onclick="copyAddr()">Copy address</button>
+          <button class="btn btn-ghost" onclick="shareAddr()">Share</button>
+        </div>
+        <div id="copy-confirm" style="margin-top:10px;font-size:.75rem;color:var(--good);display:none">Address copied.</div>
+      </div>
+      <div class="section-title mt24">Request payment</div>
+      <div class="field">
+        <label class="field-label">Amount to request (SVIT)</label>
+        <input class="field-input" type="number" id="req-amount" placeholder="0.000000" inputmode="decimal" oninput="updatePayLink()">
+      </div>
+      <div id="pay-link-box" style="display:none">
+        <div class="field-label" style="margin-bottom:6px">Payment link</div>
+        <div class="addr-box" id="pay-link" style="font-size:.6875rem;color:var(--acc)"></div>
+        <button class="btn btn-ghost btn-sm" onclick="copyPayLink()">Copy link</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stake -->
+  <div class="tab-panel" id="panel-stake">
+    <div class="form-wrap" style="max-width:600px">
+      <div class="section-title">Stake SVIT</div>
+
+      <div class="panel">
+        <div class="panel-hdr"><span class="panel-title">Claimable rewards</span><span class="chip" id="stake-claim-chip">—</span></div>
+        <div style="padding:18px">
+          <div style="font-family:var(--mono);font-size:1.375rem;font-weight:700;color:var(--good)" id="stake-claimable-amt">0.000000 SVIT</div>
+          <button class="btn btn-primary mt16" id="stake-claim-btn" onclick="claimStakingReward()" disabled>Claim rewards</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-hdr"><span class="panel-title">Your positions</span><span class="chip" id="stake-total-chip">—</span></div>
+        <ul class="tx-list" id="stake-positions-list">
+          <li class="stake-pos-row"><div class="tx-info"><div class="tx-desc">No active stake positions</div></div></li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <div class="panel-hdr"><span class="panel-title">New stake</span></div>
+        <div style="padding:20px">
+          <div class="field">
+            <label class="field-label">Amount (SVIT)</label>
+            <input class="field-input" id="stake-amt" type="number" min="0.000001" step="0.000001" placeholder="0.000000" inputmode="decimal">
+            <div class="field-hint" id="stake-avail">Available: — SVIT</div>
+          </div>
+          <div class="field">
+            <label class="field-label">Lock period</label>
+            <div style="display:flex;gap:8px">
+              <button type="button" class="btn btn-outline lock-choice" id="lock-choice-flex" onclick="selectLockDays(FLEXIBLE_LOCK_DAYS)" style="flex:1;padding:12px 8px">Flexible<span>withdraw anytime</span></button>
+              <button type="button" class="btn btn-outline lock-choice active" id="lock-choice-30" onclick="selectLockDays(30)" style="flex:1;padding:12px 8px">1 month<span>30 days</span></button>
+              <button type="button" class="btn btn-outline lock-choice" id="lock-choice-365" onclick="selectLockDays(365)" style="flex:1;padding:12px 8px">1 year<span>365 days · higher APY</span></button>
+            </div>
+          </div>
+          <button class="btn btn-primary" style="width:100%" onclick="openStakeConfirm()">Stake</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<!-- Mobile bottom nav -->
+<nav class="bottom-nav" role="navigation">
+  <button class="bnav-item active" onclick="switchTab('home')" id="bnav-home">
+    <div class="bnav-icon"><svg viewBox="0 0 20 20"><path d="M10 2L3 8v10h5v-5h4v5h5V8L10 2z"/></svg></div>
+    <span class="bnav-label">Home</span>
+  </button>
+  <button class="bnav-item" onclick="switchTab('markets')" id="bnav-markets">
+    <div class="bnav-icon"><svg viewBox="0 0 20 20"><rect x="2" y="12" width="3" height="6"/><rect x="7" y="7" width="3" height="11"/><rect x="12" y="9" width="3" height="9"/><rect x="17" y="4" width="1" height="14" rx=".5"/><polyline points="2,12 7,7 12,9 17,4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+    <span class="bnav-label">Markets</span>
+  </button>
+  <button class="bnav-item" onclick="switchTab('send')" id="bnav-send">
+    <div class="bnav-icon"><svg viewBox="0 0 20 20"><path d="M10 3v14M5 8l5-5 5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <span class="bnav-label">Send</span>
+  </button>
+  <button class="bnav-item" onclick="switchTab('receive')" id="bnav-receive">
+    <div class="bnav-icon"><svg viewBox="0 0 20 20"><path d="M10 3v14M5 12l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <span class="bnav-label">Receive</span>
+  </button>
+</nav>
+
+<script src="svit-noble.js"></script>
+<script src="chains.js"></script>
+<script>
+// ── Service Worker ─────────────────────────────────────────────────────────
+if('serviceWorker'in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js').catch(()=>{});});}
+
+// ── BIP39 wordlist (2048 English words) ────────────────────────────────────
+const BIP39=["abandon","ability","able","about","above","absent","absorb","abstract","absurd","abuse","access","accident","account","accuse","achieve","acid","acoustic","acquire","across","act","action","actor","actress","actual","adapt","add","addict","address","adjust","admit","adult","advance","advice","aerobic","affair","afford","afraid","again","age","agent","agree","ahead","aim","air","airport","aisle","alarm","album","alcohol","alert","alien","all","alley","allow","almost","alone","alpha","already","also","alter","always","amateur","amazing","among","amount","amused","analyst","anchor","ancient","anger","angle","angry","animal","ankle","announce","annual","another","answer","antenna","antique","anxiety","any","apart","apology","appear","apple","approve","april","arch","arctic","area","arena","argue","arm","armed","armor","army","around","arrange","arrest","arrive","arrow","art","artefact","artist","artwork","ask","aspect","assault","asset","assist","assume","asthma","athlete","atom","attack","attend","attitude","attract","auction","audit","august","aunt","author","auto","autumn","average","avocado","avoid","awake","aware","away","awesome","awful","awkward","axis","baby","bachelor","bacon","badge","bag","balance","balcony","ball","bamboo","banana","banner","bar","barely","bargain","barrel","base","basic","basket","battle","beach","bean","beauty","because","become","beef","before","begin","behave","behind","believe","below","belt","bench","benefit","best","betray","better","between","beyond","bicycle","bid","bike","bind","biology","bird","birth","bitter","black","blade","blame","blanket","blast","bleak","bless","blind","blood","blossom","blouse","blue","blur","blush","board","boat","body","boil","bomb","bone","bonus","book","boost","border","boring","borrow","boss","bottom","bounce","box","boy","bracket","brain","brand","brass","brave","bread","breeze","brick","bridge","brief","bright","bring","brisk","broccoli","broken","bronze","broom","brother","brown","brush","bubble","buddy","budget","buffalo","build","bulb","bulk","bullet","bundle","bunker","burden","burger","burst","bus","business","busy","butter","buyer","buzz","cabbage","cabin","cable","cactus","cage","cake","call","calm","camera","camp","can","canal","cancel","candy","cannon","canoe","canvas","canyon","capable","capital","captain","car","carbon","card","cargo","carpet","carry","cart","case","cash","casino","castle","casual","cat","catalog","catch","category","cattle","caught","cause","caution","cave","ceiling","celery","cement","census","century","cereal","certain","chair","chalk","champion","change","chaos","chapter","charge","chase","chat","cheap","check","cheese","chef","cherry","chest","chicken","chief","child","chimney","choice","choose","chronic","chuckle","chunk","churn","cigar","cinnamon","circle","citizen","city","civil","claim","clap","clarify","claw","clay","clean","clerk","clever","click","client","cliff","climb","clinic","clip","clock","clog","close","cloth","cloud","clown","club","clump","cluster","clutch","coach","coast","coconut","code","coffee","coil","coin","collect","color","column","combine","come","comfort","comic","common","company","concert","conduct","confirm","congress","connect","consider","control","convince","cook","cool","copper","copy","coral","core","corn","correct","cost","cotton","couch","country","couple","course","cousin","cover","coyote","crack","cradle","craft","cram","crane","crash","crater","crawl","crazy","cream","credit","creek","crew","cricket","crime","crisp","critic","crop","cross","crouch","crowd","crucial","cruel","cruise","crumble","crunch","crush","cry","crystal","cube","culture","cup","cupboard","curious","current","curtain","curve","cushion","custom","cute","cycle","dad","damage","damp","dance","danger","daring","dash","daughter","dawn","day","deal","debate","debris","decade","december","decide","decline","decorate","decrease","deer","defense","define","defy","degree","delay","deliver","demand","demise","denial","dentist","deny","depart","depend","deposit","depth","deputy","derive","describe","desert","design","desk","despair","destroy","detail","detect","develop","device","devote","diagram","dial","diamond","diary","dice","diesel","diet","differ","digital","dignity","dilemma","dinner","dinosaur","direct","dirt","disagree","discover","disease","dish","dismiss","disorder","display","distance","divert","divide","divorce","dizzy","doctor","document","dog","doll","dolphin","domain","donate","donkey","donor","door","dose","double","dove","draft","dragon","drama","drastic","draw","dream","dress","drift","drill","drink","drip","drive","drop","drum","dry","duck","dumb","dune","during","dust","dutch","duty","dwarf","dynamic","eager","eagle","early","earn","earth","easily","east","easy","echo","ecology","economy","edge","edit","educate","effort","egg","eight","either","elbow","elder","electric","elegant","element","elephant","elevator","elite","else","embark","embody","embrace","emerge","emotion","employ","empower","empty","enable","enact","end","endless","endorse","enemy","energy","enforce","engage","engine","enhance","enjoy","enlist","enough","enrich","enroll","ensure","enter","entire","entry","envelope","episode","equal","equip","era","erase","erode","erosion","error","erupt","escape","essay","essence","estate","eternal","ethics","evidence","evil","evoke","evolve","exact","example","excess","exchange","excite","exclude","excuse","execute","exercise","exhaust","exhibit","exile","exist","exit","exotic","expand","expect","expire","explain","expose","express","extend","extra","eye","eyebrow","fabric","face","faculty","fade","faint","faith","fall","false","fame","family","famous","fan","fancy","fantasy","farm","fashion","fat","fatal","father","fatigue","fault","favorite","feature","february","federal","fee","feed","feel","female","fence","festival","fetch","fever","few","fiber","fiction","field","figure","file","film","filter","final","find","fine","finger","finish","fire","firm","first","fiscal","fish","fit","fitness","fix","flag","flame","flash","flat","flavor","flee","flight","flip","float","flock","floor","flower","fluid","flush","fly","foam","focus","fog","foil","fold","follow","food","foot","force","forest","forget","fork","fortune","forum","forward","fossil","foster","found","fox","fragile","frame","frequent","fresh","friend","fringe","frog","front","frost","frown","frozen","fruit","fuel","fun","funny","furnace","fury","future","gadget","gain","galaxy","gallery","game","gap","garage","garbage","garden","garlic","garment","gas","gasp","gate","gather","gauge","gaze","general","genius","genre","gentle","genuine","gesture","ghost","giant","gift","giggle","ginger","giraffe","girl","give","glad","glance","glare","glass","glide","glimpse","globe","gloom","glory","glove","glow","glue","goat","goddess","gold","good","goose","gorilla","gospel","gossip","govern","gown","grab","grace","grain","grant","grape","grass","gravity","great","green","grid","grief","grit","grocery","group","grow","grunt","guard","guess","guide","guilt","guitar","gun","gym","habit","hair","half","hammer","hamster","hand","happy","harbor","hard","harsh","harvest","hat","have","hawk","hazard","head","health","heart","heavy","hedgehog","height","hello","helmet","help","hen","hero","hidden","high","hill","hint","hip","hire","history","hobby","hockey","hold","hole","holiday","hollow","home","honey","hood","hope","horn","horror","horse","hospital","host","hotel","hour","hover","hub","huge","human","humble","humor","hundred","hungry","hunt","hurdle","hurry","hurt","husband","hybrid","ice","icon","idea","identify","idle","ignore","ill","illegal","illness","image","imitate","immense","immune","impact","impose","improve","impulse","inch","include","income","increase","index","indicate","indoor","industry","infant","inflict","inform","inhale","inherit","initial","inject","injury","inmate","inner","innocent","input","inquiry","insane","insect","inside","inspire","install","intact","interest","into","invest","invite","involve","iron","island","isolate","issue","item","ivory","jacket","jaguar","jar","jazz","jealous","jeans","jelly","jewel","job","join","joke","journey","joy","judge","juice","jump","jungle","junior","junk","just","kangaroo","keen","keep","ketchup","key","kick","kid","kidney","kind","kingdom","kiss","kit","kitchen","kite","kitten","kiwi","knee","knife","knock","know","lab","label","labor","ladder","lady","lake","lamp","language","laptop","large","later","latin","laugh","laundry","lava","law","lawn","lawsuit","layer","lazy","leader","leaf","learn","leave","lecture","left","leg","legal","legend","leisure","lemon","lend","length","lens","leopard","lesson","letter","level","liar","liberty","library","license","life","lift","light","like","limb","limit","link","lion","liquid","list","little","live","lizard","load","loan","lobster","local","lock","logic","lonely","long","loop","lottery","loud","lounge","love","loyal","lucky","luggage","lumber","lunar","lunch","luxury","lyrics","machine","mad","magic","magnet","maid","mail","main","major","make","mammal","man","manage","mandate","mango","mansion","manual","maple","marble","march","margin","marine","market","marriage","mask","mass","master","match","material","math","matrix","matter","maximum","maze","meadow","mean","measure","meat","mechanic","medal","media","melody","melt","member","memory","mention","menu","mercy","merge","merit","merry","mesh","message","metal","method","middle","midnight","milk","million","mimic","mind","minimum","minor","minute","miracle","mirror","misery","miss","mistake","mix","mixed","mixture","mobile","model","modify","mom","moment","monitor","monkey","monster","month","moon","moral","more","morning","mosquito","mother","motion","motor","mountain","mouse","move","movie","much","muffin","mule","multiply","muscle","museum","mushroom","music","must","mutual","myself","mystery","myth","naive","name","napkin","narrow","nasty","nation","nature","near","neck","need","negative","neglect","neither","nephew","nerve","nest","net","network","neutral","never","news","next","nice","night","noble","noise","nominee","noodle","normal","north","nose","notable","note","nothing","notice","novel","now","nuclear","number","nurse","nut","oak","obey","object","oblige","obscure","observe","obtain","obvious","occur","ocean","october","odor","off","offer","office","often","oil","okay","old","olive","olympic","omit","once","one","onion","online","only","open","opera","opinion","oppose","option","orange","orbit","orchard","order","ordinary","organ","orient","original","orphan","ostrich","other","outdoor","outer","output","outside","oval","oven","over","own","owner","oxygen","oyster","ozone","pact","paddle","page","pair","palace","palm","panda","panel","panic","panther","paper","parade","parent","park","parrot","party","pass","patch","path","patient","patrol","pattern","pause","pave","payment","peace","peanut","pear","peasant","pelican","pen","penalty","pencil","people","pepper","perfect","permit","person","pet","phone","photo","phrase","physical","piano","picnic","picture","piece","pig","pigeon","pill","pilot","pink","pioneer","pipe","pistol","pitch","pizza","place","planet","plastic","plate","play","please","pledge","pluck","plug","plunge","poem","poet","point","polar","pole","police","pond","pony","pool","popular","portion","position","possible","post","potato","pottery","poverty","powder","power","practice","praise","predict","prefer","prepare","present","pretty","prevent","price","pride","primary","print","priority","prison","private","prize","problem","process","produce","profit","program","project","promote","proof","property","prosper","protect","proud","provide","public","pudding","pull","pulp","pulse","pumpkin","punch","pupil","puppy","purchase","purity","purpose","purse","push","put","puzzle","pyramid","quality","quantum","quarter","question","quick","quit","quiz","quote","rabbit","raccoon","race","rack","radar","radio","rail","rain","raise","rally","ramp","ranch","random","range","rapid","rare","rate","rather","raven","raw","razor","ready","real","reason","rebel","rebuild","recall","receive","recipe","record","recycle","reduce","reflect","reform","refuse","region","regret","regular","reject","relax","release","relief","rely","remain","remember","remind","remove","render","renew","rent","reopen","repair","repeat","replace","report","require","rescue","resemble","resist","resource","response","result","retire","retreat","return","reunion","reveal","review","reward","rhythm","rib","ribbon","rice","rich","ride","ridge","rifle","right","rigid","ring","riot","ripple","risk","ritual","rival","river","road","roast","robot","robust","rocket","romance","roof","rookie","room","rose","rotate","rough","round","route","royal","rubber","rude","rug","rule","run","runway","rural","sad","saddle","sadness","safe","sail","salad","salmon","salon","salt","salute","same","sample","sand","satisfy","satoshi","sauce","sausage","save","say","scale","scan","scare","scatter","scene","scheme","school","science","scissors","scorpion","scout","scrap","screen","script","scrub","sea","search","season","seat","second","secret","section","security","seed","seek","segment","select","sell","seminar","senior","sense","sentence","series","service","session","settle","setup","seven","shadow","shaft","shallow","share","shed","shell","sheriff","shield","shift","shine","ship","shiver","shock","shoe","shoot","shop","short","shoulder","shove","shrimp","shrug","shuffle","shy","sibling","sick","side","siege","sight","sign","silent","silk","silly","silver","similar","simple","since","sing","siren","sister","situate","six","size","skate","sketch","ski","skill","skin","skirt","skull","slab","slam","sleep","slender","slice","slide","slight","slim","slogan","slot","slow","slush","small","smart","smile","smoke","smooth","snack","snake","snap","sniff","snow","soap","soccer","social","sock","soda","soft","solar","soldier","solid","solution","solve","someone","song","soon","sorry","sort","soul","sound","soup","source","south","space","spare","spatial","spawn","speak","special","speed","spell","spend","sphere","spice","spider","spike","spin","spirit","split","spoil","sponsor","spoon","sport","spot","spray","spread","spring","spy","square","squeeze","squirrel","stable","stadium","staff","stage","stairs","stamp","stand","start","state","stay","steak","steel","stem","step","stereo","stick","still","sting","stock","stomach","stone","stool","story","stove","strategy","street","strike","strong","struggle","student","stuff","stumble","style","subject","submit","subway","success","such","sudden","suffer","sugar","suggest","suit","summer","sun","sunny","sunset","super","supply","supreme","sure","surface","surge","surprise","surround","survey","suspect","sustain","swallow","swamp","swap","swarm","swear","sweet","swift","swim","swing","switch","sword","symbol","symptom","syrup","system","table","tackle","tag","tail","talent","talk","tank","tape","target","task","taste","tattoo","taxi","teach","team","tell","ten","tenant","tennis","tent","term","test","text","thank","that","theme","then","theory","there","they","thing","this","thought","three","thrive","throw","thumb","thunder","ticket","tide","tiger","tilt","timber","time","tiny","tip","tired","tissue","title","toast","tobacco","today","toddler","toe","together","toilet","token","tomato","tomorrow","tone","tongue","tonight","tool","tooth","top","topic","topple","torch","tornado","tortoise","toss","total","tourist","toward","tower","town","toy","track","trade","traffic","tragic","train","transfer","trap","trash","travel","tray","treat","tree","trend","trial","tribe","trick","trigger","trim","trip","trophy","trouble","truck","true","truly","trumpet","trust","truth","try","tube","tuition","tumble","tuna","tunnel","turkey","turn","turtle","twelve","twenty","twice","twin","twist","two","type","typical","ugly","umbrella","unable","unaware","uncle","uncover","under","undo","unfair","unfold","unhappy","uniform","unique","unit","universe","unknown","unlock","until","unusual","unveil","update","upgrade","uphold","upon","upper","upset","urban","urge","usage","use","used","useful","useless","usual","utility","vacant","vacuum","vague","valid","valley","valve","van","vanish","vapor","various","vast","vault","vehicle","velvet","vendor","venture","venue","verb","verify","version","very","vessel","veteran","viable","vibrant","vicious","victory","video","view","village","vintage","violin","virtual","virus","visa","visit","visual","vital","vivid","vocal","voice","void","volcano","volume","vote","voyage","wage","wagon","wait","walk","wall","walnut","want","warfare","warm","warrior","wash","wasp","waste","water","wave","way","wealth","weapon","wear","weasel","weather","web","wedding","weekend","weird","welcome","west","wet","whale","what","wheat","wheel","when","where","whip","whisper","wide","width","wife","wild","will","win","window","wine","wing","wink","winner","winter","wire","wisdom","wise","wish","witness","wolf","woman","wonder","wood","wool","word","work","world","worry","worth","wrap","wreck","wrestle","wrist","write","wrong","yard","year","yellow","you","young","youth","zebra","zero","zone","zoo"];
+
+// ── Utility helpers ────────────────────────────────────────────────────────
+// Clickable <div>s (role="button") don't fire onclick on Enter/Space the way
+// a real <button> does natively -- this makes them keyboard-operable too.
+function kbdActivate(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();e.currentTarget.click();}}
+function toHex(b){return Array.from(b).map(x=>x.toString(16).padStart(2,'0')).join('');}
+function fromHex(h){return new Uint8Array(h.match(/.{2}/g).map(b=>parseInt(b,16)));}
+function u64LE(n){const b=new Uint8Array(8);const v=BigInt(n);for(let i=0;i<8;i++)b[i]=Number((v>>(BigInt(i)*8n))&0xFFn);return b;}
+function u32LE(n){return new Uint8Array([n&255,(n>>8)&255,(n>>16)&255,(n>>24)&255]);}
+function b64uToBytes(s){return Uint8Array.from(atob(s.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0));}
+function concatU8(...a){const L=a.reduce((s,x)=>s+x.length,0);const r=new Uint8Array(L);let o=0;for(const x of a){r.set(x,o);o+=x.length;}return r;}
+
+// ── BIP39 ──────────────────────────────────────────────────────────────────
+async function entropyToMnemonic(e32){
+  const hash=await crypto.subtle.digest('SHA-256',e32);
+  const cs=new Uint8Array(hash)[0];
+  const bits=concatU8(e32,new Uint8Array([cs]));
+  const words=[];
+  for(let i=0;i<24;i++){const bo=Math.floor(i*11/8),bs=(i*11)%8;const v=((bits[bo]<<16)|(bits[bo+1]<<8)|(bits[bo+2]||0))>>(13-bs)&0x7FF;words.push(BIP39[v]);}
+  return words.join(' ');
+}
+async function mnemonicToSeed(phrase){
+  const enc=new TextEncoder();
+  const km=await crypto.subtle.importKey('raw',enc.encode(phrase.trim()),'PBKDF2',false,['deriveBits']);
+  const bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt:enc.encode('mnemonic'),iterations:2048,hash:'SHA-512'},km,512);
+  return new Uint8Array(bits);
+}
+
+// ── Ed25519 ────────────────────────────────────────────────────────────────
+// WebCrypto Ed25519 isn't universal (older Safari/Firefox lack it) -- feature
+// -detect once at startup and fall back to the already-bundled-but-otherwise
+// -unused svitNoble.ed25519 pure-JS implementation. signingKey is either a
+// non-extractable CryptoKey (native path) or {raw:seed32} (fallback path) --
+// ed25519Sign() below dispatches on which shape it got.
+let _ed25519Native=null;
+async function ed25519SubtleSupported(){
+  if(_ed25519Native!==null)return _ed25519Native;
+  try{
+    await crypto.subtle.generateKey({name:'Ed25519'},false,['sign','verify']);
+    _ed25519Native=true;
+  }catch{
+    _ed25519Native=false;
+  }
+  return _ed25519Native;
+}
+async function seedToKeypair(seed32){
+  if(await ed25519SubtleSupported()){
+    const p8=new Uint8Array(48);
+    p8.set([0x30,0x2e,0x02,0x01,0x00,0x30,0x05,0x06,0x03,0x2b,0x65,0x70,0x04,0x22,0x04,0x20]);
+    p8.set(seed32,16);
+    const ext=await crypto.subtle.importKey('pkcs8',p8,{name:'Ed25519'},true,['sign']);
+    const jwk=await crypto.subtle.exportKey('jwk',ext);
+    const address=toHex(b64uToBytes(jwk.x));
+    const signingKey=await crypto.subtle.importKey('pkcs8',p8,{name:'Ed25519'},false,['sign']);
+    return{signingKey,address};
+  }
+  const pub=svitNoble.ed25519.getPublicKey(seed32);
+  const address=toHex(pub);
+  return{signingKey:{raw:seed32.slice()},address};
+}
+async function ed25519Sign(signingKey,digest){
+  if(signingKey&&signingKey.raw)return svitNoble.ed25519.sign(digest,signingKey.raw);
+  return new Uint8Array(await crypto.subtle.sign({name:'Ed25519'},signingKey,digest));
+}
+
+// ── AES-256-GCM keystore ───────────────────────────────────────────────────
+// v2 keystores encrypt the MNEMONIC PHRASE (not the derived seed32) so that
+// non-SVIT chain addresses (which need the full 64-byte BIP39 seed, or the
+// phrase itself for re-derivation) can be computed later on demand -- see
+// deriveChainAddress() below. seed32 = mnemonicToSeed(mnemonic).slice(0,32)
+// is one-way; a keystore that only ever stored seed32 (the original v1
+// format) cannot yield the mnemonic back, so v1 keystores are read-only for
+// SVIT signing and need a one-time re-import (migrateKeystoreWithPhrase())
+// before any other chain's address can be derived.
+async function encryptKeystore(plaintextBytes,pw){
+  const enc=new TextEncoder();const salt=crypto.getRandomValues(new Uint8Array(16));const iv=crypto.getRandomValues(new Uint8Array(12));
+  const km=await crypto.subtle.importKey('raw',enc.encode(pw),'PBKDF2',false,['deriveKey']);
+  const k=await crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:200000,hash:'SHA-256'},km,{name:'AES-GCM',length:256},false,['encrypt']);
+  const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},k,plaintextBytes);
+  return{v:2,salt:toHex(salt),iv:toHex(iv),ct:toHex(new Uint8Array(ct))};
+}
+async function decryptKeystoreBytes(ks,pw){
+  const enc=new TextEncoder();
+  const km=await crypto.subtle.importKey('raw',enc.encode(pw),'PBKDF2',false,['deriveKey']);
+  const k=await crypto.subtle.deriveKey({name:'PBKDF2',salt:fromHex(ks.salt),iterations:200000,hash:'SHA-256'},km,{name:'AES-GCM',length:256},false,['decrypt']);
+  const p=await crypto.subtle.decrypt({name:'AES-GCM',iv:fromHex(ks.iv)},k,fromHex(ks.ct));
+  return new Uint8Array(p);
+}
+/** Returns {mnemonic, seed32}. mnemonic is null for legacy v1 keystores
+ *  (seed32-only, mnemonic unrecoverable) -- callers needing other-chain
+ *  derivation must fall back to migrateKeystoreWithPhrase() in that case. */
+async function decryptKeystore(ks,pw){
+  const bytes=await decryptKeystoreBytes(ks,pw);
+  if(ks.v===2){
+    const mnemonic=new TextDecoder().decode(bytes);
+    const seed32=(await mnemonicToSeed(mnemonic)).slice(0,32);
+    return{mnemonic,seed32};
+  }
+  return{mnemonic:null,seed32:bytes};
+}
+/** One-time upgrade path for a legacy v1 keystore: verify the re-entered
+ *  phrase derives the SAME SVIT address already unlocked this session (so a
+ *  wrong/different phrase can never silently overwrite the real wallet),
+ *  then re-store as v2 (mnemonic-based). Throws 'address-mismatch' if the
+ *  phrase doesn't match. */
+async function migrateKeystoreWithPhrase(phrase,pw){
+  const clean=phrase.trim();
+  const seed32=(await mnemonicToSeed(clean)).slice(0,32);
+  const{address}=await seedToKeypair(seed32);
+  if(!_session||address!==_session.address)throw new Error('That recovery phrase doesn\'t match this wallet — check for typos and try again.');
+  localStorage.setItem('svit-keystore',JSON.stringify(await encryptKeystore(new TextEncoder().encode(clean),pw)));
+}
+
+// ── TX builder ─────────────────────────────────────────────────────────────
+function buildSigningPayload(recipHex,amtMicro,senderHex,nonce,ts){return concatU8(u32LE(0),fromHex(recipHex),u64LE(amtMicro),fromHex(senderHex),u64LE(nonce),u64LE(ts));}
+function buildTxBincode(recipHex,amtMicro,senderHex,nonce,ts,sig64){return concatU8(u32LE(0),fromHex(recipHex),u64LE(amtMicro),fromHex(senderHex),u64LE(nonce),u64LE(ts),u64LE(64),sig64);}
+
+// ── Wallet session ─────────────────────────────────────────────────────────
+let _session=null;
+function loadKeystoreRaw(){
+  return localStorage.getItem('svit-keystore');
+}
+async function walletCreateBrowser(pw){
+  const entropy=crypto.getRandomValues(new Uint8Array(32));
+  const mnemonic=await entropyToMnemonic(entropy);
+  const seed32=(await mnemonicToSeed(mnemonic)).slice(0,32);
+  const{signingKey,address}=await seedToKeypair(seed32);
+  localStorage.setItem('svit-keystore',JSON.stringify(await encryptKeystore(new TextEncoder().encode(mnemonic),pw)));
+  _session={signingKey,address};
+  return{address,address_short:'svit1'+address.slice(0,16),mnemonic};
+}
+async function walletImportBrowser(phrase,pw){
+  const clean=phrase.trim();
+  const seed32=(await mnemonicToSeed(clean)).slice(0,32);
+  const{signingKey,address}=await seedToKeypair(seed32);
+  localStorage.setItem('svit-keystore',JSON.stringify(await encryptKeystore(new TextEncoder().encode(clean),pw)));
+  _session={signingKey,address};
+  return{address,address_short:'svit1'+address.slice(0,16)};
+}
+async function walletUnlockBrowser(pw){
+  const raw=loadKeystoreRaw();
+  if(!raw)throw new Error('No keystore');
+  const{seed32}=await decryptKeystore(JSON.parse(raw),pw);
+  const{signingKey,address}=await seedToKeypair(seed32);
+  _session={signingKey,address};
+  return{address,address_short:'svit1'+address.slice(0,16)};
+}
+
+// ── Multi-chain address derivation (Receive tab) ────────────────────────────
+// Re-prompts the password and decrypts fresh for every call -- per explicit
+// user choice, the raw seed/mnemonic is never held resident for the whole
+// unlocked session, only used immediately here and then zeroed.
+async function deriveChainAddress(chainId){
+  const pw=await promptPassword();
+  const raw=loadKeystoreRaw();
+  if(!raw)throw new Error('No keystore');
+  let{mnemonic,seed32}=await decryptKeystore(JSON.parse(raw),pw);
+  if(!mnemonic){
+    // legacy (v1) keystore -- reuse the SAME password just entered to
+    // re-encrypt in place once the phrase is confirmed, so this is one
+    // password prompt + one phrase prompt, not three password prompts.
+    const phrase=await promptMigrationPhrase();
+    await migrateKeystoreWithPhrase(phrase,pw);
+    mnemonic=phrase.trim();
+    seed32=(await mnemonicToSeed(mnemonic)).slice(0,32);
+  }
+  const seed64=await mnemonicToSeed(mnemonic);
+  const chain=svitChains.CHAIN_REGISTRY.find(c=>c.id===chainId);
+  if(!chain)throw new Error('Unknown chain: '+chainId);
+  try{
+    return chain.derive(seed64);
+  }finally{
+    seed64.fill(0);
+    seed32.fill(0);
+  }
+}
+let _migResolve=null,_migReject=null;
+function promptMigrationPhrase(){
+  return new Promise((res,rej)=>{
+    _migResolve=res;_migReject=rej;
+    document.getElementById('migrate-phrase').value='';
+    document.getElementById('migrate-err').style.display='none';
+    document.getElementById('migrate-overlay').style.display='flex';
+    setTimeout(()=>document.getElementById('migrate-phrase').focus(),60);
+  });
+}
+function migrateConfirm(){
+  const phrase=document.getElementById('migrate-phrase').value.trim();
+  if(!phrase.split(/\s+/).filter(Boolean).length){
+    const e=document.getElementById('migrate-err');e.textContent='Enter your recovery phrase';e.style.display='block';return;
+  }
+  document.getElementById('migrate-overlay').style.display='none';
+  if(_migResolve){_migResolve(phrase);_migResolve=_migReject=null;}
+}
+function migrateCancel(){
+  document.getElementById('migrate-overlay').style.display='none';
+  if(_migReject){_migReject(new Error('cancelled'));_migResolve=_migReject=null;}
+}
+
+// ── Node API ───────────────────────────────────────────────────────────────
+// This copy is deployed publicly (svitlochain.com/app/) -- unlike the
+// self-hosted/Tauri build (whose sensible default is localhost:8080, since
+// that user runs their own node), a random site visitor has no local node,
+// so this defaults to the same public relay platforma/mobile's chain.ts
+// uses (SEED_RPCS[0]). Still fully overridable via Settings for anyone
+// running their own node.
+function nodeUrl(){return(localStorage.getItem('svit-node-url')||'https://dares-suffering-swimwear.ngrok-free.dev').replace(/\/$/,'');}
+// ngrok's free tier serves an HTML interstitial page (200 OK, text/html) to
+// requests it judges "browser-like" instead of proxying to the real node --
+// this is ngrok's own documented opt-out header. Same fix already shipped in
+// platforma/mobile/src/crypto/chain.ts after it silently broke one real
+// user's balance display (2026-08-02); harmless to send to non-ngrok bases.
+const NGROK_HEADERS={'ngrok-skip-browser-warning':'true'};
+// AbortSignal.timeout() isn't universal (predates it: Safari <16, older
+// Firefox/Chromium) -- fall back to a manual AbortController+setTimeout.
+function timeoutSignal(ms){
+  if(typeof AbortSignal!=='undefined'&&AbortSignal.timeout)return AbortSignal.timeout(ms);
+  const c=new AbortController();setTimeout(()=>c.abort(),ms);return c.signal;
+}
+async function apiGet(path){const r=await fetch(nodeUrl()+path,{signal:timeoutSignal(5000),headers:NGROK_HEADERS});if(!r.ok)throw new Error(await r.text());return r.json();}
+
+let _balance=0n,_nonce=0;
+
+let _tokenBalances=[]; // last /token/balances/:addr response -- feeds coin-grid, portfolio total, and Send's "Available" hint
+async function pollNodeData(){
+  if(!_session||document.hidden)return;
+  try{
+    const[status,bal,tokens]=await Promise.all([apiGet('/status'),apiGet('/balance/'+_session.address),apiGet('/token/balances/'+_session.address).catch(()=>null)]);
+    document.getElementById('block-num').textContent='#'+(status.tx_count||0).toLocaleString();
+    document.getElementById('tps-val').textContent=(status.pool_size||0)+' pending';
+    document.getElementById('chain-id-el').textContent=status.chain_id||'—';
+    document.getElementById('peers-el').textContent=status.peers??'—';
+    document.getElementById('net-lbl').textContent=status.chain_id||'SVIT';
+    document.getElementById('net-dot').classList.add('live');
+    _balance=BigInt(bal.usvit||0);
+    _nonce=bal.nonce||0;
+    const svit=bal.svit||'0.000000';
+    document.getElementById('bal-svit').textContent=svit+' SVIT';
+    document.getElementById('svit-usd').textContent='≈ $'+(parseFloat(svit)*1.85).toFixed(2);
+    document.getElementById('nonce-el').textContent=_nonce;
+    const ns=document.getElementById('send-nonce');if(ns)ns.value=_nonce;
+    if(tokens)_tokenBalances=tokens;
+    renderCoinGrid();
+    updateSendAvailable();
+    updatePortfolioTotal();
+    if(document.getElementById('panel-stake').classList.contains('active'))loadStakePanel();
+  }catch(e){
+    document.getElementById('bal-usd').textContent='Node offline — '+nodeUrl();
+    document.getElementById('net-lbl').textContent='Offline';
+    document.getElementById('net-dot').classList.remove('live');
+  }
+}
+
+// ── Settings ───────────────────────────────────────────────────────────────
+function openSettings(){document.getElementById('node-url-input').value=nodeUrl();document.getElementById('settings-overlay').style.display='flex';}
+function closeSettings(){document.getElementById('settings-overlay').style.display='none';}
+function saveSettings(){const u=document.getElementById('node-url-input').value.trim();if(u)localStorage.setItem('svit-node-url',u);closeSettings();pollNodeData();}
+function forgetWallet(){if(!confirm('Delete local keystore? Make sure you have your recovery phrase!'))return;localStorage.removeItem('svit-keystore');_session=null;closeSettings();location.reload();}
+
+// ── Theme ──────────────────────────────────────────────────────────────────
+const root=document.documentElement;
+const mq=window.matchMedia('(prefers-color-scheme: dark)');
+let theme=localStorage.getItem('svit-theme')||(mq.matches?'dark':'light');
+applyTheme(theme);
+document.getElementById('theme-btn').addEventListener('click',()=>{
+  theme=theme==='dark'?'light':'dark';applyTheme(theme);localStorage.setItem('svit-theme',theme);drawQR();
+});
+function applyTheme(t){
+  root.setAttribute('data-theme',t);
+  const mc=document.getElementById('meta-theme');
+  if(mc)mc.setAttribute('content',t==='dark'?'#1A0E08':'#F7F1E8');
+}
+
+// ── Tabs ───────────────────────────────────────────────────────────────────
+function switchTab(name){
+  document.querySelectorAll('.tab-btn,.bnav-item').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  ['tab-','bnav-'].forEach(pre=>{const el=document.getElementById(pre+name);if(el)el.classList.add('active');});
+  const panel=document.getElementById('panel-'+name);
+  if(panel)panel.classList.add('active');
+  if(name==='receive')setTimeout(drawQR,50);
+  if(name==='markets'&&!_mktLoaded)loadMarkets();
+  if(name==='stake')loadStakePanel();
+}
+(function(){const t=new URLSearchParams(location.search).get('tab');if(t)switchTab(t);})();
+
+// ── Install prompt ─────────────────────────────────────────────────────────
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();deferredPrompt=e;
+  if(window.innerWidth<=640)document.getElementById('install-banner').classList.add('show');
+  else{const c=document.getElementById('install-chip');c.style.display='flex';}
+});
+window.addEventListener('appinstalled',()=>{document.getElementById('install-banner').classList.remove('show');document.getElementById('install-chip').style.display='none';deferredPrompt=null;});
+async function handleInstall(){if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;document.getElementById('install-chip').style.display='none';document.getElementById('install-banner').classList.remove('show');}
+document.getElementById('install-ok').addEventListener('click',handleInstall);
+document.getElementById('install-no').addEventListener('click',()=>document.getElementById('install-banner').classList.remove('show'));
+
+// ── iOS hint ───────────────────────────────────────────────────────────────
+(function detectIOS(){
+  const ua=navigator.userAgent.toLowerCase();
+  const ios=/iphone|ipad|ipod/.test(ua);
+  const safari=/safari/.test(ua)&&!/chrome|crios|fxios/.test(ua);
+  const standalone=window.navigator.standalone===true;
+  const shown=sessionStorage.getItem('svit-ios-hint');
+  if(ios&&safari&&!standalone&&!shown)document.getElementById('ios-hint').classList.add('show');
+})();
+function closeIosHint(){document.getElementById('ios-hint').classList.remove('show');sessionStorage.setItem('svit-ios-hint','1');}
+
+// ── QR code ────────────────────────────────────────────────────────────────
+function drawQR(){
+  const canvas=document.getElementById('qr-canvas');if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height,N=25;
+  const cs=Math.floor(W/(N+4)),ox=Math.floor((W-N*cs)/2),oy=Math.floor((H-N*cs)/2);
+  const isDark=root.getAttribute('data-theme')==='dark'||(root.getAttribute('data-theme')!=='light'&&mq.matches);
+  const bg=isDark?'#261810':'#FFFFFF',dark=isDark?'#F5E5D0':'#2C1810',acc=isDark?'#C88B52':'#6B4226';
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  const addr=ADDR||'svit1';
+  const bits=[];for(let i=0;i<N*N;i++){const b=addr.charCodeAt(i%addr.length);bits.push(((b^(i*31))&1)===1);}
+  ctx.fillStyle=dark;
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++){if((x<8&&y<8)||(x>=N-8&&y<8)||(x<8&&y>=N-8))continue;if(bits[y*N+x])ctx.fillRect(ox+x*cs,oy+y*cs,cs-1,cs-1);}
+  function finder(sx,sy){ctx.fillStyle=dark;ctx.fillRect(ox+sx*cs,oy+sy*cs,7*cs,7*cs);ctx.fillStyle=bg;ctx.fillRect(ox+(sx+1)*cs,oy+(sy+1)*cs,5*cs,5*cs);ctx.fillStyle=dark;ctx.fillRect(ox+(sx+2)*cs,oy+(sy+2)*cs,3*cs,3*cs);}
+  finder(0,0);finder(N-7,0);finder(0,N-7);
+  ctx.fillStyle=acc;ctx.font='700 '+(cs*2)+'px monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('SVIT',W/2,H/2);
+}
+document.getElementById('panel-receive').addEventListener('transitionend',drawQR);
+
+// ── Send ───────────────────────────────────────────────────────────────────
+// ── Send-tab coin selector ──────────────────────────────────────────────────
+// SVIT keeps the original Transfer path unchanged. Any other coin switches to
+// TokenBurn -- signs with the already-unlocked SVIT key (no password
+// re-prompt needed, unlike Receive's deriveChainAddress), destination is
+// user-typed text validated client-side via svitChains.validateDestAddr.
+let _sendToken={id:'svit',symbol:'SVIT',chainId:null,tokenId:null};
+function renderSendCoinSel(){
+  const box=document.getElementById('send-coin-sel');
+  if(!box)return;
+  const svitBtn=`<button class="cs-btn active" id="cs-svit" onclick="selectSendToken('svit')" type="button"><span class="cs-dot" style="background:#C88B52"></span>SVIT</button>`;
+  const rest=svitChains.CHAIN_REGISTRY.map(c=>{
+    const color=COIN_COLORS[c.symbol]||'#8b7355';
+    return`<button class="cs-btn" id="cs-${c.symbol}" onclick="selectSendToken('${c.symbol}')" type="button"><span class="cs-dot" style="background:${color}"></span>${c.symbol}</button>`;
+  }).join('');
+  box.innerHTML=svitBtn+rest;
+}
+function selectSendToken(symbol){
+  document.querySelectorAll('#send-coin-sel .cs-btn').forEach(b=>b.classList.remove('active'));
+  const btn=document.getElementById(symbol==='svit'?'cs-svit':'cs-'+symbol);
+  if(btn)btn.classList.add('active');
+  if(symbol==='svit'){
+    _sendToken={id:'svit',symbol:'SVIT',chainId:null,tokenId:null};
+    document.getElementById('send-title').textContent='Send SVIT';
+    document.getElementById('send-to').placeholder='svit1… (64 hex chars)';
+  }else{
+    const chain=svitChains.CHAIN_REGISTRY.find(c=>c.symbol===symbol);
+    if(!chain)return;
+    _sendToken={id:chain.id,symbol:chain.symbol,chainId:chain.id,tokenId:chain.tokenIds[0]};
+    document.getElementById('send-title').textContent='Send '+chain.symbol;
+    document.getElementById('send-to').placeholder=chain.symbol+' destination address';
+  }
+  document.getElementById('send-to').value='';
+  updateSendAvailable();
+  updateSummary();
+}
+function updateSendAvailable(){
+  const el=document.getElementById('send-avail');
+  if(_sendToken.symbol==='SVIT'){
+    const tb=_tokenBalances.find(t=>t.token_id===0);
+    el.textContent='Available: '+(tb?tb.balance:'0.000000')+' SVIT';
+  }else{
+    const tb=_tokenBalances.find(t=>t.token_id===_sendToken.tokenId);
+    el.textContent='Available: '+(tb?tb.balance:'0.000000')+' '+_sendToken.symbol;
+  }
+}
+function updateSummary(){
+  const amt=parseFloat(document.getElementById('send-amt').value)||0;
+  const to=document.getElementById('send-to').value.trim();
+  const el=document.getElementById('send-summary');
+  const sym=_sendToken.symbol;
+  const validTo=_sendToken.chainId?svitChains.validateDestAddr(_sendToken.chainId,to):to.length>10;
+  if(amt>0&&validTo){
+    el.style.display='block';
+    document.getElementById('ss-amount').textContent=amt.toFixed(6)+' '+sym;
+    if(_sendToken.chainId){
+      document.getElementById('ss-total').textContent=amt.toFixed(6)+' '+sym+' (+0.000100 SVIT network fee, charged separately)';
+    }else{
+      document.getElementById('ss-total').textContent=(amt+0.0001).toFixed(6)+' '+sym;
+    }
+  }
+  else el.style.display='none';
+}
+async function signTx(){
+  const to=document.getElementById('send-to').value.trim();
+  const amt=parseFloat(document.getElementById('send-amt').value)||0;
+  if(!to||!amt){alert('Fill in recipient and amount.');return;}
+
+  if(_sendToken.chainId){
+    if(!svitChains.validateDestAddr(_sendToken.chainId,to)){alert('That doesn\'t look like a valid '+_sendToken.symbol+' address.');return;}
+    if(!_session){alert('Wallet locked — please unlock.');return;}
+    const amtMicro=BigInt(Math.round(amt*1_000_000));
+    try{
+      const res=await signAndSubmitKind(encodeTokenBurnKind(_sendToken.tokenId,amtMicro,to));
+      if(res.ok){alert('Broadcast! Hash: '+res.tx_hash?.slice(0,16)+'…');setTimeout(pollNodeData,2000);}
+      else alert('Node rejected TX: '+res.error);
+    }catch(e){console.error(e);alert('Error: '+e.message);return;}
+    document.getElementById('tx-output').style.display='none';
+    clearSend();
+    return;
+  }
+
+  const recipHex=to.startsWith('svit1')?to.slice(5):to;
+  if(!/^[0-9a-f]{64}$/i.test(recipHex)){alert('Invalid address — need 64 hex chars after svit1');return;}
+  const nonce=parseInt(document.getElementById('send-nonce')?.value)||_nonce;
+  const ts=BigInt(Date.now());const amtMicro=BigInt(Math.round(amt*1_000_000));
+  let hex;
+  if(window.__TAURI__){
+    let pw;try{pw=await promptPassword();}catch{return;}
+    try{hex=await window.__TAURI__.core.invoke('wallet_sign_transfer',{password:pw,recipientHex:recipHex,amountSvit:amt,nonce});}
+    catch(e){alert('Signing error: '+e);return;}
+  }else{
+    if(!_session){alert('Wallet locked — please unlock.');return;}
+    try{
+      const payload=buildSigningPayload(recipHex,amtMicro,_session.address,nonce,ts);
+      const digest=svitNoble.blake3(payload);
+      const sig64=await ed25519Sign(_session.signingKey,digest);
+      const txBytes=buildTxBincode(recipHex,amtMicro,_session.address,nonce,ts,sig64);
+      hex=toHex(txBytes);
+      const resp=await fetch(nodeUrl()+'/tx',{method:'POST',headers:{'Content-Type':'application/json',...NGROK_HEADERS},body:JSON.stringify({tx_hex:hex})});
+      const res=await resp.json();
+      if(res.ok){alert('Broadcast! Hash: '+res.tx_hash?.slice(0,16)+'…');setTimeout(pollNodeData,2000);}
+      else alert('Node rejected TX: '+res.error);
+    }catch(e){console.error(e);alert('Error: '+e.message);return;}
+  }
+  document.getElementById('tx-hex').textContent=hex;
+  document.getElementById('tx-output').style.display='block';
+}
+function clearSend(){document.getElementById('send-to').value='';document.getElementById('send-amt').value='';document.getElementById('send-summary').style.display='none';document.getElementById('tx-output').style.display='none';}
+
+// ── Receive ────────────────────────────────────────────────────────────────
+let ADDR='';
+function copyAddr(){
+  if(!ADDR)return;
+  navigator.clipboard.writeText(ADDR).catch(()=>{});
+  const el=document.getElementById('copy-confirm');el.style.display='block';setTimeout(()=>{el.style.display='none';},2500);
+}
+function shareAddr(){if(navigator.share&&ADDR)navigator.share({title:'My Svitlo Address',text:ADDR}).catch(()=>{});else copyAddr();}
+function updatePayLink(){
+  const amt=document.getElementById('req-amount').value;
+  const box=document.getElementById('pay-link-box'),lnk=document.getElementById('pay-link');
+  if(amt&&parseFloat(amt)>0){box.style.display='block';lnk.textContent='svit:'+ADDR+'?amount='+parseFloat(amt).toFixed(6);}
+  else box.style.display='none';
+}
+function copyPayLink(){navigator.clipboard.writeText(document.getElementById('pay-link').textContent).catch(()=>{});}
+
+// ── Wallet setup overlays ──────────────────────────────────────────────────
+let _pwResolve=null,_pwReject=null;
+function promptPassword(){return new Promise((res,rej)=>{_pwResolve=res;_pwReject=rej;const el=document.getElementById('pw-overlay');document.getElementById('pw-input').value='';document.getElementById('pw-err').style.display='none';el.style.display='flex';setTimeout(()=>document.getElementById('pw-input').focus(),60);});}
+function pwConfirm(){const pw=document.getElementById('pw-input').value;if(!pw){const e=document.getElementById('pw-err');e.textContent='Enter password';e.style.display='block';return;}document.getElementById('pw-overlay').style.display='none';if(_pwResolve){_pwResolve(pw);_pwResolve=_pwReject=null;}}
+function pwCancel(){document.getElementById('pw-overlay').style.display='none';if(_pwReject){_pwReject('cancelled');_pwResolve=_pwReject=null;}}
+function setupMode(mode){
+  const c=mode==='create';
+  document.getElementById('setup-create').style.display=c?'block':'none';
+  document.getElementById('setup-import').style.display=c?'none':'block';
+  document.getElementById('setup-tab-create').style.borderBottomColor=c?'var(--acc)':'transparent';
+  document.getElementById('setup-tab-create').style.color=c?'var(--tx)':'var(--txm)';
+  document.getElementById('setup-tab-import').style.borderBottomColor=c?'transparent':'var(--acc)';
+  document.getElementById('setup-tab-import').style.color=c?'var(--txm)':'var(--tx)';
+}
+let _pendingWalletSession=null;
+async function doCreateWallet(){
+  const pw1=document.getElementById('setup-pw1').value;const pw2=document.getElementById('setup-pw2').value;const err=document.getElementById('setup-err');
+  if(pw1.length<8){err.textContent='At least 8 characters';err.style.display='block';return;}
+  if(pw1!==pw2){err.textContent='Passwords do not match';err.style.display='block';return;}
+  err.style.display='none';
+  try{let data;if(window.__TAURI__){const json=await window.__TAURI__.core.invoke('wallet_generate',{password:pw1});data=JSON.parse(json);}else data=await walletCreateBrowser(pw1);_pendingWalletSession=data;document.getElementById('setup-overlay').style.display='none';_showMnemonicBackup(data.mnemonic||'');}
+  catch(e){err.textContent=String(e);err.style.display='block';}
+}
+async function doImportWallet(){
+  const phrase=document.getElementById('setup-phrase').value.trim();const pw=document.getElementById('setup-imp-pw').value;const err=document.getElementById('setup-imp-err');
+  const wc=phrase.split(/\s+/).filter(Boolean).length;
+  if(wc!==12&&wc!==24){err.textContent='Enter 12 or 24 words';err.style.display='block';return;}
+  if(!pw){err.textContent='Enter a password';err.style.display='block';return;}
+  err.style.display='none';
+  try{let data;if(window.__TAURI__){const json=await window.__TAURI__.core.invoke('wallet_import',{mnemonic:phrase,password:pw});data=JSON.parse(json);}else data=await walletImportBrowser(phrase,pw);_applyWalletSession(data);document.getElementById('setup-overlay').style.display='none';}
+  catch(e){err.textContent=String(e);err.style.display='block';}
+}
+function _showMnemonicBackup(phrase){
+  const words=phrase.split(/\s+/).filter(Boolean);const grid=document.getElementById('mnemonic-grid');grid.innerHTML='';
+  words.forEach((w,i)=>{grid.innerHTML+=`<div style="display:flex;align-items:center;gap:6px;background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:6px 9px"><span style="font-size:.625rem;color:var(--txm);min-width:18px;text-align:right;font-family:var(--mono)">${i+1}</span><span style="font-size:.8125rem;color:var(--tx);font-family:var(--mono)">${w}</span></div>`;});
+  document.getElementById('mnemonic-plain').textContent=phrase;
+  document.getElementById('mnemonic-confirm-cb').checked=false;
+  const btn=document.getElementById('mnemonic-continue-btn');btn.disabled=true;btn.style.opacity='.45';btn.style.cursor='not-allowed';
+  document.getElementById('mnemonic-copy-ok').style.display='none';
+  document.getElementById('mnemonic-overlay').style.display='flex';
+}
+function copyMnemonic(){navigator.clipboard.writeText(document.getElementById('mnemonic-plain').textContent).catch(()=>{});document.getElementById('mnemonic-copy-ok').style.display='block';setTimeout(()=>{document.getElementById('mnemonic-copy-ok').style.display='none';},2500);}
+function mnemonicCheckChange(){const checked=document.getElementById('mnemonic-confirm-cb').checked;const btn=document.getElementById('mnemonic-continue-btn');btn.disabled=!checked;btn.style.opacity=checked?'1':'.45';btn.style.cursor=checked?'pointer':'not-allowed';}
+function mnemonicDone(){document.getElementById('mnemonic-overlay').style.display='none';if(_pendingWalletSession){_applyWalletSession(_pendingWalletSession);_pendingWalletSession=null;}}
+function _applyWalletSession(data){
+  ADDR='svit1'+data.address;
+  document.getElementById('addr-display').textContent=ADDR;
+  document.getElementById('hdr-addr-el').innerHTML='<strong>svit1</strong>'+data.address.slice(0,16)+'…';
+  document.getElementById('buy-addr').textContent=ADDR;
+  drawQR();
+  setTimeout(()=>{pollNodeData();setInterval(pollNodeData,15000);},500);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden){pollNodeData();}});
+}
+
+// ── Portfolio total ────────────────────────────────────────────────────────
+function updatePortfolioTotal(){
+  const total=_tokenBalances.reduce((sum,t)=>sum+(parseFloat(t.usd_value)||0),0);
+  document.getElementById('port-total').textContent='$'+total.toFixed(2);
+  document.getElementById('bal-usd').textContent=(_tokenBalances.length?'Portfolio':'SVIT balance')+' · connected to '+nodeUrl().replace('http://','');
+}
+
+// ── Coin grid (home) ────────────────────────────────────────────────────────
+const COIN_COLORS={SVIT:'#C88B52',USDT:'#26a17b',BTC:'#f7931a',USDC:'#2775ca',XRP:'#00aae4',ETH:'#627eea',BNB:'#f3ba2f',SOL:'#9945ff',AVAX:'#e84142',DOGE:'#c2a633',LINK:'#2a5ada',MATIC:'#8247e5',LTC:'#345d9d',DAI:'#f5ac37',UNI:'#ff007a',ATOM:'#2e3148',ARB:'#28a0f0',SHIB:'#f00500',DOT:'#e6007a',NEAR:'#00c08b'};
+function renderCoinGrid(){
+  const grid=document.getElementById('coin-grid');
+  if(!grid)return;
+  const svitCard=grid.querySelector('.cc'); // first child -- unchanged SVIT card, has bal-svit/svit-usd/svit-chg ids used elsewhere
+  const rest=svitChains.CHAIN_REGISTRY.map(c=>{
+    const color=COIN_COLORS[c.symbol]||'#8b7355';
+    const tb=_tokenBalances.find(t=>t.token_id===c.tokenIds[0]);
+    const bal=tb?parseFloat(tb.balance).toFixed(c.symbol==='BTC'?8:2):(c.symbol==='BTC'?'0.00000000':'0.00');
+    const usd=tb?(parseFloat(tb.usd_value)||0):0;
+    return`<div class="cc" style="--cc-color:${color}" onclick="openBuyFor('${c.id}','${c.symbol}','${c.name}')" onkeydown="kbdActivate(event)" role="button" tabindex="0" aria-label="${c.name} balance, receive ${c.symbol}">
+      <div class="cc-top"><div class="cc-ico" style="background:${color}">${c.symbol.slice(0,4)}</div><div><div class="cc-name">${c.name}</div><div class="cc-sym">${c.symbol}</div></div></div>
+      <div class="cc-bal">${bal}</div>
+      <div class="cc-usd">$${usd.toFixed(2)}</div>
+      <span class="cc-chg flat">—</span>
+    </div>`;
+  }).join('');
+  grid.innerHTML='';
+  if(svitCard)grid.appendChild(svitCard);
+  grid.insertAdjacentHTML('beforeend',rest);
+}
+
+// ── Live coin prices (home cards) ──────────────────────────────────────────
+// ── Markets (top 100) ──────────────────────────────────────────────────────
+let _mktLoaded=false,_mktData=[];
+
+function fmtPrice(p){
+  if(!p)return'—';
+  if(p>=1000)return p.toLocaleString('en-US',{maximumFractionDigits:0});
+  if(p>=1)return p.toFixed(2);
+  if(p>=0.01)return p.toFixed(4);
+  return p.toFixed(8);
+}
+function fmtMcap(m){
+  if(!m)return'—';
+  if(m>=1e12)return'$'+(m/1e12).toFixed(2)+'T';
+  if(m>=1e9)return'$'+(m/1e9).toFixed(1)+'B';
+  if(m>=1e6)return'$'+(m/1e6).toFixed(1)+'M';
+  return'$'+m.toLocaleString();
+}
+
+async function loadMarkets(){
+  _mktLoaded=true;
+  try{
+    const url='https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h';
+    const r=await fetch(url,{signal:timeoutSignal(10000)});
+    if(!r.ok)throw new Error('API error');
+    _mktData=await r.json();
+    document.getElementById('mkt-status').textContent='Top 100 · Live';
+    renderMarkets(_mktData);
+  }catch(e){
+    document.getElementById('mkt-status').textContent='API unavailable';
+    document.getElementById('mkt-tbody').innerHTML='<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--txm);font-size:.8125rem">CoinGecko API rate-limited. Try again in a moment.</td></tr>';
+  }
+}
+
+function renderMarkets(coins){
+  // SVIT row first
+  const svitRow=`<tr>
+    <td class="mkt-rank">★</td>
+    <td><div class="mkt-coin"><div class="mkt-ico" style="background:#C88B52;color:#fff;font-size:.5625rem;font-weight:700">SVIT</div><div><div class="mkt-cname">Svitlo Chain</div><div class="mkt-csym">SVIT</div></div></div></td>
+    <td class="mkt-price">$1.85</td>
+    <td class="mkt-chg up">+2.40%</td>
+    <td class="mkt-mcap">$185M</td>
+    <td class="mkt-acts"><button class="btn btn-xs btn-primary" onclick="openBuyFor('svit','SVIT','Svitlo Chain')">Buy</button><button class="btn btn-xs btn-ghost" onclick="switchTab('send')">Send</button></td>
+  </tr>`;
+  const rows=coins.map((c,i)=>{
+    const chg=c.price_change_percentage_24h||0;
+    const cls=chg>=0?'up':'dn';
+    const sign=chg>=0?'+':'';
+    const imgHtml=c.image?`<img src="${c.image}" alt="${c.symbol}" onerror="this.style.display='none';this.nextSibling.style.display='flex'"><span style="display:none;align-items:center;justify-content:center;width:100%;height:100%;font-size:.5625rem;font-weight:700">${(c.symbol||'').slice(0,3).toUpperCase()}</span>`:`<span style="align-items:center;justify-content:center;width:100%;height:100%;font-size:.5625rem;font-weight:700;display:flex">${(c.symbol||'').slice(0,3).toUpperCase()}</span>`;
+    return`<tr data-name="${(c.name||'').toLowerCase()}" data-sym="${(c.symbol||'').toLowerCase()}">
+      <td class="mkt-rank">${i+2}</td>
+      <td><div class="mkt-coin"><div class="mkt-ico">${imgHtml}</div><div><div class="mkt-cname">${c.name}</div><div class="mkt-csym">${c.symbol}</div></div></div></td>
+      <td class="mkt-price">$${fmtPrice(c.current_price)}</td>
+      <td class="mkt-chg ${cls}">${sign}${chg.toFixed(2)}%</td>
+      <td class="mkt-mcap">${fmtMcap(c.market_cap)}</td>
+      <td class="mkt-acts"><button class="btn btn-xs btn-primary" onclick="openBuyFor('${c.id}','${c.symbol?.toUpperCase()}','${c.name}')">Buy</button><button class="btn btn-xs btn-ghost" onclick="switchTab('send')">Send</button></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('mkt-tbody').innerHTML=svitRow+rows;
+}
+
+function filterMarkets(q){
+  q=q.toLowerCase().trim();
+  document.querySelectorAll('#mkt-tbody tr').forEach(tr=>{
+    if(!q){tr.style.display='';return;}
+    const name=tr.dataset.name||'';const sym=tr.dataset.sym||'';
+    tr.style.display=(name.includes(q)||sym.includes(q))?'':'none';
+  });
+}
+
+// ── Buy modal ──────────────────────────────────────────────────────────────
+// Chains whose address bytes are canonically case-insensitive at the
+// protocol level (hex EVM, bech32 Cosmos, hex NEAR) -- registerDepositAddress
+// lowercases these before sending, mirroring mobile/screens/DepositScreen.tsx
+// exactly. Everything else (base58/base58check/SS58/bech32-bc/ltc) is
+// case-sensitive data, never lowercased.
+const LOWERCASE_ON_REGISTER=new Set(['evm','atom','near']);
+let _buyAddr='';
+async function registerChainAddressIfNeeded(chain,addr){
+  const cacheKey='svit-deposit-registered-'+chain.id+'-'+chain.symbol;
+  if(localStorage.getItem(cacheKey)===addr)return;
+  const registerAddr=LOWERCASE_ON_REGISTER.has(chain.id)?addr.toLowerCase():addr;
+  const external=chain.addrPrefix+':'+registerAddr;
+  await fetch(nodeUrl()+'/deposit/register',{method:'POST',headers:{'Content-Type':'application/json',...NGROK_HEADERS},body:JSON.stringify({external_address:external,svit_address:_session.address})});
+  localStorage.setItem(cacheKey,addr);
+}
+async function openBuyFor(id,sym,name){
+  const coin=_mktData.find(c=>c.id===id);
+  const priceEl=document.getElementById('buy-price');
+  const chgEl=document.getElementById('buy-chg');
+  if(coin){
+    priceEl.textContent='$'+fmtPrice(coin.current_price);
+    const chg=coin.price_change_percentage_24h||0;
+    chgEl.textContent=(chg>=0?'+':'')+chg.toFixed(2)+'% (24h)';
+    chgEl.style.color=chg>=0?'var(--good)':'var(--red)';
+  }else if(id==='svit'){
+    priceEl.textContent='$1.85';chgEl.textContent='+2.40% (24h)';chgEl.style.color='var(--good)';
+  }else{priceEl.textContent='—';chgEl.textContent='';}
+
+  const addrBox=document.getElementById('buy-addr');
+  const chain=svitChains.CHAIN_REGISTRY.find(c=>c.symbol===sym);
+  if(!chain){
+    // SVIT, or a coin outside the supported-chain list (e.g. ADA, deferred) --
+    // unchanged original behavior: show the SVIT address.
+    document.getElementById('buy-title').textContent='Buy '+name;
+    _buyAddr=ADDR;
+    addrBox.textContent=ADDR;
+    document.getElementById('buy-modal').classList.add('show');
+    return;
+  }
+  document.getElementById('buy-title').textContent='Receive '+name;
+  _buyAddr='';
+  addrBox.textContent='Deriving address…';
+  document.getElementById('buy-modal').classList.add('show');
+  try{
+    const addr=await deriveChainAddress(chain.id);
+    _buyAddr=addr;
+    addrBox.textContent=addr;
+    registerChainAddressIfNeeded(chain,addr).catch(()=>{
+      // best-effort -- if this fails the cache flag is never set, so it's
+      // simply retried the next time this chain's Receive is opened.
+    });
+  }catch(e){
+    _buyAddr='';
+    const cancelled=e==='cancelled'||(e&&e.message==='cancelled');
+    addrBox.textContent=cancelled?'Cancelled — tap Receive again to retry.':'Could not derive address: '+(e&&e.message?e.message:e);
+  }
+}
+function closeBuy(){document.getElementById('buy-modal').classList.remove('show');}
+function copyBuyAddr(){navigator.clipboard.writeText(_buyAddr||ADDR||'—').catch(()=>{});const el=document.getElementById('buy-addr');const orig=el.style.borderColor;el.style.borderColor='var(--acc)';setTimeout(()=>{el.style.borderColor=orig;},1000);}
+document.getElementById('buy-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeBuy();});
+
+// ── Swap modal — real AMM pool (TxKind::TokenSwap, discriminant 16) ─────────
+// Wire format mirrors buildSigningPayload/buildTxBincode above: bincode encodes
+// a struct-variant enum as u32 LE discriminant + fields in declaration order.
+// See TxKind in src/types.rs — TokenSwap { from_token: u32, to_token: u32,
+// amount_in: u64, min_out: u64 } is variant #16 (Transfer=0 ... RegisterRelay=17,
+// the file's own comment confirms that count).
+function encodeTokenSwapKind(fromToken,toToken,amountInMicro,minOutMicro){
+  return concatU8(u32LE(16),u32LE(fromToken),u32LE(toToken),u64LE(amountInMicro),u64LE(minOutMicro));
+}
+// TokenBurn (discriminant 14 -- counted from types.rs's TxKind enum: Transfer=0,
+// JobSubmit=1, JobSettle=2, Stake=3, Unstake=4, PriceUpdate=5, JobComplete=6,
+// InsuranceClaim=7, DistributedJobComplete=8, JobEscrow=9, ClaimStakingReward=10,
+// Burn=11, TokenMint=12, TokenTransfer=13, TokenBurn=14) { token_id: u32,
+// amount: u64, dest_addr: String }. bincode 1.3's String length prefix is
+// always u64 LE regardless of int-encoding mode, independent of the u32/u64
+// widths of the struct's own fields.
+function strLenPrefixed(s){const b=new TextEncoder().encode(s);return concatU8(u64LE(b.length),b);}
+function encodeTokenBurnKind(tokenId,amountMicro,destAddr){
+  return concatU8(u32LE(14),u32LE(tokenId),u64LE(amountMicro),strLenPrefixed(destAddr));
+}
+function signingPayloadGeneric(kindBytes,senderHex,nonce,ts){return concatU8(kindBytes,fromHex(senderHex),u64LE(nonce),u64LE(ts));}
+function txBincodeGeneric(kindBytes,senderHex,nonce,ts,sig64){return concatU8(kindBytes,fromHex(senderHex),u64LE(nonce),u64LE(ts),u64LE(64),sig64);}
+
+// Browser/PWA signing path only (mirrors _session.signingKey use in signTx()).
+// Tauri desktop builds sign through dedicated per-kind commands
+// (wallet_sign_transfer, etc.) — a wallet_sign_token_swap command doesn't exist
+// yet on the Rust side, so the Swap tab is browser-key-only for now; adding the
+// Tauri command is a separate, not-yet-scoped follow-up.
+async function signAndSubmitKind(kindBytes){
+  if(!_session)throw new Error('Wallet locked — please unlock.');
+  const nonce=_nonce;const ts=BigInt(Date.now());
+  const payload=signingPayloadGeneric(kindBytes,_session.address,nonce,ts);
+  const digest=svitNoble.blake3(payload);
+  const sig64=await ed25519Sign(_session.signingKey,digest);
+  const txBytes=txBincodeGeneric(kindBytes,_session.address,nonce,ts,sig64);
+  const resp=await fetch(nodeUrl()+'/tx',{method:'POST',headers:{'Content-Type':'application/json',...NGROK_HEADERS},body:JSON.stringify({tx_hex:toHex(txBytes)})});
+  return resp.json();
+}
+
+let _swapTokens=[],_swapQuote=null,_swapQuoteTimer=null;
+
+async function openSwap(){
+  document.getElementById('swap-modal').classList.add('show');
+  document.getElementById('swap-error').style.display='none';
+  document.getElementById('swap-nopool').style.display='none';
+  document.getElementById('swap-quote-box').style.display='none';
+  document.getElementById('swap-btn').disabled=true;
+  if(!_session||window.__TAURI__)return; // Tauri: see signAndSubmitKind's note above
+  try{
+    _swapTokens=await apiGet('/token/balances/'+_session.address);
+    const opts=_swapTokens.map(t=>`<option value="${t.token_id}">${t.symbol}</option>`).join('');
+    const fromSel=document.getElementById('swap-from-token'),toSel=document.getElementById('swap-to-token');
+    fromSel.innerHTML=opts;toSel.innerHTML=opts;
+    fromSel.value='0';
+    toSel.value=String(_swapTokens.find(t=>t.token_id!==0)?.token_id??'1');
+    updateSwapFromBalance();
+  }catch(e){console.error('swap token list',e);}
+}
+function closeSwap(){document.getElementById('swap-modal').classList.remove('show');}
+document.getElementById('swap-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeSwap();});
+
+function updateSwapFromBalance(){
+  const id=parseInt(document.getElementById('swap-from-token').value,10);
+  const t=_swapTokens.find(x=>x.token_id===id);
+  document.getElementById('swap-from-bal').textContent=t?('Available: '+t.balance+' '+t.symbol):'';
+}
+function flipSwapTokens(){
+  const fromSel=document.getElementById('swap-from-token'),toSel=document.getElementById('swap-to-token');
+  const f=fromSel.value;fromSel.value=toSel.value;toSel.value=f;
+  onSwapTokenChange();
+}
+function onSwapTokenChange(){updateSwapFromBalance();fetchSwapQuote();}
+function onSwapAmountChange(){fetchSwapQuote();}
+function fetchSwapQuote(){clearTimeout(_swapQuoteTimer);_swapQuoteTimer=setTimeout(fetchSwapQuoteNow,350);}
+
+async function fetchSwapQuoteNow(){
+  const from=document.getElementById('swap-from-token').value;
+  const to=document.getElementById('swap-to-token').value;
+  const amt=parseFloat(document.getElementById('swap-amt-in').value)||0;
+  const box=document.getElementById('swap-quote-box'),nopool=document.getElementById('swap-nopool'),
+        err=document.getElementById('swap-error'),btn=document.getElementById('swap-btn');
+  box.style.display='none';nopool.style.display='none';err.style.display='none';btn.disabled=true;_swapQuote=null;
+  if(!from||!to||from===to||amt<=0)return;
+  try{
+    const q=await apiGet(`/pool/quote?from=${from}&to=${to}&amount=${amt}`);
+    document.getElementById('swap-quote-out').textContent=q.amount_out+' '+q.to_symbol;
+    document.getElementById('swap-quote-impact').textContent=q.price_impact_pct.toFixed(2)+'%';
+    document.getElementById('swap-quote-fee').textContent=q.fee+' '+q.from_symbol;
+    box.style.display='block';
+    const SLIPPAGE=0.01; // 1% built-in tolerance — no UI control yet, see field-level TODO
+    _swapQuote={
+      fromToken:parseInt(from,10),toToken:parseInt(to,10),
+      amountInMicro:Math.round(amt*1_000_000),
+      minOutMicro:Math.max(0,Math.round(q.amount_out*(1-SLIPPAGE)*1_000_000)),
+    };
+    btn.disabled=false;
+  }catch(e){
+    let msg='No liquidity pool exists yet for this pair.';
+    try{const parsed=JSON.parse(e.message);if(parsed.error)msg=parsed.error;}catch{}
+    nopool.textContent=msg;nopool.style.display='block';
+  }
+}
+
+async function executeSwap(){
+  if(!_swapQuote)return;
+  const btn=document.getElementById('swap-btn'),err=document.getElementById('swap-error');
+  btn.disabled=true;btn.textContent='Swapping…';err.style.display='none';
+  try{
+    const kindBytes=encodeTokenSwapKind(_swapQuote.fromToken,_swapQuote.toToken,_swapQuote.amountInMicro,_swapQuote.minOutMicro);
+    const res=await signAndSubmitKind(kindBytes);
+    if(res.ok){alert('Swap broadcast! Hash: '+res.tx_hash.slice(0,16)+'…');closeSwap();setTimeout(pollNodeData,2000);}
+    else{err.textContent=res.error||'Node rejected the swap.';err.style.display='block';}
+  }catch(e){err.textContent=e.message;err.style.display='block';}
+  finally{btn.disabled=false;btn.textContent='Swap';}
+}
+
+// ── Stake — real locked-staking policy (TxKind::Stake=3, Unstake=4,
+// ClaimStakingReward=10 -- see src/types.rs's TxKind ordering, cross-checked
+// by wallet_hardcoded_discriminants_match_real_encoding). Stake/Unstake carry
+// {amount:u64, lock_days:u32}; ClaimStakingReward is a unit variant (tag only,
+// no fields). Same browser-key-only caveat as Swap: Tauri desktop doesn't have
+// dedicated wallet_sign_stake/_unstake/_claim commands yet.
+function encodeStakeKind(amountMicro,lockDays){return concatU8(u32LE(3),u64LE(amountMicro),u32LE(lockDays));}
+function encodeUnstakeKind(amountMicro,lockDays){return concatU8(u32LE(4),u64LE(amountMicro),u32LE(lockDays));}
+function encodeClaimStakingRewardKind(){return u32LE(10);}
+
+// Matches the chain's LOCK_TIER_FLEXIBLE_DAYS (state/mod.rs) -- u32::MAX,
+// deliberately not 0 since 0 already means "legacy grandfathered" stake.
+const FLEXIBLE_LOCK_DAYS=0xffffffff;
+
+function microToSvit(u){u=BigInt(u);return(u/1000000n).toString()+'.'+(u%1000000n).toString().padStart(6,'0');}
+function fmtUnlockDate(ms){return ms?new Date(ms).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'}):'—';}
+function lockLabel(days){return days===0?'Legacy stake (unlocked)':days===FLEXIBLE_LOCK_DAYS?'Flexible (unlocked)':days===30?'1-month lock':'1-year lock';}
+
+let _stakeLockDays=30;
+function selectLockDays(days){
+  _stakeLockDays=days;
+  document.getElementById('lock-choice-flex').classList.toggle('active',days===FLEXIBLE_LOCK_DAYS);
+  document.getElementById('lock-choice-30').classList.toggle('active',days===30);
+  document.getElementById('lock-choice-365').classList.toggle('active',days===365);
+}
+
+async function loadStakePanel(){
+  if(!_session)return;
+  document.getElementById('stake-avail').textContent='Available: '+microToSvit(_balance)+' SVIT';
+  try{
+    const d=await apiGet('/stake/'+_session.address);
+    renderStakePositions(d);
+    renderStakeClaimable(d);
+  }catch(e){console.error('stake load',e);}
+}
+
+function renderStakePositions(d){
+  const list=document.getElementById('stake-positions-list');
+  document.getElementById('stake-total-chip').textContent=d.staked_svit+' SVIT';
+  if(!d.positions||d.positions.length===0){
+    list.innerHTML='<li class="stake-pos-row"><div class="tx-info"><div class="tx-desc">No active stake positions</div></div></li>';
+    return;
+  }
+  list.innerHTML=d.positions.map(p=>{
+    const hasRealLock=p.lock_days>0&&p.lock_days!==FLEXIBLE_LOCK_DAYS;
+    const locked=hasRealLock&&!p.unlocked;
+    const action=locked
+      ?`<button class="btn btn-ghost btn-sm" disabled>Locked</button>`
+      :`<button class="btn btn-outline btn-sm" onclick="unstakePosition(${p.lock_days},${p.amount_usvit})">Unstake</button>`;
+    const unlockLine=hasRealLock
+      ?`<div class="stake-pos-unlock">${p.unlocked?'Unlocked — withdrawable now':'Unlocks '+fmtUnlockDate(p.unlock_at_ms)}</div>`
+      :'';
+    return `<li class="stake-pos-row">
+      <div class="tx-info">
+        <div class="stake-pos-tier">${lockLabel(p.lock_days)}</div>
+        <div class="stake-pos-amt">${p.amount_svit} SVIT</div>
+        ${unlockLine}
+      </div>
+      ${action}
+    </li>`;
+  }).join('');
+}
+
+function renderStakeClaimable(d){
+  document.getElementById('stake-claimable-amt').textContent=d.claimable_svit+' SVIT';
+  document.getElementById('stake-claim-chip').textContent=d.claimable_usvit>0?'Ready':'—';
+  document.getElementById('stake-claim-btn').disabled=!(d.claimable_usvit>0);
+}
+
+let _stakePending=null;
+function openStakeConfirm(){
+  if(!_session){alert('Wallet locked — please unlock.');return;}
+  const amt=parseFloat(document.getElementById('stake-amt').value)||0;
+  if(amt<=0){alert('Enter an amount to stake.');return;}
+  const amountMicro=Math.round(amt*1_000_000);
+  const lockDays=_stakeLockDays;
+  const unlockAtMs=lockDays===FLEXIBLE_LOCK_DAYS?Date.now():Date.now()+lockDays*86400000;
+  _stakePending={amountMicro,lockDays};
+  document.getElementById('stake-confirm-amt').textContent=amt.toFixed(6)+' SVIT';
+  document.getElementById('stake-confirm-period').textContent=lockDays===FLEXIBLE_LOCK_DAYS?'Flexible (withdraw anytime)':lockDays===30?'1 month (30 days)':'1 year (365 days)';
+  document.getElementById('stake-confirm-warn').innerHTML=lockDays===FLEXIBLE_LOCK_DAYS
+    ?'<strong>Lower reward rate.</strong> Flexible stakes can be withdrawn anytime, but earn less than the locked 1-month or 1-year plans.'
+    :'<strong>Your funds will be frozen.</strong> Once staked, this amount cannot be unstaked before the lock period ends — no exceptions.';
+  document.getElementById('stake-confirm-unlock').textContent=fmtUnlockDate(unlockAtMs);
+  document.getElementById('stake-confirm-error').style.display='none';
+  const btn=document.getElementById('stake-confirm-btn');btn.disabled=false;btn.textContent='I understand, stake now';
+  document.getElementById('stake-confirm-modal').classList.add('show');
+}
+function closeStakeConfirm(){document.getElementById('stake-confirm-modal').classList.remove('show');}
+document.getElementById('stake-confirm-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeStakeConfirm();});
+
+async function executeStake(){
+  if(!_stakePending)return;
+  const btn=document.getElementById('stake-confirm-btn'),err=document.getElementById('stake-confirm-error');
+  btn.disabled=true;btn.textContent='Staking…';err.style.display='none';
+  try{
+    const res=await signAndSubmitKind(encodeStakeKind(_stakePending.amountMicro,_stakePending.lockDays));
+    if(res.ok){
+      alert('Stake broadcast! Hash: '+res.tx_hash.slice(0,16)+'…');
+      closeStakeConfirm();
+      document.getElementById('stake-amt').value='';
+      setTimeout(()=>{pollNodeData();loadStakePanel();},2000);
+    }else{err.textContent=res.error||'Node rejected the stake.';err.style.display='block';btn.disabled=false;btn.textContent='I understand, stake now';}
+  }catch(e){err.textContent=e.message;err.style.display='block';btn.disabled=false;btn.textContent='I understand, stake now';}
+}
+
+async function unstakePosition(lockDays,amountUsvit){
+  if(!_session){alert('Wallet locked — please unlock.');return;}
+  if(!confirm('Unstake this position and return the funds to your available balance?'))return;
+  try{
+    const res=await signAndSubmitKind(encodeUnstakeKind(amountUsvit,lockDays));
+    if(res.ok){alert('Unstake broadcast! Hash: '+res.tx_hash.slice(0,16)+'…');setTimeout(()=>{pollNodeData();loadStakePanel();},2000);}
+    else alert('Node rejected the unstake: '+(res.error||'unknown error'));
+  }catch(e){alert('Error: '+e.message);}
+}
+
+async function claimStakingReward(){
+  if(!_session){alert('Wallet locked — please unlock.');return;}
+  const btn=document.getElementById('stake-claim-btn');
+  btn.disabled=true;btn.textContent='Claiming…';
+  try{
+    const res=await signAndSubmitKind(encodeClaimStakingRewardKind());
+    if(res.ok){alert('Claim broadcast! Hash: '+res.tx_hash.slice(0,16)+'…');setTimeout(()=>{pollNodeData();loadStakePanel();},2000);}
+    else alert('Node rejected the claim: '+(res.error||'unknown error'));
+  }catch(e){alert('Error: '+e.message);}
+  finally{btn.textContent='Claim rewards';loadStakePanel();}
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────
+async function browserInit(){
+  const raw=loadKeystoreRaw();
+  if(!raw){document.getElementById('setup-overlay').style.display='flex';return;}
+  let pw;try{pw=await promptPassword();}catch{return;}
+  try{const data=await walletUnlockBrowser(pw);_applyWalletSession(data);}
+  catch(e){const errEl=document.getElementById('pw-err');errEl.textContent='Wrong password';errEl.style.display='block';document.getElementById('pw-overlay').style.display='flex';}
+}
+async function tauriInit(){
+  if(!window.__TAURI__)return;
+  try{
+    const exists=await window.__TAURI__.core.invoke('wallet_exists');
+    if(!exists){document.getElementById('setup-overlay').style.display='flex';return;}
+    let pw;try{pw=await promptPassword();}catch{return;}
+    try{const json=await window.__TAURI__.core.invoke('wallet_load',{password:pw});_applyWalletSession(JSON.parse(json));}
+    catch{const e=document.getElementById('pw-err');e.textContent='Wrong password';e.style.display='block';document.getElementById('pw-overlay').style.display='flex';}
+  }catch(_){}
+}
+
+renderSendCoinSel();
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',()=>{if(window.__TAURI__)tauriInit();else browserInit();});}
+else{if(window.__TAURI__)tauriInit();else browserInit();}
+</script>
+</body>
+</html>

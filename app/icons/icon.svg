@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Full bleed background (maskable safe zone = inner 80%) -->
+  <rect width="512" height="512" fill="#06080F"/>
+  <!-- Subtle hexagon, centered, within safe zone -->
+  <polygon points="256,72 374,138 374,270 256,336 138,270 138,138"
+    fill="none" stroke="#00B87C" stroke-width="10" opacity="0.35"/>
+  <!-- Inner hexagon -->
+  <polygon points="256,108 346,160 346,264 256,316 166,264 166,160"
+    fill="none" stroke="#00B87C" stroke-width="4" opacity="0.18"/>
+  <!-- SVIT logotype -->
+  <text x="256" y="292"
+    font-family="'SF Mono','Cascadia Code','Courier New',monospace"
+    font-size="100" font-weight="700" fill="#00B87C"
+    text-anchor="middle" letter-spacing="-2">SVIT</text>
+  <!-- Tagline -->
+  <text x="256" y="350"
+    font-family="system-ui,sans-serif"
+    font-size="28" font-weight="400" fill="#6B7FA3"
+    text-anchor="middle" letter-spacing="6">WALLET</text>
+</svg>

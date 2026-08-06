@@ -1,0 +1,88 @@
+{
+  "name": "Svitlo Wallet",
+  "short_name": "Svitlo",
+  "description": "Svitlo Chain — AI-Native Layer-1 Wallet. Manage SVIT, send/receive, earn from AI inference.",
+  "start_url": "./",
+  "id": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "orientation": "portrait-primary",
+  "background_color": "#06080F",
+  "theme_color": "#00B87C",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["finance", "utilities"],
+  "icons": [
+    {
+      "src": "icons/icon-32.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Send SVIT",
+      "short_name": "Send",
+      "description": "Send SVIT to an address",
+      "url": "./?tab=send",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Receive SVIT",
+      "short_name": "Receive",
+      "description": "Show your SVIT address",
+      "url": "./?tab=receive",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "AI Jobs",
+      "short_name": "Jobs",
+      "description": "View active inference jobs",
+      "url": "./?tab=jobs",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Svitlo Wallet Overview"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}
