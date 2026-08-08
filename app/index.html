@@ -1371,17 +1371,25 @@ function _applyWalletSession(data){
 // this only affects what's displayed.
 const SUPPORTED_CURRENCIES=['USD','EUR','GBP','JPY','UAH','CHF','CNY','NOK','SEK'];
 const CURRENCY_SYMBOLS={USD:'$',EUR:'€',GBP:'£',JPY:'¥',UAH:'₴',CHF:'CHF ',CNY:'¥',NOK:'NOK ',SEK:'SEK '};
+// Approximate, deliberately rough -- only ever used until the first real
+// CoinGecko fetch succeeds (see _fxRatesLoaded below). A failed FIRST-ever
+// fetch used to leave _fxRates at {USD:1}, so fmtFiat's `_fxRates[cur]||1`
+// silently rendered the raw USD figure mislabeled with the real currency's
+// symbol (e.g. NOK showing the USD number, off by ~10x) -- the exact bug
+// found live on the mobile app (2026-08-08), same CoinGecko-USDC approach.
+const FALLBACK_FX_RATES={EUR:0.92,GBP:0.79,JPY:149,UAH:41.5,CHF:0.88,CNY:7.2,NOK:10.6,SEK:10.4};
 let _displayCurrency='USD';
 let _fxRates={USD:1};
+let _fxRatesLoaded=false; // true only after a genuine CoinGecko success, never for the static fallback
 async function refreshFxRates(){
   if(_displayCurrency==='USD'){_fxRates={USD:1};return;}
   try{
     const vs=SUPPORTED_CURRENCIES.filter(c=>c!=='USD').map(c=>c.toLowerCase()).join(',');
     const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd-coin&vs_currencies=usd,'+vs,{signal:timeoutSignal(8000)});
-    if(!r.ok)return;
+    if(!r.ok){ if(!_fxRatesLoaded)_fxRates={USD:1,...FALLBACK_FX_RATES}; return; }
     const d=await r.json();
     const usdc=d['usd-coin'];
-    if(!usdc)return;
+    if(!usdc){ if(!_fxRatesLoaded)_fxRates={USD:1,...FALLBACK_FX_RATES}; return; }
     const usdBase=usdc.usd||1;
     const next={USD:1};
     for(const c of SUPPORTED_CURRENCIES){
@@ -1390,7 +1398,12 @@ async function refreshFxRates(){
       if(v)next[c]=v/usdBase;
     }
     _fxRates=next;
-  }catch(_){ /* keep last-known rates (or the USD:1 default) on failure */ }
+    _fxRatesLoaded=true;
+  }catch(_){
+    // keep last-known-good real rates on a later transient failure; only
+    // ever fall back to the static table if we've NEVER had a real rate.
+    if(!_fxRatesLoaded)_fxRates={USD:1,...FALLBACK_FX_RATES};
+  }
 }
 function setDisplayCurrency(cur){
   if(!SUPPORTED_CURRENCIES.includes(cur))cur='USD';
