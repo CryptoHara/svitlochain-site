@@ -452,6 +452,11 @@ input,textarea,select{font:inherit;}
       </div>
       <p style="font-size:.8125rem;color:var(--txm);margin-bottom:18px;line-height:1.6" data-i18n="buy.body">To purchase this asset, send funds to your wallet address below or connect an external exchange.</p>
       <div class="addr-box" id="buy-addr" style="font-size:.6875rem"></div>
+      <!-- Defense-in-depth, added after a real gap found live (2026-08-08,
+           SHIB): an EVM address is real and will happily receive ANY
+           ERC-20/BEP-20 token, not just the ones the relayer watches for.
+           Shown only for chain.addrPrefix==='evm' -- see openBuyFor(). -->
+      <div id="buy-evm-warning" style="display:none;background:var(--s2);border:1px solid var(--red);border-radius:8px;padding:10px 12px;margin:12px 0;font-size:.75rem;color:var(--red);line-height:1.5"></div>
       <div style="display:flex;gap:8px">
         <button onclick="copyBuyAddr()" class="btn btn-primary" style="flex:1" data-i18n="buy.copy_address">Copy address</button>
         <button onclick="closeBuy()" class="btn btn-ghost" data-i18n="common.cancel">Cancel</button>
@@ -1562,6 +1567,7 @@ async function openBuyFor(id,sym,name){
   }else{priceEl.textContent='—';chgEl.textContent='';}
 
   const addrBox=document.getElementById('buy-addr');
+  const warnBox=document.getElementById('buy-evm-warning');
   const chain=svitChains.CHAIN_REGISTRY.find(c=>c.symbol===sym);
   if(!chain){
     // SVIT, or a coin outside the supported-chain list (e.g. ADA, deferred) --
@@ -1569,8 +1575,15 @@ async function openBuyFor(id,sym,name){
     document.getElementById('buy-title').textContent=t('dyn.buy_title',{name});
     _buyAddr=ADDR;
     addrBox.textContent=ADDR;
+    warnBox.style.display='none';
     document.getElementById('buy-modal').classList.add('show');
     return;
+  }
+  if(chain.addrPrefix==='evm'){
+    warnBox.textContent=t('dyn.evm_only_token_warning',{sym});
+    warnBox.style.display='block';
+  }else{
+    warnBox.style.display='none';
   }
   document.getElementById('buy-title').textContent=t('dyn.receive_title',{name});
   _buyAddr='';
