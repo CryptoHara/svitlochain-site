@@ -19,6 +19,7 @@
     ja: 'デフォルト: Svitlo Chainのパブリックリレー',
     ko: '기본값: 공개 Svitlo Chain 릴레이',
     zh: '默认：公开的 Svitlo Chain 中继',
+    de: 'Standard: das öffentliche Svitlo-Chain-Relay',
   };
   for (const lang in overrides) {
     if (window.svitI18N[lang]) window.svitI18N[lang]['settings.rpc_default'] = overrides[lang];

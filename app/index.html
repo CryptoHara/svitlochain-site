@@ -422,6 +422,7 @@ input,textarea,select{font:inherit;}
         <option value="ja">日本語</option>
         <option value="ko">한국어</option>
         <option value="zh">中文</option>
+        <option value="de">Deutsch</option>
       </select>
       <!-- Display currency moved to its own header button (#currency-btn) --
            independent of language, and now a single access point instead of
@@ -833,7 +834,7 @@ function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':
 // here. Dynamic (JS-built) strings go through t(key, vars) instead -- see
 // i18n.js's 'dyn.*' keys and their call sites (openBuyFor, signTx, etc.).
 let _lang='en';
-const SUPPORTED_LANGS=['en','uk','no','sv','es','it','pt','fr','fi','ja','ko','zh'];
+const SUPPORTED_LANGS=['en','uk','no','sv','es','it','pt','fr','fi','ja','ko','zh','de'];
 function applyLanguage(lang){
   const dict=(window.svitI18N&&window.svitI18N[lang])||{};
   const en=(window.svitI18N&&window.svitI18N.en)||{};
