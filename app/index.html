@@ -2,18 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<!-- Published copy (svitlochain.com/app/) -- locked to the known default
-     public relay rather than the source wallet-web's broader `https:`
-     connect-src, since this deployment's visitors are expected to use the
-     default relay (nodeUrl()'s fallback), not an arbitrary self-hosted
-     node. If you repoint Settings' RPC URL at a custom domain, add it here
-     too or requests will be CSP-blocked. frame-ancestors 'none' also
-     closes the clickjacking vector (page can't be iframed at all).
-     'unsafe-inline' is unavoidable given this file's extensive inline
-     onclick="..." handlers -- the actual XSS mitigation is
-     escapeHtml()/the delegated listener in renderMarkets(), this CSP is
-     defense-in-depth on top of that (specifically: it blocks a successful
-     XSS from exfiltrating the stolen keystore anywhere off-allowlist). -->
+<!-- This is the self-hosted/dev/Tauri build -- nodeUrl() defaults to
+     localhost and is routinely repointed at an arbitrary self-hosted node
+     (that's the documented point of the Settings "RPC URL" field), so
+     connect-src can't be locked to one origin the way the published
+     svitlochain.com/app/ copy's CSP is. Still blocks non-HTTPS/non-local
+     exfiltration targets, object embedding, iframing (clickjacking), and
+     inline event-handler-string escapes don't matter here since
+     'unsafe-inline' is unavoidable given this file's extensive onclick="..."
+     usage -- see the escapeHtml()/delegated-listener fix in renderMarkets()
+     for the actual XSS mitigation, CSP is defense-in-depth on top of that. -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://coin-images.coingecko.com; connect-src 'self' https://dares-suffering-swimwear.ngrok-free.dev https://api.coingecko.com; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; manifest-src 'self'; worker-src 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#6B4226" id="meta-theme">
@@ -135,6 +133,10 @@ input,textarea,select{font:inherit;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .hdr-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--bd);color:var(--txm);font-size:.875rem;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;}
 .hdr-btn:hover{border-color:var(--bd2);color:var(--tx);background:var(--s2);}
+/* Native <select> reset so it can sit in the header row looking like a
+   plain .hdr-btn icon button instead of default browser select chrome. */
+.hdr-select{appearance:none;-webkit-appearance:none;-moz-appearance:none;background:var(--s1);cursor:pointer;padding:0 4px;font-family:inherit;font-weight:700;text-align:center;text-align-last:center;}
+.hdr-select:hover{border-color:var(--bd2);color:var(--tx);background:var(--s2);}
 .install-chip{display:none;align-items:center;gap:5px;padding:5px 12px;background:var(--acc-fill);color:#fff;border-radius:20px;font-size:.71875rem;font-weight:600;flex-shrink:0;}
 
 /* Install banner */
@@ -271,7 +273,7 @@ input,textarea,select{font:inherit;}
 .pill.running{background:var(--acc-bg);color:var(--acc);}
 .pill.pending{background:var(--warn-bg);color:var(--warn);}
 .lock-choice{flex-direction:column;line-height:1.5;gap:2px;}
-.lock-choice span{font-weight:400;}
+.lock-choice .lc-sub{font-weight:400;}
 .lock-choice.active{background:var(--acc-bg);border-color:var(--acc);color:var(--acc);}
 .warn-box{background:var(--warn-bg);border:1px solid var(--warn);border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:.8125rem;color:var(--tx);line-height:1.6;}
 .stake-pos-row{display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--bd);}
@@ -323,27 +325,27 @@ input,textarea,select{font:inherit;}
   <div style="background:var(--s1);border:1px solid var(--bd2);border-radius:14px;width:100%;max-width:400px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.15)">
     <div style="padding:20px 22px;border-bottom:1px solid var(--bd)">
       <div style="font-family:var(--serif);font-size:1.25rem;font-weight:700;color:var(--acc)">Svitlo Wallet</div>
-      <div style="font-size:.75rem;color:var(--txm);margin-top:3px">No wallet found — create or restore one</div>
+      <div style="font-size:.75rem;color:var(--txm);margin-top:3px" data-i18n="setup.subtitle">No wallet found — create or restore one</div>
     </div>
     <div style="display:flex;border-bottom:1px solid var(--bd)">
-      <button id="setup-tab-create" onclick="setupMode('create')" style="flex:1;background:none;border:none;border-bottom:2px solid var(--acc);color:var(--tx);padding:11px;font-size:.8125rem;font-weight:600;cursor:pointer">Create new</button>
-      <button id="setup-tab-import" onclick="setupMode('import')" style="flex:1;background:none;border:none;border-bottom:2px solid transparent;color:var(--txm);padding:11px;font-size:.8125rem;font-weight:600;cursor:pointer">Restore from phrase</button>
+      <button id="setup-tab-create" onclick="setupMode('create')" style="flex:1;background:none;border:none;border-bottom:2px solid var(--acc);color:var(--tx);padding:11px;font-size:.8125rem;font-weight:600;cursor:pointer" data-i18n="setup.tab_create">Create new</button>
+      <button id="setup-tab-import" onclick="setupMode('import')" style="flex:1;background:none;border:none;border-bottom:2px solid transparent;color:var(--txm);padding:11px;font-size:.8125rem;font-weight:600;cursor:pointer" data-i18n="setup.tab_import">Restore from phrase</button>
     </div>
     <div style="padding:20px 22px">
       <div id="setup-create">
-        <div style="margin-bottom:12px"><div style="font-size:.625rem;color:var(--txm);letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:5px">Password</div><input id="setup-pw1" type="password" placeholder="At least 8 characters" autocomplete="new-password" style="width:100%;background:var(--s2);border:1.5px solid var(--bd2);border-radius:8px;padding:9px 12px;font-size:.8125rem;color:var(--tx);box-sizing:border-box;outline:none;transition:border-color .15s" onfocus="this.style.borderColor='var(--acc)'" onblur="this.style.borderColor='var(--bd2)'"></div>
-        <div style="margin-bottom:14px"><div style="font-size:.625rem;color:var(--txm);letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:5px">Confirm password</div><input id="setup-pw2" type="password" placeholder="Repeat password" autocomplete="new-password" style="width:100%;background:var(--s2);border:1.5px solid var(--bd2);border-radius:8px;padding:9px 12px;font-size:.8125rem;color:var(--tx);box-sizing:border-box;outline:none;transition:border-color .15s" onfocus="this.style.borderColor='var(--acc)'" onblur="this.style.borderColor='var(--bd2)'"></div>
+        <div style="margin-bottom:12px"><div style="font-size:.625rem;color:var(--txm);letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:5px" data-i18n="setup.password">Password</div><input id="setup-pw1" type="password" placeholder="At least 8 characters" data-i18n-ph="setup.pw_ph" autocomplete="new-password" style="width:100%;background:var(--s2);border:1.5px solid var(--bd2);border-radius:8px;padding:9px 12px;font-size:.8125rem;color:var(--tx);box-sizing:border-box;outline:none;transition:border-color .15s" onfocus="this.style.borderColor='var(--acc)'" onblur="this.style.borderColor='var(--bd2)'"></div>
+        <div style="margin-bottom:14px"><div style="font-size:.625rem;color:var(--txm);letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:5px" data-i18n="setup.confirm_password">Confirm password</div><input id="setup-pw2" type="password" placeholder="Repeat password" data-i18n-ph="setup.repeat_ph" autocomplete="new-password" style="width:100%;background:var(--s2);border:1.5px solid var(--bd2);border-radius:8px;padding:9px 12px;font-size:.8125rem;color:var(--tx);box-sizing:border-box;outline:none;transition:border-color .15s" onfocus="this.style.borderColor='var(--acc)'" onblur="this.style.borderColor='var(--bd2)'"></div>
         <div id="setup-err" style="font-size:.75rem;color:var(--red);margin-bottom:10px;display:none"></div>
-        <button onclick="doCreateWallet()" style="width:100%;background:var(--acc-fill);border:none;border-radius:8px;padding:11px;font-size:.8125rem;font-weight:700;color:#fff;cursor:pointer">Create wallet</button>
+        <button onclick="doCreateWallet()" style="width:100%;background:var(--acc-fill);border:none;border-radius:8px;padding:11px;font-size:.8125rem;font-weight:700;color:#fff;cursor:pointer" data-i18n="setup.create_btn">Create wallet</button>
       </div>
       <div id="setup-import" style="display:none">
-        <div style="font-size:.75rem;color:var(--txm);margin-bottom:12px">Enter your 12 or 24-word BIP39 recovery phrase.</div>
-        <div style="margin-bottom:12px"><div style="font-size:.625rem;color:var(--txm);letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:5px">Recovery phrase</div><textarea id="setup-phrase" rows="3" placeholder="word1 word2 word3 …" autocomplete="off" spellcheck="false" style="width:100%;background:var(--s2);border:1.5px solid var(--bd2);border-radius:8px;padding:9px 12px;font-size:.8125rem;font-family:var(--mono);color:var(--tx);box-sizing:border-box;resize:vertical;line-height:1.6;outline:none"></textarea></div>
-        <div style="margin-bottom:14px"><div style="font-size:.625rem;color:var(--txm);letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:5px">New password</div><input id="setup-imp-pw" type="password" autocomplete="new-password" style="width:100%;background:var(--s2);border:1.5px solid var(--bd2);border-radius:8px;padding:9px 12px;font-size:.8125rem;color:var(--tx);box-sizing:border-box;outline:none"></div>
+        <div style="font-size:.75rem;color:var(--txm);margin-bottom:12px" data-i18n="setup.import_hint">Enter your 12 or 24-word BIP39 recovery phrase.</div>
+        <div style="margin-bottom:12px"><div style="font-size:.625rem;color:var(--txm);letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:5px" data-i18n="setup.recovery_phrase">Recovery phrase</div><textarea id="setup-phrase" rows="3" placeholder="word1 word2 word3 …" autocomplete="off" spellcheck="false" style="width:100%;background:var(--s2);border:1.5px solid var(--bd2);border-radius:8px;padding:9px 12px;font-size:.8125rem;font-family:var(--mono);color:var(--tx);box-sizing:border-box;resize:vertical;line-height:1.6;outline:none"></textarea></div>
+        <div style="margin-bottom:14px"><div style="font-size:.625rem;color:var(--txm);letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:5px" data-i18n="setup.new_password">New password</div><input id="setup-imp-pw" type="password" autocomplete="new-password" style="width:100%;background:var(--s2);border:1.5px solid var(--bd2);border-radius:8px;padding:9px 12px;font-size:.8125rem;color:var(--tx);box-sizing:border-box;outline:none"></div>
         <div id="setup-imp-err" style="font-size:.75rem;color:var(--red);margin-bottom:10px;display:none"></div>
-        <button onclick="doImportWallet()" style="width:100%;background:var(--acc-fill);border:none;border-radius:8px;padding:11px;font-size:.8125rem;font-weight:700;color:#fff;cursor:pointer">Restore wallet</button>
+        <button onclick="doImportWallet()" style="width:100%;background:var(--acc-fill);border:none;border-radius:8px;padding:11px;font-size:.8125rem;font-weight:700;color:#fff;cursor:pointer" data-i18n="setup.restore_btn">Restore wallet</button>
       </div>
-      <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--bd);font-size:.65625rem;line-height:1.5;color:var(--txm)">
+      <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--bd);font-size:.65625rem;line-height:1.5;color:var(--txm)" data-i18n-html="setup.disclaimer">
         This is a <strong>non-custodial</strong> wallet — you alone control your funds and recovery phrase, and you alone are responsible for keeping them safe. Never share your password or recovery phrase with anyone, including anyone claiming to offer support: doing so can lead to immediate, total, irreversible loss of funds. We cannot recover lost access, reverse transactions, or protect you from irrational use.
       </div>
     </div>
@@ -353,12 +355,12 @@ input,textarea,select{font:inherit;}
 <!-- ── Password prompt ───────────────────────────────────────────────────── -->
 <div id="pw-overlay" style="display:none;position:fixed;inset:0;z-index:901;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:20px">
   <div style="background:var(--s1);border:1px solid var(--bd2);border-radius:14px;width:100%;max-width:340px;padding:22px;box-shadow:0 24px 64px rgba(0,0,0,.2)">
-    <div style="font-family:var(--serif);font-size:1.125rem;font-weight:700;color:var(--tx);margin-bottom:14px">Enter wallet password</div>
-    <input id="pw-input" type="password" placeholder="Password" autocomplete="current-password" style="width:100%;background:var(--s2);border:1.5px solid var(--bd2);border-radius:8px;padding:10px 12px;font-size:.8125rem;color:var(--tx);box-sizing:border-box;margin-bottom:12px;outline:none" onkeydown="if(event.key==='Enter')pwConfirm()">
+    <div style="font-family:var(--serif);font-size:1.125rem;font-weight:700;color:var(--tx);margin-bottom:14px" data-i18n="pw.title">Enter wallet password</div>
+    <input id="pw-input" type="password" placeholder="Password" data-i18n-ph="pw.placeholder" autocomplete="current-password" style="width:100%;background:var(--s2);border:1.5px solid var(--bd2);border-radius:8px;padding:10px 12px;font-size:.8125rem;color:var(--tx);box-sizing:border-box;margin-bottom:12px;outline:none" onkeydown="if(event.key==='Enter')pwConfirm()">
     <div id="pw-err" style="font-size:.75rem;color:var(--red);margin-bottom:10px;display:none"></div>
     <div style="display:flex;gap:8px">
-      <button onclick="pwConfirm()" style="flex:1;background:var(--acc-fill);border:none;border-radius:8px;padding:10px;font-size:.8125rem;font-weight:700;color:#fff;cursor:pointer">Unlock</button>
-      <button onclick="pwCancel()" style="background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:10px 16px;font-size:.8125rem;color:var(--txm);cursor:pointer">Cancel</button>
+      <button onclick="pwConfirm()" style="flex:1;background:var(--acc-fill);border:none;border-radius:8px;padding:10px;font-size:.8125rem;font-weight:700;color:#fff;cursor:pointer" data-i18n="pw.unlock">Unlock</button>
+      <button onclick="pwCancel()" style="background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:10px 16px;font-size:.8125rem;color:var(--txm);cursor:pointer" data-i18n="common.cancel">Cancel</button>
     </div>
   </div>
 </div>
@@ -367,13 +369,13 @@ input,textarea,select{font:inherit;}
      multi-chain support) ─────────────────────────────────────────────────── -->
 <div id="migrate-overlay" style="display:none;position:fixed;inset:0;z-index:901;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:20px">
   <div style="background:var(--s1);border:1px solid var(--bd2);border-radius:14px;width:100%;max-width:400px;padding:22px;box-shadow:0 24px 64px rgba(0,0,0,.2)">
-    <div style="font-family:var(--serif);font-size:1.125rem;font-weight:700;color:var(--tx);margin-bottom:8px">One-time setup for other coins</div>
-    <div style="font-size:.78125rem;color:var(--txm);margin-bottom:14px;line-height:1.6">This wallet was created before multi-chain support. Re-enter your recovery phrase once to enable BTC/ETH/and other coin addresses — your SVIT wallet stays exactly the same, this only unlocks deriving the other addresses.</div>
-    <textarea id="migrate-phrase" rows="3" placeholder="word1 word2 word3 …" autocomplete="off" spellcheck="false" style="width:100%;background:var(--s2);border:1.5px solid var(--bd2);border-radius:8px;padding:9px 12px;font-size:.8125rem;font-family:var(--mono);color:var(--tx);box-sizing:border-box;resize:vertical;line-height:1.6;outline:none;margin-bottom:12px"></textarea>
+    <div style="font-family:var(--serif);font-size:1.125rem;font-weight:700;color:var(--tx);margin-bottom:8px" data-i18n="migrate.title">One-time setup for other coins</div>
+    <div style="font-size:.78125rem;color:var(--txm);margin-bottom:14px;line-height:1.6" data-i18n="migrate.body">This wallet was created before multi-chain support. Re-enter your recovery phrase once to enable BTC/ETH/and other coin addresses — your SVIT wallet stays exactly the same, this only unlocks deriving the other addresses.</div>
+    <textarea id="migrate-phrase" rows="3" placeholder="word1 word2 word3 …" data-i18n-ph="common.phrase_ph" autocomplete="off" spellcheck="false" style="width:100%;background:var(--s2);border:1.5px solid var(--bd2);border-radius:8px;padding:9px 12px;font-size:.8125rem;font-family:var(--mono);color:var(--tx);box-sizing:border-box;resize:vertical;line-height:1.6;outline:none;margin-bottom:12px"></textarea>
     <div id="migrate-err" style="font-size:.75rem;color:var(--red);margin-bottom:10px;display:none"></div>
     <div style="display:flex;gap:8px">
-      <button onclick="migrateConfirm()" style="flex:1;background:var(--acc-fill);border:none;border-radius:8px;padding:10px;font-size:.8125rem;font-weight:700;color:#fff;cursor:pointer">Confirm</button>
-      <button onclick="migrateCancel()" style="background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:10px 16px;font-size:.8125rem;color:var(--txm);cursor:pointer">Cancel</button>
+      <button onclick="migrateConfirm()" style="flex:1;background:var(--acc-fill);border:none;border-radius:8px;padding:10px;font-size:.8125rem;font-weight:700;color:#fff;cursor:pointer" data-i18n="common.confirm">Confirm</button>
+      <button onclick="migrateCancel()" style="background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:10px 16px;font-size:.8125rem;color:var(--txm);cursor:pointer" data-i18n="common.cancel">Cancel</button>
     </div>
   </div>
 </div>
@@ -383,17 +385,17 @@ input,textarea,select{font:inherit;}
   <div style="background:var(--s1);border:1px solid var(--warn);border-radius:14px;width:100%;max-width:480px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.3)">
     <div style="background:var(--warn-bg);border-bottom:1px solid var(--warn);padding:14px 20px;display:flex;align-items:center;gap:10px">
       <div style="width:22px;height:22px;border-radius:50%;background:var(--warn);color:#000;font-size:.75rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">!</div>
-      <div><div style="font-size:.8125rem;font-weight:700;color:var(--warn)">Back up your recovery phrase</div><div style="font-size:.71875rem;color:var(--txm);margin-top:2px">Shown once — never stored. Without it your wallet cannot be recovered.</div></div>
+      <div><div style="font-size:.8125rem;font-weight:700;color:var(--warn)" data-i18n="mnemonic.title">Back up your recovery phrase</div><div style="font-size:.71875rem;color:var(--txm);margin-top:2px" data-i18n="mnemonic.subtitle">Shown once — never stored. Without it your wallet cannot be recovered.</div></div>
     </div>
     <div style="padding:20px">
       <div id="mnemonic-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px 10px;margin-bottom:18px"></div>
-      <div style="background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;font-family:var(--mono);font-size:.71875rem;color:var(--txm);word-break:break-all;margin-bottom:16px;cursor:pointer" id="mnemonic-plain" onclick="copyMnemonic()" onkeydown="kbdActivate(event)" role="button" tabindex="0" title="Click to copy" aria-label="Copy recovery phrase to clipboard"></div>
-      <div id="mnemonic-copy-ok" style="font-size:.6875rem;color:var(--good);margin-bottom:10px;display:none">Copied to clipboard</div>
+      <div style="background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;font-family:var(--mono);font-size:.71875rem;color:var(--txm);word-break:break-all;margin-bottom:16px;cursor:pointer" id="mnemonic-plain" onclick="copyMnemonic()" onkeydown="kbdActivate(event)" role="button" tabindex="0" title="Click to copy" data-i18n-title="mnemonic.click_copy" aria-label="Copy recovery phrase to clipboard" data-i18n-aria="mnemonic.copy_aria"></div>
+      <div id="mnemonic-copy-ok" style="font-size:.6875rem;color:var(--good);margin-bottom:10px;display:none" data-i18n="common.copied">Copied to clipboard</div>
       <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin-bottom:16px;font-size:.78125rem;color:var(--txm)">
         <input type="checkbox" id="mnemonic-confirm-cb" onchange="mnemonicCheckChange()" style="margin-top:2px;accent-color:var(--acc)">
-        <span>I have written down all 24 words in the correct order and stored them securely offline.</span>
+        <span data-i18n="mnemonic.confirm_cb">I have written down all 24 words in the correct order and stored them securely offline.</span>
       </label>
-      <button id="mnemonic-continue-btn" onclick="mnemonicDone()" disabled style="width:100%;background:var(--acc-fill);border:none;border-radius:8px;padding:11px;font-size:.8125rem;font-weight:700;color:#fff;cursor:not-allowed;opacity:.45;transition:opacity .15s">Continue to wallet</button>
+      <button id="mnemonic-continue-btn" onclick="mnemonicDone()" disabled style="width:100%;background:var(--acc-fill);border:none;border-radius:8px;padding:11px;font-size:.8125rem;font-weight:700;color:#fff;cursor:not-allowed;opacity:.45;transition:opacity .15s" data-i18n="mnemonic.continue">Continue to wallet</button>
     </div>
   </div>
 </div>
@@ -402,20 +404,36 @@ input,textarea,select{font:inherit;}
 <div id="settings-overlay" style="display:none;position:fixed;inset:0;z-index:910;background:rgba(0,0,0,.65);align-items:center;justify-content:center;padding:20px">
   <div style="background:var(--s1);border:1px solid var(--bd2);border-radius:14px;width:100%;max-width:380px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.2)">
     <div style="padding:14px 20px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
-      <div style="font-family:var(--serif);font-size:1.0625rem;font-weight:700;color:var(--tx)">Node Settings</div>
+      <div style="font-family:var(--serif);font-size:1.0625rem;font-weight:700;color:var(--tx)" data-i18n="settings.title">Node Settings</div>
       <button onclick="closeSettings()" aria-label="Close" style="background:var(--s2);border:none;border-radius:50%;width:28px;height:28px;color:var(--txm);font-size:.875rem;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
     </div>
     <div style="padding:18px 20px">
-      <div style="font-size:.625rem;color:var(--txm);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:6px">RPC URL</div>
+      <div style="font-size:.625rem;color:var(--txm);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:6px" data-i18n="settings.language">Language</div>
+      <select id="lang-select" onchange="setLanguage(this.value)" style="width:100%;background:var(--bg);border:1.5px solid var(--bd2);border-radius:8px;color:var(--tx);padding:9px 12px;font-size:.8125rem;box-sizing:border-box;outline:none;margin-bottom:16px">
+        <option value="en">English</option>
+        <option value="uk">Українська</option>
+        <option value="no">Norsk</option>
+        <option value="sv">Svenska</option>
+        <option value="es">Español</option>
+        <option value="it">Italiano</option>
+        <option value="pt">Português</option>
+        <option value="fr">Français</option>
+        <option value="fi">Suomi</option>
+        <option value="ja">日本語</option>
+      </select>
+      <!-- Display currency moved to its own header button (#currency-btn) --
+           independent of language, and now a single access point instead of
+           a duplicated, easy-to-desync second control here. -->
+      <div style="font-size:.625rem;color:var(--txm);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:6px" data-i18n="settings.rpc_url">RPC URL</div>
       <input id="node-url-input" type="url" style="width:100%;background:var(--bg);border:1.5px solid var(--bd2);border-radius:8px;color:var(--tx);padding:9px 12px;font-family:var(--mono);font-size:.75rem;box-sizing:border-box;outline:none" placeholder="https://dares-suffering-swimwear.ngrok-free.dev">
-      <div style="font-size:.6875rem;color:var(--txm);margin-top:5px">Default: the public Svitlo Chain relay. Change this only if you're running your own node.</div>
+      <div style="font-size:.6875rem;color:var(--txm);margin-top:5px" data-i18n="settings.rpc_default">Default: http://localhost:8080</div>
       <div style="display:flex;gap:8px;margin-top:14px">
-        <button onclick="saveSettings()" style="flex:1;background:var(--acc-fill);border:none;border-radius:8px;padding:10px;font-size:.8125rem;font-weight:700;color:#fff;cursor:pointer">Save &amp; connect</button>
-        <button onclick="closeSettings()" style="background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:10px 16px;font-size:.8125rem;color:var(--txm);cursor:pointer">Cancel</button>
+        <button onclick="saveSettings()" style="flex:1;background:var(--acc-fill);border:none;border-radius:8px;padding:10px;font-size:.8125rem;font-weight:700;color:#fff;cursor:pointer" data-i18n="settings.save_connect">Save &amp; connect</button>
+        <button onclick="closeSettings()" style="background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:10px 16px;font-size:.8125rem;color:var(--txm);cursor:pointer" data-i18n="common.cancel">Cancel</button>
       </div>
       <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--bd)">
-        <div style="font-size:.625rem;color:var(--txm);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:8px">Wallet Actions</div>
-        <button onclick="forgetWallet()" style="width:100%;background:var(--red-bg);border:1px solid rgba(168,48,48,.3);border-radius:8px;padding:9px;font-size:.75rem;color:var(--red);cursor:pointer">Forget wallet (clear local keystore)</button>
+        <div style="font-size:.625rem;color:var(--txm);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:8px" data-i18n="settings.wallet_actions">Wallet Actions</div>
+        <button onclick="forgetWallet()" style="width:100%;background:var(--red-bg);border:1px solid rgba(168,48,48,.3);border-radius:8px;padding:9px;font-size:.75rem;color:var(--red);cursor:pointer" data-i18n="settings.forget_wallet">Forget wallet (clear local keystore)</button>
       </div>
     </div>
   </div>
@@ -428,15 +446,15 @@ input,textarea,select{font:inherit;}
     <div class="bs-title" id="buy-title">Buy</div>
     <div id="buy-body">
       <div style="background:var(--s2);border-radius:10px;padding:16px;margin-bottom:16px">
-        <div style="font-size:.75rem;color:var(--txm);margin-bottom:4px">Current price</div>
+        <div style="font-size:.75rem;color:var(--txm);margin-bottom:4px" data-i18n="buy.current_price">Current price</div>
         <div id="buy-price" style="font-family:var(--mono);font-size:1.375rem;font-weight:700;color:var(--tx)">—</div>
         <div id="buy-chg" style="font-family:var(--mono);font-size:.75rem;margin-top:2px"></div>
       </div>
-      <p style="font-size:.8125rem;color:var(--txm);margin-bottom:18px;line-height:1.6">To purchase this asset, send funds to your wallet address below or connect an external exchange.</p>
+      <p style="font-size:.8125rem;color:var(--txm);margin-bottom:18px;line-height:1.6" data-i18n="buy.body">To purchase this asset, send funds to your wallet address below or connect an external exchange.</p>
       <div class="addr-box" id="buy-addr" style="font-size:.6875rem"></div>
       <div style="display:flex;gap:8px">
-        <button onclick="copyBuyAddr()" class="btn btn-primary" style="flex:1">Copy address</button>
-        <button onclick="closeBuy()" class="btn btn-ghost">Cancel</button>
+        <button onclick="copyBuyAddr()" class="btn btn-primary" style="flex:1" data-i18n="buy.copy_address">Copy address</button>
+        <button onclick="closeBuy()" class="btn btn-ghost" data-i18n="common.cancel">Cancel</button>
       </div>
     </div>
   </div>
@@ -446,9 +464,9 @@ input,textarea,select{font:inherit;}
 <div class="bs-overlay" id="swap-modal">
   <div class="bottom-sheet" style="max-width:480px">
     <div class="bs-handle"></div>
-    <div class="bs-title">Swap</div>
+    <div class="bs-title" data-i18n="swap.title">Swap</div>
     <div class="field">
-      <label class="field-label">From</label>
+      <label class="field-label" data-i18n="swap.from">From</label>
       <div style="display:flex;gap:8px">
         <select class="field-input" id="swap-from-token" style="flex:0 0 112px" onchange="onSwapTokenChange()"></select>
         <input class="field-input" id="swap-amt-in" type="number" min="0" step="0.000001" placeholder="0.000000" inputmode="decimal" oninput="onSwapAmountChange()">
@@ -456,22 +474,22 @@ input,textarea,select{font:inherit;}
       <div id="swap-from-bal" style="font-size:.6875rem;color:var(--txm);margin-top:5px"></div>
     </div>
     <div style="display:flex;justify-content:center;margin:2px 0 10px">
-      <button onclick="flipSwapTokens()" title="Flip" aria-label="Flip from/to tokens" style="background:var(--s2);border:1px solid var(--bd);border-radius:50%;width:30px;height:30px;color:var(--tx);cursor:pointer;display:flex;align-items:center;justify-content:center">⇅</button>
+      <button onclick="flipSwapTokens()" title="Flip" aria-label="Flip from/to tokens" data-i18n-title="swap.flip" data-i18n-aria="swap.flip" style="background:var(--s2);border:1px solid var(--bd);border-radius:50%;width:30px;height:30px;color:var(--tx);cursor:pointer;display:flex;align-items:center;justify-content:center">⇅</button>
     </div>
     <div class="field">
-      <label class="field-label">To</label>
+      <label class="field-label" data-i18n="swap.to">To</label>
       <select class="field-input" id="swap-to-token" onchange="onSwapTokenChange()"></select>
     </div>
     <div id="swap-quote-box" style="background:var(--s2);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:.78125rem;color:var(--txm);line-height:1.7;display:none">
-      <div>You receive <strong id="swap-quote-out" style="color:var(--tx)">—</strong></div>
-      <div>Price impact: <span id="swap-quote-impact">—</span></div>
-      <div>Fee (0.3%): <span id="swap-quote-fee">—</span></div>
-      <div style="margin-top:4px">Slippage tolerance: 1% (built in)</div>
+      <div><span data-i18n="swap.you_receive_label">You receive</span> <strong id="swap-quote-out" style="color:var(--tx)">—</strong></div>
+      <div><span data-i18n="swap.price_impact_label">Price impact:</span> <span id="swap-quote-impact">—</span></div>
+      <div><span data-i18n="swap.fee_label">Fee (0.3%):</span> <span id="swap-quote-fee">—</span></div>
+      <div style="margin-top:4px" data-i18n="swap.slippage">Slippage tolerance: 1% (built in)</div>
     </div>
     <div id="swap-nopool" style="font-size:.78125rem;color:var(--txm);margin-bottom:12px;display:none"></div>
     <div id="swap-error" style="font-size:.75rem;color:var(--red);margin-bottom:12px;display:none"></div>
-    <button onclick="executeSwap()" id="swap-btn" class="btn btn-primary" style="width:100%" disabled>Swap</button>
-    <button onclick="closeSwap()" class="btn btn-ghost" style="width:100%;margin-top:8px">Cancel</button>
+    <button onclick="executeSwap()" id="swap-btn" class="btn btn-primary" style="width:100%" disabled data-i18n="swap.title">Swap</button>
+    <button onclick="closeSwap()" class="btn btn-ghost" style="width:100%;margin-top:8px" data-i18n="common.cancel">Cancel</button>
   </div>
 </div>
 
@@ -479,61 +497,74 @@ input,textarea,select{font:inherit;}
 <div class="bs-overlay" id="stake-confirm-modal">
   <div class="bottom-sheet" style="max-width:480px">
     <div class="bs-handle"></div>
-    <div class="bs-title">Confirm stake</div>
-    <div class="warn-box" id="stake-confirm-warn">
+    <div class="bs-title" data-i18n="stake.confirm_title">Confirm stake</div>
+    <div class="warn-box" id="stake-confirm-warn" data-i18n-html="stake.locked_warn">
       <strong>Your funds will be frozen.</strong> Once staked, this amount cannot be unstaked before the lock period ends — no exceptions.
     </div>
     <div class="send-summary">
-      <div class="ss-row"><span class="k">Amount</span><span class="v" id="stake-confirm-amt">—</span></div>
-      <div class="ss-row"><span class="k">Lock period</span><span class="v" id="stake-confirm-period">—</span></div>
-      <div class="ss-row total"><span class="k">Unlocks on</span><span class="v" id="stake-confirm-unlock">—</span></div>
+      <div class="ss-row"><span class="k" data-i18n="common.amount">Amount</span><span class="v" id="stake-confirm-amt">—</span></div>
+      <div class="ss-row"><span class="k" data-i18n="stake.lock_period">Lock period</span><span class="v" id="stake-confirm-period">—</span></div>
+      <div class="ss-row total"><span class="k" data-i18n="stake.unlocks_on">Unlocks on</span><span class="v" id="stake-confirm-unlock">—</span></div>
     </div>
     <div id="stake-confirm-error" style="font-size:.75rem;color:var(--red);margin:12px 0;display:none"></div>
-    <button class="btn btn-primary" style="width:100%" id="stake-confirm-btn" onclick="executeStake()">I understand, stake now</button>
-    <button class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="closeStakeConfirm()">Cancel</button>
+    <button class="btn btn-primary" style="width:100%" id="stake-confirm-btn" onclick="executeStake()" data-i18n="stake.confirm_btn">I understand, stake now</button>
+    <button class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="closeStakeConfirm()" data-i18n="common.cancel">Cancel</button>
   </div>
 </div>
 
 <!-- Install banner -->
 <div class="install-banner" id="install-banner">
-  <div class="ib-text">Install <strong>Svitlo Wallet</strong> for instant access and offline use.</div>
-  <button class="btn btn-primary btn-sm" id="install-ok">Install</button>
-  <button class="btn btn-ghost btn-sm" id="install-no" aria-label="Dismiss" style="padding:6px 8px">✕</button>
+  <div class="ib-text" data-i18n-html="install.banner_text">Install <strong>Svitlo Wallet</strong> for instant access and offline use.</div>
+  <button class="btn btn-primary btn-sm" id="install-ok" data-i18n="install.install">Install</button>
+  <button class="btn btn-ghost btn-sm" id="install-no" aria-label="Dismiss" data-i18n-aria="install.dismiss" style="padding:6px 8px">✕</button>
 </div>
 
 <!-- iOS hint -->
 <div class="ios-hint" id="ios-hint">
   <div class="ios-h-row">
-    <div class="ios-h-title" style="font-family:var(--serif)">Install on iPhone / iPad</div>
-    <button style="background:var(--s2);border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;color:var(--txm)" onclick="closeIosHint()" aria-label="Close">✕</button>
+    <div class="ios-h-title" style="font-family:var(--serif)" data-i18n="install.ios_title">Install on iPhone / iPad</div>
+    <button style="background:var(--s2);border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;color:var(--txm)" onclick="closeIosHint()" aria-label="Close" data-i18n-aria="common.close">✕</button>
   </div>
   <div class="ios-h-steps">
-    <div class="ios-h-step"><div class="ios-h-num">1</div><div>Tap the Share button at the bottom of Safari</div></div>
-    <div class="ios-h-step"><div class="ios-h-num">2</div><div>Scroll down and tap <strong>Add to Home Screen</strong></div></div>
-    <div class="ios-h-step"><div class="ios-h-num">3</div><div>Tap <strong>Add</strong></div></div>
+    <div class="ios-h-step"><div class="ios-h-num">1</div><div data-i18n="install.ios_step1">Tap the Share button at the bottom of Safari</div></div>
+    <div class="ios-h-step"><div class="ios-h-num">2</div><div data-i18n-html="install.ios_step2">Scroll down and tap <strong>Add to Home Screen</strong></div></div>
+    <div class="ios-h-step"><div class="ios-h-num">3</div><div data-i18n-html="install.ios_step3">Tap <strong>Add</strong></div></div>
   </div>
 </div>
 
 <!-- Header -->
 <header class="hdr">
   <div class="hdr-logo">Svitlo<small>wallet</small></div>
-  <div class="hdr-addr" id="hdr-addr-el" title="Copy address" onclick="copyAddr()" onkeydown="kbdActivate(event)" role="button" tabindex="0" aria-label="Copy wallet address to clipboard">—</div>
+  <div class="hdr-addr" id="hdr-addr-el" title="Copy address" data-i18n-title="hdr.copy_address" onclick="copyAddr()" onkeydown="kbdActivate(event)" role="button" tabindex="0" aria-label="Copy wallet address to clipboard" data-i18n-aria="hdr.copy_address_aria">—</div>
   <div class="hdr-spacer"></div>
   <div class="net-badge"><span class="net-dot" id="net-dot"></span><span id="net-lbl">—</span></div>
-  <button class="install-chip" id="install-chip" onclick="handleInstall()">↓ Install</button>
-  <button class="hdr-btn" id="settings-btn" title="Node settings" aria-label="Node settings" onclick="openSettings()" style="font-size:.9375rem">⚙</button>
-  <button class="hdr-btn" id="theme-btn" title="Toggle theme" aria-label="Toggle dark/light theme">◐</button>
+  <button class="install-chip" id="install-chip" onclick="handleInstall()" data-i18n="install.chip">↓ Install</button>
+  <!-- Standalone currency control, independent of the Settings modal's
+       language selector -- picking a currency here never touches language,
+       and vice versa (separate <select>, separate setDisplayCurrency()/
+       setLanguage() handlers, separate localStorage keys). -->
+  <select id="currency-btn" class="hdr-btn hdr-select" onchange="setDisplayCurrency(this.value)" title="Display currency" aria-label="Display currency" data-i18n-title="settings.currency" data-i18n-aria="settings.currency">
+    <option value="USD">$</option>
+    <option value="EUR">€</option>
+    <option value="GBP">£</option>
+    <option value="JPY">¥ JPY</option>
+    <option value="UAH">₴</option>
+    <option value="CHF">CHF</option>
+    <option value="CNY">¥ CNY</option>
+  </select>
+  <button class="hdr-btn" id="settings-btn" title="Node settings" aria-label="Node settings" data-i18n-title="hdr.node_settings" data-i18n-aria="hdr.node_settings" onclick="openSettings()" style="font-size:.9375rem">⚙</button>
+  <button class="hdr-btn" id="theme-btn" title="Toggle theme" aria-label="Toggle dark/light theme" data-i18n-title="hdr.toggle_theme" data-i18n-aria="hdr.toggle_theme">◐</button>
 </header>
 
 <!-- Portfolio zone -->
 <div class="port-zone">
-  <div class="port-eye">Total Portfolio</div>
+  <div class="port-eye" data-i18n="portfolio.total">Total Portfolio</div>
   <div class="port-total" id="port-total">$—</div>
-  <div class="port-sub" id="bal-usd">Connecting to node…</div>
+  <div class="port-sub" id="bal-usd" data-i18n="portfolio.connecting">Connecting to node…</div>
 
   <!-- 4 Coin Cards -->
   <div class="coin-grid" id="coin-grid">
-    <div class="cc" style="--cc-color:#C88B52" onclick="switchTab('send')" onkeydown="kbdActivate(event)" role="button" tabindex="0" aria-label="SVIT balance, go to Send">
+    <div class="cc" style="--cc-color:#C88B52" onclick="switchTab('send')" onkeydown="kbdActivate(event)" role="button" tabindex="0" aria-label="SVIT balance, go to Send" data-i18n-aria="portfolio.svit_aria">
       <div class="cc-top"><div class="cc-ico" style="background:#C88B52">SVIT</div><div><div class="cc-name">Svitlo Chain</div><div class="cc-sym">SVIT</div></div></div>
       <div class="cc-bal" id="bal-svit">—</div>
       <div class="cc-usd" id="svit-usd">$—</div>
@@ -561,31 +592,31 @@ input,textarea,select{font:inherit;}
 
   <!-- Action row -->
   <div class="action-row">
-    <button class="act-btn primary" onclick="switchTab('send')"><div class="act-icon">↑</div>Send</button>
-    <button class="act-btn" onclick="switchTab('receive')"><div class="act-icon">↓</div>Receive</button>
-    <button class="act-btn" onclick="openSwap()"><div class="act-icon">⇄</div>Swap</button>
-    <button class="act-btn" onclick="switchTab('stake')"><div class="act-icon">%</div>Stake</button>
-    <button class="act-btn" onclick="switchTab('markets')"><div class="act-icon">◈</div>Markets</button>
+    <button class="act-btn primary" onclick="switchTab('send')"><div class="act-icon">↑</div><span data-i18n="action.send">Send</span></button>
+    <button class="act-btn" onclick="switchTab('receive')"><div class="act-icon">↓</div><span data-i18n="action.receive">Receive</span></button>
+    <button class="act-btn" onclick="openSwap()"><div class="act-icon">⇄</div><span data-i18n="action.swap">Swap</span></button>
+    <button class="act-btn" onclick="switchTab('stake')"><div class="act-icon">%</div><span data-i18n="action.stake">Stake</span></button>
+    <button class="act-btn" onclick="switchTab('markets')"><div class="act-icon">◈</div><span data-i18n="action.markets">Markets</span></button>
   </div>
 </div>
 
 <!-- Stats strip -->
 <div class="stats-strip">
-  <div class="stat-item"><div class="stat-label">Block</div><div class="stat-value" id="block-num">—</div></div>
-  <div class="stat-item"><div class="stat-label">Pool</div><div class="stat-value ok" id="tps-val">—</div></div>
-  <div class="stat-item"><div class="stat-label">Chain</div><div class="stat-value" id="chain-id-el">—</div></div>
-  <div class="stat-item"><div class="stat-label">Peers</div><div class="stat-value" id="peers-el">—</div></div>
-  <div class="stat-item"><div class="stat-label">Nonce</div><div class="stat-value" id="nonce-el">—</div></div>
+  <div class="stat-item"><div class="stat-label" data-i18n="stats.block">Block</div><div class="stat-value" id="block-num">—</div></div>
+  <div class="stat-item"><div class="stat-label" data-i18n="stats.pool">Pool</div><div class="stat-value ok" id="tps-val">—</div></div>
+  <div class="stat-item"><div class="stat-label" data-i18n="stats.chain">Chain</div><div class="stat-value" id="chain-id-el">—</div></div>
+  <div class="stat-item"><div class="stat-label" data-i18n="stats.peers">Peers</div><div class="stat-value" id="peers-el">—</div></div>
+  <div class="stat-item"><div class="stat-label" data-i18n="stats.nonce">Nonce</div><div class="stat-value" id="nonce-el">—</div></div>
 </div>
 
 <!-- Desktop tabs -->
 <div class="tabs-wrap">
   <nav class="tabs" role="tablist">
-    <button class="tab-btn active" onclick="switchTab('home')" id="tab-home">Home</button>
-    <button class="tab-btn" onclick="switchTab('markets')" id="tab-markets">Markets</button>
-    <button class="tab-btn" onclick="switchTab('send')" id="tab-send">Send</button>
-    <button class="tab-btn" onclick="switchTab('receive')" id="tab-receive">Receive</button>
-    <button class="tab-btn" onclick="switchTab('stake')" id="tab-stake">Stake</button>
+    <button class="tab-btn active" onclick="switchTab('home')" id="tab-home" data-i18n="tab.home">Home</button>
+    <button class="tab-btn" onclick="switchTab('markets')" id="tab-markets" data-i18n="tab.markets">Markets</button>
+    <button class="tab-btn" onclick="switchTab('send')" id="tab-send" data-i18n="action.send">Send</button>
+    <button class="tab-btn" onclick="switchTab('receive')" id="tab-receive" data-i18n="action.receive">Receive</button>
+    <button class="tab-btn" onclick="switchTab('stake')" id="tab-stake" data-i18n="action.stake">Stake</button>
   </nav>
 </div>
 
@@ -595,7 +626,7 @@ input,textarea,select{font:inherit;}
   <!-- Home -->
   <div class="tab-panel active" id="panel-home">
     <div class="panel">
-      <div class="panel-hdr"><span class="panel-title">Recent activity</span><span class="chip">Svitlo chain</span></div>
+      <div class="panel-hdr"><span class="panel-title" data-i18n="home.recent_activity">Recent activity</span><span class="chip">Svitlo chain</span></div>
       <ul class="tx-list">
         <li class="tx-row"><div class="tx-icon in">GPU</div><div class="tx-info"><div class="tx-desc">GPU reward — Batch #12,841</div><div class="tx-meta">svit1node4f2a… · 2 min ago</div></div><div class="tx-amount in">+128.000<span class="sub">SVIT</span></div></li>
         <li class="tx-row"><div class="tx-icon job">JOB</div><div class="tx-info"><div class="tx-desc">Inference — LLaMA-3-70B, 4K tokens</div><div class="tx-meta">job:a3f2c9d1… · 18 min ago</div></div><div class="tx-amount out">−42.500<span class="sub">SVIT</span></div></li>
@@ -611,9 +642,9 @@ input,textarea,select{font:inherit;}
     <div class="mkt-bar">
       <div class="mkt-sw">
         <span class="mkt-sw-ic">🔍</span>
-        <input class="mkt-search" id="mkt-search" type="search" placeholder="Search coins…" oninput="filterMarkets(this.value)">
+        <input class="mkt-search" id="mkt-search" type="search" placeholder="Search coins…" data-i18n-ph="markets.search_ph" oninput="filterMarkets(this.value)">
       </div>
-      <span class="chip" id="mkt-status">Loading…</span>
+      <span class="chip" id="mkt-status" data-i18n="markets.loading">Loading…</span>
     </div>
     <div class="panel">
       <div class="mkt-wrap">
@@ -621,11 +652,11 @@ input,textarea,select{font:inherit;}
           <thead>
             <tr>
               <th class="mkt-rank">#</th>
-              <th>Coin</th>
-              <th>Price</th>
-              <th>24h</th>
-              <th>Market Cap</th>
-              <th>Actions</th>
+              <th data-i18n="markets.coin">Coin</th>
+              <th data-i18n="markets.price">Price</th>
+              <th data-i18n="markets.24h">24h</th>
+              <th data-i18n="markets.market_cap">Market Cap</th>
+              <th data-i18n="markets.actions">Actions</th>
             </tr>
           </thead>
           <tbody id="mkt-tbody"><tr><td colspan="6"><div class="spinner"></div></td></tr></tbody>
@@ -642,32 +673,32 @@ input,textarea,select{font:inherit;}
         <div style="padding:20px">
           <div class="coin-sel" id="send-coin-sel"></div>
           <div class="field">
-            <label class="field-label">Recipient address</label>
+            <label class="field-label" data-i18n="send.recipient">Recipient address</label>
             <input class="field-input" id="send-to" type="text" placeholder="svit1… (64 hex chars)" oninput="updateSummary()" autocomplete="off" spellcheck="false">
-            <div class="field-hint">64-character hex public key or svit1… address</div>
+            <div class="field-hint" data-i18n="send.recipient_hint">64-character hex public key or svit1… address</div>
           </div>
           <div class="field">
-            <label class="field-label">Amount (SVIT)</label>
+            <label class="field-label" id="send-amt-label" data-i18n="send.amount_svit">Amount (SVIT)</label>
             <input class="field-input" id="send-amt" type="number" min="0.000001" step="0.000001" placeholder="0.000000" oninput="updateSummary()" inputmode="decimal">
             <div class="field-hint" id="send-avail">Available: — SVIT</div>
           </div>
           <div class="field">
-            <label class="field-label">Nonce</label>
+            <label class="field-label" data-i18n="send.nonce">Nonce</label>
             <input class="field-input" id="send-nonce" type="number" value="1025" inputmode="numeric">
           </div>
           <div class="send-summary" id="send-summary" style="display:none">
-            <div class="ss-row"><span class="k">Amount</span><span class="v" id="ss-amount">—</span></div>
-            <div class="ss-row"><span class="k">Network fee</span><span class="v">0.000100 SVIT</span></div>
-            <div class="ss-row total"><span class="k">Total deducted</span><span class="v" id="ss-total">—</span></div>
+            <div class="ss-row"><span class="k" data-i18n="common.amount">Amount</span><span class="v" id="ss-amount">—</span></div>
+            <div class="ss-row"><span class="k" data-i18n="send.network_fee">Network fee</span><span class="v">0.000100 SVIT</span></div>
+            <div class="ss-row total"><span class="k" data-i18n="send.total_deducted">Total deducted</span><span class="v" id="ss-total">—</span></div>
           </div>
           <div style="display:flex;gap:8px">
-            <button class="btn btn-primary" onclick="signTx()" style="flex:1">Sign &amp; broadcast</button>
-            <button class="btn btn-ghost" onclick="clearSend()">Clear</button>
+            <button class="btn btn-primary" onclick="signTx()" style="flex:1" data-i18n="send.sign_broadcast">Sign &amp; broadcast</button>
+            <button class="btn btn-ghost" onclick="clearSend()" data-i18n="common.clear">Clear</button>
           </div>
           <div id="tx-output" style="margin-top:16px;display:none">
-            <div class="field-label" style="margin-bottom:6px">Signed transaction (hex)</div>
+            <div class="field-label" style="margin-bottom:6px" data-i18n="send.signed_tx">Signed transaction (hex)</div>
             <div class="addr-box" id="tx-hex" style="font-size:.625rem;color:var(--acc)"></div>
-            <div class="field-hint" style="color:var(--good)">Broadcast: svitlo-wallet broadcast &lt;hex&gt;</div>
+            <div class="field-hint" style="color:var(--good)" data-i18n="send.broadcast_hint">Broadcast: svitlo-wallet broadcast &lt;hex&gt;</div>
           </div>
         </div>
       </div>
@@ -677,25 +708,25 @@ input,textarea,select{font:inherit;}
   <!-- Receive -->
   <div class="tab-panel" id="panel-receive">
     <div class="form-wrap">
-      <div class="section-title">Receive SVIT</div>
+      <div class="section-title" data-i18n="receive.title">Receive SVIT</div>
       <div class="panel" style="padding:24px;text-align:center">
         <canvas class="qr-canvas" id="qr-canvas" width="200" height="200"></canvas>
         <div class="addr-box" id="addr-display" style="text-align:left">—</div>
         <div style="display:flex;gap:8px;justify-content:center">
-          <button class="btn btn-primary" onclick="copyAddr()">Copy address</button>
-          <button class="btn btn-ghost" onclick="shareAddr()">Share</button>
+          <button class="btn btn-primary" onclick="copyAddr()" data-i18n="buy.copy_address">Copy address</button>
+          <button class="btn btn-ghost" onclick="shareAddr()" data-i18n="receive.share">Share</button>
         </div>
-        <div id="copy-confirm" style="margin-top:10px;font-size:.75rem;color:var(--good);display:none">Address copied.</div>
+        <div id="copy-confirm" style="margin-top:10px;font-size:.75rem;color:var(--good);display:none" data-i18n="receive.address_copied">Address copied.</div>
       </div>
-      <div class="section-title mt24">Request payment</div>
+      <div class="section-title mt24" data-i18n="receive.request_payment">Request payment</div>
       <div class="field">
-        <label class="field-label">Amount to request (SVIT)</label>
+        <label class="field-label" data-i18n="receive.amount_to_request">Amount to request (SVIT)</label>
         <input class="field-input" type="number" id="req-amount" placeholder="0.000000" inputmode="decimal" oninput="updatePayLink()">
       </div>
       <div id="pay-link-box" style="display:none">
-        <div class="field-label" style="margin-bottom:6px">Payment link</div>
+        <div class="field-label" style="margin-bottom:6px" data-i18n="receive.payment_link">Payment link</div>
         <div class="addr-box" id="pay-link" style="font-size:.6875rem;color:var(--acc)"></div>
-        <button class="btn btn-ghost btn-sm" onclick="copyPayLink()">Copy link</button>
+        <button class="btn btn-ghost btn-sm" onclick="copyPayLink()" data-i18n="receive.copy_link">Copy link</button>
       </div>
     </div>
   </div>
@@ -703,40 +734,40 @@ input,textarea,select{font:inherit;}
   <!-- Stake -->
   <div class="tab-panel" id="panel-stake">
     <div class="form-wrap" style="max-width:600px">
-      <div class="section-title">Stake SVIT</div>
+      <div class="section-title" data-i18n="stake.title">Stake SVIT</div>
 
       <div class="panel">
-        <div class="panel-hdr"><span class="panel-title">Claimable rewards</span><span class="chip" id="stake-claim-chip">—</span></div>
+        <div class="panel-hdr"><span class="panel-title" data-i18n="stake.claimable_rewards">Claimable rewards</span><span class="chip" id="stake-claim-chip">—</span></div>
         <div style="padding:18px">
           <div style="font-family:var(--mono);font-size:1.375rem;font-weight:700;color:var(--good)" id="stake-claimable-amt">0.000000 SVIT</div>
-          <button class="btn btn-primary mt16" id="stake-claim-btn" onclick="claimStakingReward()" disabled>Claim rewards</button>
+          <button class="btn btn-primary mt16" id="stake-claim-btn" onclick="claimStakingReward()" disabled data-i18n="stake.claim_rewards">Claim rewards</button>
         </div>
       </div>
 
       <div class="panel">
-        <div class="panel-hdr"><span class="panel-title">Your positions</span><span class="chip" id="stake-total-chip">—</span></div>
+        <div class="panel-hdr"><span class="panel-title" data-i18n="stake.your_positions">Your positions</span><span class="chip" id="stake-total-chip">—</span></div>
         <ul class="tx-list" id="stake-positions-list">
-          <li class="stake-pos-row"><div class="tx-info"><div class="tx-desc">No active stake positions</div></div></li>
+          <li class="stake-pos-row"><div class="tx-info"><div class="tx-desc" data-i18n="stake.no_positions">No active stake positions</div></div></li>
         </ul>
       </div>
 
       <div class="panel">
-        <div class="panel-hdr"><span class="panel-title">New stake</span></div>
+        <div class="panel-hdr"><span class="panel-title" data-i18n="stake.new_stake">New stake</span></div>
         <div style="padding:20px">
           <div class="field">
-            <label class="field-label">Amount (SVIT)</label>
+            <label class="field-label" data-i18n="send.amount_svit">Amount (SVIT)</label>
             <input class="field-input" id="stake-amt" type="number" min="0.000001" step="0.000001" placeholder="0.000000" inputmode="decimal">
             <div class="field-hint" id="stake-avail">Available: — SVIT</div>
           </div>
           <div class="field">
-            <label class="field-label">Lock period</label>
+            <label class="field-label" data-i18n="stake.lock_period">Lock period</label>
             <div style="display:flex;gap:8px">
-              <button type="button" class="btn btn-outline lock-choice" id="lock-choice-flex" onclick="selectLockDays(FLEXIBLE_LOCK_DAYS)" style="flex:1;padding:12px 8px">Flexible<span>withdraw anytime</span></button>
-              <button type="button" class="btn btn-outline lock-choice active" id="lock-choice-30" onclick="selectLockDays(30)" style="flex:1;padding:12px 8px">1 month<span>30 days</span></button>
-              <button type="button" class="btn btn-outline lock-choice" id="lock-choice-365" onclick="selectLockDays(365)" style="flex:1;padding:12px 8px">1 year<span>365 days · higher APY</span></button>
+              <button type="button" class="btn btn-outline lock-choice" id="lock-choice-flex" onclick="selectLockDays(FLEXIBLE_LOCK_DAYS)" style="flex:1;padding:12px 8px"><span data-i18n="stake.flexible">Flexible</span><span class="lc-sub" data-i18n="stake.withdraw_anytime">withdraw anytime</span></button>
+              <button type="button" class="btn btn-outline lock-choice active" id="lock-choice-30" onclick="selectLockDays(30)" style="flex:1;padding:12px 8px"><span data-i18n="stake.month_1">1 month</span><span class="lc-sub" data-i18n="stake.days_30">30 days</span></button>
+              <button type="button" class="btn btn-outline lock-choice" id="lock-choice-365" onclick="selectLockDays(365)" style="flex:1;padding:12px 8px"><span data-i18n="stake.year_1">1 year</span><span class="lc-sub" data-i18n="stake.days_365">365 days · higher APY</span></button>
             </div>
           </div>
-          <button class="btn btn-primary" style="width:100%" onclick="openStakeConfirm()">Stake</button>
+          <button class="btn btn-primary" style="width:100%" onclick="openStakeConfirm()" data-i18n="action.stake">Stake</button>
         </div>
       </div>
     </div>
@@ -748,24 +779,26 @@ input,textarea,select{font:inherit;}
 <nav class="bottom-nav" role="navigation">
   <button class="bnav-item active" onclick="switchTab('home')" id="bnav-home">
     <div class="bnav-icon"><svg viewBox="0 0 20 20"><path d="M10 2L3 8v10h5v-5h4v5h5V8L10 2z"/></svg></div>
-    <span class="bnav-label">Home</span>
+    <span class="bnav-label" data-i18n="tab.home">Home</span>
   </button>
   <button class="bnav-item" onclick="switchTab('markets')" id="bnav-markets">
     <div class="bnav-icon"><svg viewBox="0 0 20 20"><rect x="2" y="12" width="3" height="6"/><rect x="7" y="7" width="3" height="11"/><rect x="12" y="9" width="3" height="9"/><rect x="17" y="4" width="1" height="14" rx=".5"/><polyline points="2,12 7,7 12,9 17,4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
-    <span class="bnav-label">Markets</span>
+    <span class="bnav-label" data-i18n="tab.markets">Markets</span>
   </button>
   <button class="bnav-item" onclick="switchTab('send')" id="bnav-send">
     <div class="bnav-icon"><svg viewBox="0 0 20 20"><path d="M10 3v14M5 8l5-5 5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    <span class="bnav-label">Send</span>
+    <span class="bnav-label" data-i18n="action.send">Send</span>
   </button>
   <button class="bnav-item" onclick="switchTab('receive')" id="bnav-receive">
     <div class="bnav-icon"><svg viewBox="0 0 20 20"><path d="M10 3v14M5 12l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    <span class="bnav-label">Receive</span>
+    <span class="bnav-label" data-i18n="action.receive">Receive</span>
   </button>
 </nav>
 
 <script src="svit-noble.js"></script>
 <script src="chains.js"></script>
+<script src="i18n.js"></script>
+<script src="i18n-site-overrides.js"></script>
 <script>
 // ── Service Worker ─────────────────────────────────────────────────────────
 if('serviceWorker'in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js').catch(()=>{});});}
@@ -785,6 +818,43 @@ function kbdActivate(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();e.cu
 // (see its data-buy-* + delegated listener below) rather than relying on
 // escaping alone.
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+// ── i18n ─────────────────────────────────────────────────────────────────
+// Static markup uses data-i18n/-ph/-title/-aria/-html attributes, applied
+// here. Dynamic (JS-built) strings go through t(key, vars) instead -- see
+// i18n.js's 'dyn.*' keys and their call sites (openBuyFor, signTx, etc.).
+let _lang='en';
+const SUPPORTED_LANGS=['en','uk','no','sv','es','it','pt','fr','fi','ja'];
+function applyLanguage(lang){
+  const dict=(window.svitI18N&&window.svitI18N[lang])||{};
+  const en=(window.svitI18N&&window.svitI18N.en)||{};
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');el.textContent=dict[k]??en[k]??el.textContent;});
+  document.querySelectorAll('[data-i18n-html]').forEach(el=>{const k=el.getAttribute('data-i18n-html');el.innerHTML=dict[k]??en[k]??el.innerHTML;});
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{const k=el.getAttribute('data-i18n-ph');el.placeholder=dict[k]??en[k]??el.placeholder;});
+  document.querySelectorAll('[data-i18n-title]').forEach(el=>{const k=el.getAttribute('data-i18n-title');el.title=dict[k]??en[k]??el.title;});
+  document.querySelectorAll('[data-i18n-aria]').forEach(el=>{const k=el.getAttribute('data-i18n-aria');el.setAttribute('aria-label',dict[k]??en[k]??el.getAttribute('aria-label'));});
+}
+function setLanguage(lang){
+  if(!SUPPORTED_LANGS.includes(lang))lang='en';
+  _lang=lang;
+  try{localStorage.setItem('svit-wallet-lang',lang);}catch(e){}
+  const sel=document.getElementById('lang-select');if(sel)sel.value=lang;
+  applyLanguage(lang);
+  // re-render anything built from a JS template so already-visible dynamic
+  // text (coin grid, send-tab coin selector, markets table) picks up the
+  // new language too, not just the static markup above.
+  if(typeof renderSendCoinSel==='function')renderSendCoinSel();
+  if(typeof renderCoinGrid==='function'&&_tokenBalances)renderCoinGrid();
+  if(typeof updateSendAvailable==='function')updateSendAvailable();
+}
+/** Look up a dynamic (JS-interpolated) string, e.g. t('dyn.available',{amount:'1.5',symbol:'BTC'}). */
+function t(key,vars){
+  const dict=(window.svitI18N&&window.svitI18N[_lang])||{};
+  const en=(window.svitI18N&&window.svitI18N.en)||{};
+  let s=dict[key]??en[key]??key;
+  if(vars)for(const k in vars)s=s.split('{'+k+'}').join(vars[k]);
+  return s;
+}
 function toHex(b){return Array.from(b).map(x=>x.toString(16).padStart(2,'0')).join('');}
 function fromHex(h){return new Uint8Array(h.match(/.{2}/g).map(b=>parseInt(b,16)));}
 function u64LE(n){const b=new Uint8Array(8);const v=BigInt(n);for(let i=0;i<8;i++)b[i]=Number((v>>(BigInt(i)*8n))&0xFFn);return b;}
@@ -969,7 +1039,7 @@ function promptMigrationPhrase(){
 function migrateConfirm(){
   const phrase=document.getElementById('migrate-phrase').value.trim();
   if(!phrase.split(/\s+/).filter(Boolean).length){
-    const e=document.getElementById('migrate-err');e.textContent='Enter your recovery phrase';e.style.display='block';return;
+    const e=document.getElementById('migrate-err');e.textContent=t('dyn.enter_recovery_phrase');e.style.display='block';return;
   }
   document.getElementById('migrate-overlay').style.display='none';
   if(_migResolve){_migResolve(phrase);_migResolve=_migReject=null;}
@@ -1018,7 +1088,7 @@ async function pollNodeData(){
     _nonce=bal.nonce||0;
     const svit=bal.svit||'0.000000';
     document.getElementById('bal-svit').textContent=svit+' SVIT';
-    document.getElementById('svit-usd').textContent='≈ $'+(parseFloat(svit)*1.85).toFixed(2);
+    document.getElementById('svit-usd').textContent='≈ '+fmtFiat(parseFloat(svit)*1.85);
     document.getElementById('nonce-el').textContent=_nonce;
     const ns=document.getElementById('send-nonce');if(ns)ns.value=_nonce;
     if(tokens)_tokenBalances=tokens;
@@ -1148,10 +1218,10 @@ function updateSendAvailable(){
   const el=document.getElementById('send-avail');
   if(_sendToken.symbol==='SVIT'){
     const tb=_tokenBalances.find(t=>t.token_id===0);
-    el.textContent='Available: '+(tb?tb.balance:'0.000000')+' SVIT';
+    el.textContent=t('dyn.available',{amount:tb?tb.balance:'0.000000',symbol:'SVIT'});
   }else{
     const tb=_tokenBalances.find(t=>t.token_id===_sendToken.tokenId);
-    el.textContent='Available: '+(tb?tb.balance:'0.000000')+' '+_sendToken.symbol;
+    el.textContent=t('dyn.available',{amount:tb?tb.balance:'0.000000',symbol:_sendToken.symbol});
   }
 }
 function updateSummary(){
@@ -1174,16 +1244,16 @@ function updateSummary(){
 async function signTx(){
   const to=document.getElementById('send-to').value.trim();
   const amt=parseFloat(document.getElementById('send-amt').value)||0;
-  if(!to||!amt){alert('Fill in recipient and amount.');return;}
+  if(!to||!amt){alert(t('dyn.fill_recipient_amount'));return;}
 
   if(_sendToken.chainId){
-    if(!svitChains.validateDestAddr(_sendToken.chainId,to)){alert('That doesn\'t look like a valid '+_sendToken.symbol+' address.');return;}
-    if(!_session){alert('Wallet locked — please unlock.');return;}
+    if(!svitChains.validateDestAddr(_sendToken.chainId,to)){alert(t('dyn.invalid_dest_address',{symbol:_sendToken.symbol}));return;}
+    if(!_session){alert(t('dyn.wallet_locked'));return;}
     const amtMicro=BigInt(Math.round(amt*1_000_000));
     try{
       const res=await signAndSubmitKind(encodeTokenBurnKind(_sendToken.tokenId,amtMicro,to));
-      if(res.ok){alert('Broadcast! Hash: '+res.tx_hash?.slice(0,16)+'…');setTimeout(pollNodeData,2000);}
-      else alert('Node rejected TX: '+res.error);
+      if(res.ok){alert(t('dyn.broadcast_ok',{hash:res.tx_hash?.slice(0,16)}));setTimeout(pollNodeData,2000);}
+      else alert(t('dyn.node_rejected',{error:res.error}));
     }catch(e){console.error(e);alert('Error: '+e.message);return;}
     document.getElementById('tx-output').style.display='none';
     clearSend();
@@ -1191,7 +1261,7 @@ async function signTx(){
   }
 
   const recipHex=to.startsWith('svit1')?to.slice(5):to;
-  if(!/^[0-9a-f]{64}$/i.test(recipHex)){alert('Invalid address — need 64 hex chars after svit1');return;}
+  if(!/^[0-9a-f]{64}$/i.test(recipHex)){alert(t('dyn.invalid_address'));return;}
   const nonce=parseInt(document.getElementById('send-nonce')?.value)||_nonce;
   const ts=BigInt(Date.now());const amtMicro=BigInt(Math.round(amt*1_000_000));
   let hex;
@@ -1200,7 +1270,7 @@ async function signTx(){
     try{hex=await window.__TAURI__.core.invoke('wallet_sign_transfer',{password:pw,recipientHex:recipHex,amountSvit:amt,nonce});}
     catch(e){alert('Signing error: '+e);return;}
   }else{
-    if(!_session){alert('Wallet locked — please unlock.');return;}
+    if(!_session){alert(t('dyn.wallet_locked'));return;}
     try{
       const payload=buildSigningPayload(recipHex,amtMicro,_session.address,nonce,ts);
       const digest=svitNoble.blake3(payload);
@@ -1209,8 +1279,8 @@ async function signTx(){
       hex=toHex(txBytes);
       const resp=await fetch(nodeUrl()+'/tx',{method:'POST',headers:{'Content-Type':'application/json',...NGROK_HEADERS},body:JSON.stringify({tx_hex:hex})});
       const res=await resp.json();
-      if(res.ok){alert('Broadcast! Hash: '+res.tx_hash?.slice(0,16)+'…');setTimeout(pollNodeData,2000);}
-      else alert('Node rejected TX: '+res.error);
+      if(res.ok){alert(t('dyn.broadcast_ok',{hash:res.tx_hash?.slice(0,16)}));setTimeout(pollNodeData,2000);}
+      else alert(t('dyn.node_rejected',{error:res.error}));
     }catch(e){console.error(e);alert('Error: '+e.message);return;}
   }
   document.getElementById('tx-hex').textContent=hex;
@@ -1237,7 +1307,7 @@ function copyPayLink(){navigator.clipboard.writeText(document.getElementById('pa
 // ── Wallet setup overlays ──────────────────────────────────────────────────
 let _pwResolve=null,_pwReject=null;
 function promptPassword(){return new Promise((res,rej)=>{_pwResolve=res;_pwReject=rej;const el=document.getElementById('pw-overlay');document.getElementById('pw-input').value='';document.getElementById('pw-err').style.display='none';el.style.display='flex';setTimeout(()=>document.getElementById('pw-input').focus(),60);});}
-function pwConfirm(){const pw=document.getElementById('pw-input').value;if(!pw){const e=document.getElementById('pw-err');e.textContent='Enter password';e.style.display='block';return;}document.getElementById('pw-overlay').style.display='none';if(_pwResolve){_pwResolve(pw);_pwResolve=_pwReject=null;}}
+function pwConfirm(){const pw=document.getElementById('pw-input').value;if(!pw){const e=document.getElementById('pw-err');e.textContent=t('dyn.enter_password');e.style.display='block';return;}document.getElementById('pw-overlay').style.display='none';if(_pwResolve){_pwResolve(pw);_pwResolve=_pwReject=null;}}
 function pwCancel(){document.getElementById('pw-overlay').style.display='none';if(_pwReject){_pwReject('cancelled');_pwResolve=_pwReject=null;}}
 function setupMode(mode){
   const c=mode==='create';
@@ -1288,10 +1358,58 @@ function _applyWalletSession(data){
   document.addEventListener('visibilitychange',()=>{if(!document.hidden){pollNodeData();}});
 }
 
+// ── Display currency ─────────────────────────────────────────────────────
+// Portfolio total / coin-grid USD values are computed server-side in USD
+// (ledger's usd_value field) -- converting to another display currency is a
+// client-side-only relabeling via a USD->currency rate, fetched from
+// CoinGecko (already the only third-party domain allowlisted in CSP's
+// connect-src, so this needs no new external dependency or CSP change)
+// using a USD-pegged stablecoin (USDC) as the reference asset. Real money
+// amounts/signing are always still in SVIT/token micro-units server-side;
+// this only affects what's displayed.
+const SUPPORTED_CURRENCIES=['USD','EUR','GBP','JPY','UAH','CHF','CNY'];
+const CURRENCY_SYMBOLS={USD:'$',EUR:'€',GBP:'£',JPY:'¥',UAH:'₴',CHF:'CHF ',CNY:'¥'};
+let _displayCurrency='USD';
+let _fxRates={USD:1};
+async function refreshFxRates(){
+  if(_displayCurrency==='USD'){_fxRates={USD:1};return;}
+  try{
+    const vs=SUPPORTED_CURRENCIES.filter(c=>c!=='USD').map(c=>c.toLowerCase()).join(',');
+    const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd-coin&vs_currencies=usd,'+vs,{signal:timeoutSignal(8000)});
+    if(!r.ok)return;
+    const d=await r.json();
+    const usdc=d['usd-coin'];
+    if(!usdc)return;
+    const usdBase=usdc.usd||1;
+    const next={USD:1};
+    for(const c of SUPPORTED_CURRENCIES){
+      if(c==='USD')continue;
+      const v=usdc[c.toLowerCase()];
+      if(v)next[c]=v/usdBase;
+    }
+    _fxRates=next;
+  }catch(_){ /* keep last-known rates (or the USD:1 default) on failure */ }
+}
+function setDisplayCurrency(cur){
+  if(!SUPPORTED_CURRENCIES.includes(cur))cur='USD';
+  _displayCurrency=cur;
+  try{localStorage.setItem('svit-wallet-currency',cur);}catch(e){}
+  const sel=document.getElementById('currency-btn');if(sel)sel.value=cur;
+  refreshFxRates().then(()=>{updatePortfolioTotal();if(typeof renderCoinGrid==='function')renderCoinGrid();});
+}
+/** Format a USD amount in the currently-selected display currency. */
+function fmtFiat(usdAmount){
+  const rate=_fxRates[_displayCurrency]||1;
+  const val=usdAmount*rate;
+  const sym=CURRENCY_SYMBOLS[_displayCurrency]||'$';
+  const decimals=_displayCurrency==='JPY'?0:2;
+  return sym+val.toLocaleString(undefined,{minimumFractionDigits:decimals,maximumFractionDigits:decimals});
+}
+
 // ── Portfolio total ────────────────────────────────────────────────────────
 function updatePortfolioTotal(){
   const total=_tokenBalances.reduce((sum,t)=>sum+(parseFloat(t.usd_value)||0),0);
-  document.getElementById('port-total').textContent='$'+total.toFixed(2);
+  document.getElementById('port-total').textContent=fmtFiat(total);
   document.getElementById('bal-usd').textContent=(_tokenBalances.length?'Portfolio':'SVIT balance')+' · connected to '+nodeUrl().replace('http://','');
 }
 
@@ -1309,7 +1427,7 @@ function renderCoinGrid(){
     return`<div class="cc" style="--cc-color:${color}" onclick="openBuyFor('${c.id}','${c.symbol}','${c.name}')" onkeydown="kbdActivate(event)" role="button" tabindex="0" aria-label="${c.name} balance, receive ${c.symbol}">
       <div class="cc-top"><div class="cc-ico" style="background:${color}">${c.symbol.slice(0,4)}</div><div><div class="cc-name">${c.name}</div><div class="cc-sym">${c.symbol}</div></div></div>
       <div class="cc-bal">${bal}</div>
-      <div class="cc-usd">$${usd.toFixed(2)}</div>
+      <div class="cc-usd">${fmtFiat(usd)}</div>
       <span class="cc-chg flat">—</span>
     </div>`;
   }).join('');
@@ -1433,15 +1551,15 @@ async function openBuyFor(id,sym,name){
   if(!chain){
     // SVIT, or a coin outside the supported-chain list (e.g. ADA, deferred) --
     // unchanged original behavior: show the SVIT address.
-    document.getElementById('buy-title').textContent='Buy '+name;
+    document.getElementById('buy-title').textContent=t('dyn.buy_title',{name});
     _buyAddr=ADDR;
     addrBox.textContent=ADDR;
     document.getElementById('buy-modal').classList.add('show');
     return;
   }
-  document.getElementById('buy-title').textContent='Receive '+name;
+  document.getElementById('buy-title').textContent=t('dyn.receive_title',{name});
   _buyAddr='';
-  addrBox.textContent='Deriving address…';
+  addrBox.textContent=t('dyn.deriving_address');
   document.getElementById('buy-modal').classList.add('show');
   try{
     const addr=await deriveChainAddress(chain.id);
@@ -1454,7 +1572,7 @@ async function openBuyFor(id,sym,name){
   }catch(e){
     _buyAddr='';
     const cancelled=e==='cancelled'||(e&&e.message==='cancelled');
-    addrBox.textContent=cancelled?'Cancelled — tap Receive again to retry.':'Could not derive address: '+(e&&e.message?e.message:e);
+    addrBox.textContent=cancelled?t('dyn.cancelled_retry'):t('dyn.could_not_derive',{error:e&&e.message?e.message:e});
   }
 }
 function closeBuy(){document.getElementById('buy-modal').classList.remove('show');}
@@ -1490,7 +1608,7 @@ function txBincodeGeneric(kindBytes,senderHex,nonce,ts,sig64){return concatU8(ki
 // yet on the Rust side, so the Swap tab is browser-key-only for now; adding the
 // Tauri command is a separate, not-yet-scoped follow-up.
 async function signAndSubmitKind(kindBytes){
-  if(!_session)throw new Error('Wallet locked — please unlock.');
+  if(!_session)throw new Error(t('dyn.wallet_locked'));
   const nonce=_nonce;const ts=BigInt(Date.now());
   const payload=signingPayloadGeneric(kindBytes,_session.address,nonce,ts);
   const digest=svitNoble.blake3(payload);
@@ -1525,7 +1643,7 @@ document.getElementById('swap-modal').addEventListener('click',e=>{if(e.target==
 function updateSwapFromBalance(){
   const id=parseInt(document.getElementById('swap-from-token').value,10);
   const t=_swapTokens.find(x=>x.token_id===id);
-  document.getElementById('swap-from-bal').textContent=t?('Available: '+t.balance+' '+t.symbol):'';
+  document.getElementById('swap-from-bal').textContent=t?window.t('dyn.available',{amount:t.balance,symbol:t.symbol}):'';
 }
 function flipSwapTokens(){
   const fromSel=document.getElementById('swap-from-token'),toSel=document.getElementById('swap-to-token');
@@ -1648,7 +1766,7 @@ function renderStakeClaimable(d){
 
 let _stakePending=null;
 function openStakeConfirm(){
-  if(!_session){alert('Wallet locked — please unlock.');return;}
+  if(!_session){alert(t('dyn.wallet_locked'));return;}
   const amt=parseFloat(document.getElementById('stake-amt').value)||0;
   if(amt<=0){alert('Enter an amount to stake.');return;}
   const amountMicro=Math.round(amt*1_000_000);
@@ -1684,7 +1802,7 @@ async function executeStake(){
 }
 
 async function unstakePosition(lockDays,amountUsvit){
-  if(!_session){alert('Wallet locked — please unlock.');return;}
+  if(!_session){alert(t('dyn.wallet_locked'));return;}
   if(!confirm('Unstake this position and return the funds to your available balance?'))return;
   try{
     const res=await signAndSubmitKind(encodeUnstakeKind(amountUsvit,lockDays));
@@ -1694,7 +1812,7 @@ async function unstakePosition(lockDays,amountUsvit){
 }
 
 async function claimStakingReward(){
-  if(!_session){alert('Wallet locked — please unlock.');return;}
+  if(!_session){alert(t('dyn.wallet_locked'));return;}
   const btn=document.getElementById('stake-claim-btn');
   btn.disabled=true;btn.textContent='Claiming…';
   try{
@@ -1724,6 +1842,21 @@ async function tauriInit(){
   }catch(_){}
 }
 
+(function initLanguage(){
+  let saved=null;
+  try{saved=localStorage.getItem('svit-wallet-lang');}catch(e){}
+  let initial=saved;
+  if(!initial){
+    const nav=((navigator.language||'en').split('-')[0]||'en').toLowerCase();
+    initial=SUPPORTED_LANGS.includes(nav)?nav:'en';
+  }
+  setLanguage(initial);
+})();
+(function initCurrency(){
+  let saved=null;
+  try{saved=localStorage.getItem('svit-wallet-currency');}catch(e){}
+  setDisplayCurrency(saved&&SUPPORTED_CURRENCIES.includes(saved)?saved:'USD');
+})();
 renderSendCoinSel();
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',()=>{if(window.__TAURI__)tauriInit();else browserInit();});}
 else{if(window.__TAURI__)tauriInit();else browserInit();}
