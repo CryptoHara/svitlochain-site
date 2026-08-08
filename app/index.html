@@ -551,6 +551,8 @@ input,textarea,select{font:inherit;}
     <option value="UAH">₴</option>
     <option value="CHF">CHF</option>
     <option value="CNY">¥ CNY</option>
+    <option value="NOK">NOK</option>
+    <option value="SEK">SEK</option>
   </select>
   <button class="hdr-btn" id="settings-btn" title="Node settings" aria-label="Node settings" data-i18n-title="hdr.node_settings" data-i18n-aria="hdr.node_settings" onclick="openSettings()" style="font-size:.9375rem">⚙</button>
   <button class="hdr-btn" id="theme-btn" title="Toggle theme" aria-label="Toggle dark/light theme" data-i18n-title="hdr.toggle_theme" data-i18n-aria="hdr.toggle_theme">◐</button>
@@ -1367,8 +1369,8 @@ function _applyWalletSession(data){
 // using a USD-pegged stablecoin (USDC) as the reference asset. Real money
 // amounts/signing are always still in SVIT/token micro-units server-side;
 // this only affects what's displayed.
-const SUPPORTED_CURRENCIES=['USD','EUR','GBP','JPY','UAH','CHF','CNY'];
-const CURRENCY_SYMBOLS={USD:'$',EUR:'€',GBP:'£',JPY:'¥',UAH:'₴',CHF:'CHF ',CNY:'¥'};
+const SUPPORTED_CURRENCIES=['USD','EUR','GBP','JPY','UAH','CHF','CNY','NOK','SEK'];
+const CURRENCY_SYMBOLS={USD:'$',EUR:'€',GBP:'£',JPY:'¥',UAH:'₴',CHF:'CHF ',CNY:'¥',NOK:'NOK ',SEK:'SEK '};
 let _displayCurrency='USD';
 let _fxRates={USD:1};
 async function refreshFxRates(){
