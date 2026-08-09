@@ -6,12 +6,9 @@ export default {
   },
   nav: {
     links: [
-      { href: '#idea', label: 'Idea' },
-      { href: '#developers', label: 'Developers' },
-      { href: '#gpu-owners', label: 'GPU owners' },
-      { href: '#token', label: 'Token' },
-      { href: '#roadmap', label: 'Roadmap' },
-      { href: '#faq', label: 'FAQ' },
+      { href: '/en/wallet/', label: 'Wallet' },
+      { href: '/en/platform/', label: 'Platform' },
+      { href: '/en/documentation/', label: 'Documentation' },
     ],
   },
   hero: {
@@ -234,7 +231,7 @@ svitlo-node start`,
     infraBody: 'Beyond direct utility, Svitlo Chain builds on its own infrastructure that strengthens the ecosystem and makes using SVIT smoother.',
     infraCards: [
       { title: 'L1 blockchain for SVIT', body: 'SVIT is the native coin of Svitlo Chain’s own L1 blockchain, with a total emission of 1 billion coins. It serves as the backbone of the ecosystem’s security, transaction flow, staking, burning, and long-term capitalization. All activity links directly to SVIT’s value and sustainability.' },
-      { title: 'Svitlo Wallet', body: 'Svitlo Wallet is a simple wallet for storing, sending, and using SVIT across the entire Svitlo Chain ecosystem.', href: '/wallet/', linkLabel: 'Learn more' },
+      { title: 'Svitlo Wallet', body: 'Svitlo Wallet is a simple wallet for storing, sending, and using SVIT across the entire Svitlo Chain ecosystem.', href: '/en/wallet/', linkLabel: 'Learn more' },
     ],
   },
   enterprise: {
@@ -381,9 +378,9 @@ svitlo-node start`,
   footer: {
     tagline: 'A Layer-1 blockchain for AI compute and inference settlement.',
     cols: [
-      { title: 'Product', links: [{ label: 'For developers', href: '#developers' }, { label: 'For GPU owners', href: '#gpu-owners' }, { label: 'SVIT token', href: '#token' }] },
+      { title: 'Product', links: [{ label: 'Platform', href: '/en/platform/' }, { label: 'Documentation', href: '/en/documentation/' }, { label: 'For developers', href: '#developers' }, { label: 'For GPU owners', href: '#gpu-owners' }, { label: 'SVIT token', href: '#token' }] },
       { title: 'Company', links: [{ label: 'Roadmap', href: '#roadmap' }, { label: 'FAQ', href: '#faq' }, { label: 'Contact', href: '#contact' }] },
-      { title: 'Wallet', links: [{ label: 'Privacy policy', href: '/privacy/' }, { label: 'Support', href: '/support/' }] },
+      { title: 'Wallet', links: [{ label: 'Open Wallet', href: '/en/wallet/' }, { label: 'Privacy policy', href: '/privacy/' }, { label: 'Support', href: '/support/' }] },
     ],
     copyright: '© 2026 Svitlo Chain. All rights reserved.',
   },

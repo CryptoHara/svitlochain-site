@@ -6,12 +6,9 @@ export default {
   },
   nav: {
     links: [
-      { href: '#idea', label: 'Ідея' },
-      { href: '#developers', label: 'Розробникам' },
-      { href: '#gpu-owners', label: 'Власникам GPU' },
-      { href: '#token', label: 'Токен' },
-      { href: '#roadmap', label: 'Дорожня карта' },
-      { href: '#faq', label: 'Питання' },
+      { href: '/uk/wallet/', label: 'Гаманець' },
+      { href: '/uk/platform/', label: 'Платформа' },
+      { href: '/uk/documentation/', label: 'Документація' },
     ],
   },
   hero: {
@@ -234,7 +231,7 @@ svitlo-node start`,
     infraBody: 'Крім прямої корисності, Svitlo Chain будує власну інфраструктуру, що зміцнює екосистему й робить використання SVIT зручнішим.',
     infraCards: [
       { title: 'L1-блокчейн для SVIT', body: 'SVIT — рідна монета власного L1-блокчейну Svitlo Chain, із загальною емісією 1 мільярд монет. Він слугує основою безпеки екосистеми, потоку транзакцій, стейкінгу, спалювання й довгострокової капіталізації. Уся активність напряму пов’язана з вартістю й стійкістю SVIT.' },
-      { title: 'Svitlo Wallet', body: 'Svitlo Wallet — простий гаманець для зберігання, відправки й використання SVIT у всій екосистемі Svitlo Chain.', href: '/wallet/', linkLabel: 'Дізнатись більше' },
+      { title: 'Svitlo Wallet', body: 'Svitlo Wallet — простий гаманець для зберігання, відправки й використання SVIT у всій екосистемі Svitlo Chain.', href: '/uk/wallet/', linkLabel: 'Дізнатись більше' },
     ],
   },
   enterprise: {
@@ -381,9 +378,9 @@ svitlo-node start`,
   footer: {
     tagline: 'Layer-1 блокчейн для ШІ-обчислень і розрахунків за інференс.',
     cols: [
-      { title: 'Продукт', links: [{ label: 'Розробникам', href: '#developers' }, { label: 'Власникам GPU', href: '#gpu-owners' }, { label: 'Токен SVIT', href: '#token' }] },
+      { title: 'Продукт', links: [{ label: 'Платформа', href: '/uk/platform/' }, { label: 'Документація', href: '/uk/documentation/' }, { label: 'Розробникам', href: '#developers' }, { label: 'Власникам GPU', href: '#gpu-owners' }, { label: 'Токен SVIT', href: '#token' }] },
       { title: 'Компанія', links: [{ label: 'Дорожня карта', href: '#roadmap' }, { label: 'Питання', href: '#faq' }, { label: 'Контакти', href: '#contact' }] },
-      { title: 'Гаманець', links: [{ label: 'Політика конфіденційності', href: '/privacy/' }, { label: 'Підтримка', href: '/support/' }] },
+      { title: 'Гаманець', links: [{ label: 'Відкрити гаманець', href: '/uk/wallet/' }, { label: 'Політика конфіденційності', href: '/privacy/' }, { label: 'Підтримка', href: '/support/' }] },
     ],
     copyright: '© 2026 Svitlo Chain. Усі права захищено.',
   },

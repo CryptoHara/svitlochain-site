@@ -6,12 +6,9 @@ export default {
   },
   nav: {
     links: [
-      { href: '#idea', label: 'Idén' },
-      { href: '#developers', label: 'Utvecklare' },
-      { href: '#gpu-owners', label: 'GPU-ägare' },
-      { href: '#token', label: 'Token' },
-      { href: '#roadmap', label: 'Färdplan' },
-      { href: '#faq', label: 'FAQ' },
+      { href: '/sv/wallet/', label: 'Plånbok' },
+      { href: '/sv/platform/', label: 'Plattform' },
+      { href: '/sv/documentation/', label: 'Dokumentation' },
     ],
   },
   hero: {
@@ -234,7 +231,7 @@ svitlo-node start`,
     infraBody: 'Utöver den direkta nyttan bygger Svitlo Chain vidare på en egen infrastruktur som stärker ekosystemet och gör användningen av SVIT smidigare.',
     infraCards: [
       { title: 'L1-blockkedja för SVIT', body: 'SVIT är den native coinen i Svitlo Chains egen L1-blockkedja, med en total emission på 1 miljard coins. Den fungerar som ryggraden i ekosystemets säkerhet, transaktionsflöde, staking, bränning och långsiktiga kapitalisering. All aktivitet kopplas direkt till SVIT:s värde och hållbarhet.' },
-      { title: 'Svitlo Wallet', body: 'Svitlo Wallet är en enkel plånbok för att lagra, skicka och använda SVIT i hela Svitlo Chain-ekosystemet.', href: '/wallet/', linkLabel: 'Läs mer' },
+      { title: 'Svitlo Wallet', body: 'Svitlo Wallet är en enkel plånbok för att lagra, skicka och använda SVIT i hela Svitlo Chain-ekosystemet.', href: '/sv/wallet/', linkLabel: 'Läs mer' },
     ],
   },
   enterprise: {
@@ -381,9 +378,9 @@ svitlo-node start`,
   footer: {
     tagline: 'En Layer-1-blockchain för AI-beräkning och avveckling av inferens.',
     cols: [
-      { title: 'Produkt', links: [{ label: 'För utvecklare', href: '#developers' }, { label: 'För GPU-ägare', href: '#gpu-owners' }, { label: 'SVIT-token', href: '#token' }] },
+      { title: 'Produkt', links: [{ label: 'Plattform', href: '/sv/platform/' }, { label: 'Dokumentation', href: '/sv/documentation/' }, { label: 'För utvecklare', href: '#developers' }, { label: 'För GPU-ägare', href: '#gpu-owners' }, { label: 'SVIT-token', href: '#token' }] },
       { title: 'Företag', links: [{ label: 'Färdplan', href: '#roadmap' }, { label: 'FAQ', href: '#faq' }, { label: 'Kontakt', href: '#contact' }] },
-      { title: 'Plånbok', links: [{ label: 'Integritetspolicy', href: '/privacy/' }, { label: 'Support', href: '/support/' }] },
+      { title: 'Plånbok', links: [{ label: 'Öppna plånboken', href: '/sv/wallet/' }, { label: 'Integritetspolicy', href: '/privacy/' }, { label: 'Support', href: '/support/' }] },
     ],
     copyright: '© 2026 Svitlo Chain. Alla rättigheter förbehållna.',
   },

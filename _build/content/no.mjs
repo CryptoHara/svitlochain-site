@@ -6,12 +6,9 @@ export default {
   },
   nav: {
     links: [
-      { href: '#idea', label: 'Idéen' },
-      { href: '#developers', label: 'Utviklere' },
-      { href: '#gpu-owners', label: 'GPU-eiere' },
-      { href: '#token', label: 'Token' },
-      { href: '#roadmap', label: 'Veikart' },
-      { href: '#faq', label: 'Spørsmål' },
+      { href: '/no/wallet/', label: 'Lommebok' },
+      { href: '/no/platform/', label: 'Plattform' },
+      { href: '/no/documentation/', label: 'Dokumentasjon' },
     ],
   },
   hero: {
@@ -234,7 +231,7 @@ svitlo-node start`,
     infraBody: 'Utover den direkte nytteverdien bygger Svitlo Chain videre på egen infrastruktur som styrker økosystemet og gjør bruken av SVIT enklere.',
     infraCards: [
       { title: 'L1-blokkjede for SVIT', body: 'SVIT er den native mynten på Svitlo Chains egen L1-blokkjede, med en total emisjon på 1 milliard mynter. Den fungerer som ryggraden i økosystemets sikkerhet, transaksjonsflyt, staking, brenning og langsiktige kapitalisering. All aktivitet er direkte knyttet til SVITs verdi og bærekraft.' },
-      { title: 'Svitlo Wallet', body: 'Svitlo Wallet er en enkel lommebok for å lagre, sende og bruke SVIT i hele Svitlo Chain-økosystemet.', href: '/wallet/', linkLabel: 'Les mer' },
+      { title: 'Svitlo Wallet', body: 'Svitlo Wallet er en enkel lommebok for å lagre, sende og bruke SVIT i hele Svitlo Chain-økosystemet.', href: '/no/wallet/', linkLabel: 'Les mer' },
     ],
   },
   enterprise: {
@@ -381,9 +378,9 @@ svitlo-node start`,
   footer: {
     tagline: 'En Layer-1-blokkjede for AI-beregning og oppgjør av inferens.',
     cols: [
-      { title: 'Produkt', links: [{ label: 'For utviklere', href: '#developers' }, { label: 'For GPU-eiere', href: '#gpu-owners' }, { label: 'SVIT-token', href: '#token' }] },
+      { title: 'Produkt', links: [{ label: 'Plattform', href: '/no/platform/' }, { label: 'Dokumentasjon', href: '/no/documentation/' }, { label: 'For utviklere', href: '#developers' }, { label: 'For GPU-eiere', href: '#gpu-owners' }, { label: 'SVIT-token', href: '#token' }] },
       { title: 'Selskap', links: [{ label: 'Veikart', href: '#roadmap' }, { label: 'Spørsmål', href: '#faq' }, { label: 'Kontakt', href: '#contact' }] },
-      { title: 'Lommebok', links: [{ label: 'Personvernerklæring', href: '/privacy/' }, { label: 'Support', href: '/support/' }] },
+      { title: 'Lommebok', links: [{ label: 'Åpne lommeboken', href: '/no/wallet/' }, { label: 'Personvernerklæring', href: '/privacy/' }, { label: 'Support', href: '/support/' }] },
     ],
     copyright: '© 2026 Svitlo Chain. Alle rettigheter forbeholdt.',
   },
