@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Svitlo Chain — 分散型GPUクラウド</title>
+<meta name="description" content="AIのための分散型GPUマーケットプレイス — 遊休GPUをレンタルするか、自分のハードウェアを提供して、ブロックチェーンで保護された収益を得られます。">
+<link rel="stylesheet" href="/assets/platform.css">
+<script>
+try {
+  var t = localStorage.getItem('svitlo-theme');
+  if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+} catch (e) {}
+</script>
+</head>
+<body>
+
+<nav class="site-nav glass">
+  <a href="/ja/" class="brand"><img class="logo" src="/assets/images/logo.jpg" alt="Svitlo Chain">Svitlo<b>Chain</b></a>
+  <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" onclick="document.getElementById('nav-links').classList.toggle('open');this.setAttribute('aria-expanded', document.getElementById('nav-links').classList.contains('open'))">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div class="links" id="nav-links">
+    <a href="/ja/wallet/">ウォレット</a><a href="/ja/platform/">プラットフォーム</a><a href="/ja/documentation/">ドキュメント</a>
+    <div class="lang-switch" id="lang-switch">
+      <button type="button" onclick="document.getElementById('lang-switch').classList.toggle('open')">🇯🇵 JA <span aria-hidden="true">▾</span></button>
+      <ul><li><a href="/en/" class="">🇬🇧 English</a></li><li><a href="/uk/" class="">🇺🇦 Українська</a></li><li><a href="/sv/" class="">🇸🇪 Svenska</a></li><li><a href="/no/" class="">🇳🇴 Norsk</a></li><li><a href="/it/" class="">🇮🇹 Italiano</a></li><li><a href="/es/" class="">🇪🇸 Español</a></li><li><a href="/fr/" class="">🇫🇷 Français</a></li><li><a href="/de/" class="">🇩🇪 Deutsch</a></li><li><a href="/fi/" class="">🇫🇮 Suomi</a></li><li><a href="/pt/" class="">🇵🇹 Português</a></li><li><a href="/ja/" class="current">🇯🇵 日本語</a></li><li><a href="/ko/" class="">🇰🇷 한국어</a></li><li><a href="/zh/" class="">🇨🇳 中文</a></li></ul>
+    </div>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" onclick="window.__toggleTheme()"><span class="theme-icon-light">☀️</span><span class="theme-icon-dark">🌙</span></button>
+  </div>
+</nav>
+
+<section class="hero hero-cosmic">
+  <div class="hero-spheres" aria-hidden="true">
+    <span class="hero-sphere s1"></span>
+    <span class="hero-sphere s2"></span>
+    <span class="hero-sphere s3"></span>
+    <span class="hero-sphere s4"></span>
+  </div>
+  <div class="wrap hero-copy">
+    <div class="eyebrow">レイヤー1ブロックチェーン</div>
+    <h1>Svitlo Chain：分散型GPUクラウド</h1>
+    <p class="lede">大手クラウドによるGPU価格の独占から解放されましょう。遊休GPUをレンタルするか、自分のハードウェアを提供して実際の収入を得る — AIが動力源となり、ブロックチェーンによって保護されます。</p>
+    <div class="cta-row">
+      <a href="/platform/" class="btn btn-primary">サプライヤーになる</a>
+      <a href="/platform/" class="btn btn-glass glass-sm">開発を始める</a>
+    </div>
+  </div>
+</section>
+
+<section id="idea">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">なぜSvitlo Chainなのか</div>
+      <h2>Svitlo Chainの背景にあるアイデア</h2>
+      <p>クラウドGPU市場は、AWS、Google、Azureといった一握りの巨大企業に支配されており、プレミアム価格が設定される一方、何百万ものGPUがゲーミングPC、マイニングリグ、企業データセンターで遊休状態にあります。Svitlo Chainはこれを変えるために存在します。</p><p>コンセプトはシンプルです：ハードウェア所有者が未使用の計算能力から収益を得られ、AI開発者は単一のベンダーに縛られることなく、手頃で拡張性のある能力を得られる分散型GPUマーケットプレイス。仲介業者なし。上乗せ料金なし。暗号学的証明と透明性のある評判システムによって保護された、需要と供給の間の直接的で信頼不要な接続だけがあります。</p>
+    </div>
+    <div class="grid grid-3">
+    <div class="card">
+      <div class="eyebrow" style="margin-bottom:10px">課題</div>
+      <h3>集中型クラウドGPU</h3>
+      <p style="margin-top:8px">集中型クラウドプロバイダーは価格、可用性、アクセスを管理しており、AIイノベーションのボトルネックを生み出しています。</p>
+    </div>
+    <div class="card">
+      <div class="eyebrow" style="margin-bottom:10px">解決策</div>
+      <h3>ピアツーピア市場</h3>
+      <p style="margin-top:8px">遊休ハードウェアを所有者に収益をもたらす生産的なインフラに変えるピアツーピアGPUマーケットプレイス。</p>
+    </div>
+    <div class="card">
+      <div class="eyebrow" style="margin-bottom:10px">ビジョン</div>
+      <h3>グローバルな計算レイヤー</h3>
+      <p style="margin-top:8px">次世代のAIアプリケーションを推進する、グローバルで検閲耐性のある計算能力のレイヤー。</p>
+    </div></div>
+  </div>
+</section>
+
+<section id="developers">
+  <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/bg-laptop-desk.jpg')"></div>
+    <div class="section-head">
+      <div class="eyebrow">仕組み</div>
+      <h2>AI開発者とビルダーのために</h2>
+      <p>Svitlo Chainは、コンシューマー向けRTXカードからエンタープライズ向けA100まで、従来のクラウドコストの数分の一で、AI開発者にグローバルなGPUプールへの即座のアクセスを提供します。大規模言語モデルのトレーニング、大規模な推論の実行、複雑なシミュレーションのレンダリングのいずれであっても、Svitlo Chainは数秒であなたのワークロードを適切なハードウェアにマッチングします。</p><p>プラットフォームはジョブスケジューリング、安全なコンテナ化、請求を自動的に処理します。ビルダーはCLIまたはAPI経由でデプロイし、GPU要件を指定し、実際に使用した計算能力のみに対して支払います — 長期契約も最低利用義務もありません。</p>
+    </div>
+    <div class="grid" style="gap:22px;margin-bottom:56px">
+    <div class="step">
+      <span class="arrow">→</span>
+      <div><h3>GPU要件を指定</h3><p style="margin-top:4px">VRAM、計算能力、リージョンを選択します。</p></div>
+    </div>
+    <div class="step">
+      <span class="arrow">→</span>
+      <div><h3>CLIまたはAPI経由でデプロイ</h3><p style="margin-top:4px">コンテナを送信し、すぐに計算を開始します。</p></div>
+    </div>
+    <div class="step">
+      <span class="arrow">→</span>
+      <div><h3>使用量に応じて支払う</h3><p style="margin-top:4px">契約不要。SVITまたはステーブルコインで請求されます。</p></div>
+    </div></div>
+
+    <h2 style="margin-top:8px">開発者ガイド：Svitlo Chainクイックスタート</h2>
+    <p class="lede" style="margin-bottom:28px">AI開発者として、GPUリソースへの高速で費用対効果が高く、拡張性のあるアクセスが必要です。このクイックスタートでは、認証から最初のジョブと結果までをご案内します。</p>
+    
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">1</div>
+      <h3>API認証とセットアップ</h3>
+      <p style="margin-top:8px">Svitlo Chain APIとやり取りするには、登録後に開発者ダッシュボードから取得したAPIキーが必要です。Python開発者にはスムーズな統合のために当社のSDKをお勧めします。他の言語ではREST APIを直接呼び出せます。</p>
+      <div class="code"><span class="kw">import</span> os
+<span class="kw">import</span> svitlo_sdk
+
+<span class="c1"># 環境変数からAPIキーを安全に読み込む</span>
+API_KEY = os.environ.get(<span class="str">"SVIT_API_KEY"</span>)
+
+<span class="kw">if not</span> API_KEY:
+    <span class="kw">raise</span> ValueError(<span class="str">"SVIT_API_KEYが設定されていません。"</span>)
+
+<span class="c1"># Svitlo Chain SDKクライアントを初期化</span>
+client = svitlo_sdk.SvitloClient(api_key=API_KEY)
+print(<span class="str">"APIクライアントが正常に初期化されました。"</span>)</div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">2</div>
+      <h3>最初のGPUジョブを送信</h3>
+      <p style="margin-top:8px">GPUジョブの送信は簡単です。実行するAIモデル、使用する入力データ、必要なGPUリソースを定義します。Svitlo Chainはネットワーク上の利用可能なサプライヤーに自動的にジョブをマッチングします。</p>
+      <div class="code">job_config = {
+    <span class="str">"model_name"</span>: <span class="str">"stable_diffusion_v2"</span>,
+    <span class="str">"input_data_url"</span>: <span class="str">"s3://my-bucket/input-image.jpg"</span>,
+    <span class="str">"output_data_url"</span>: <span class="str">"s3://my-bucket/output-results/"</span>,
+    <span class="str">"gpu_type"</span>: <span class="str">"RTX_3090"</span>,
+    <span class="str">"gpu_count"</span>: 1,
+    <span class="str">"duration_hours"</span>: 0.5,
+}
+
+<span class="kw">try</span>:
+    job = client.submit_job(job_config)
+    print(<span class="fn">f</span><span class="str">"ジョブが送信されました！ジョブID: {job.id}"</span>)
+    print(<span class="fn">f</span><span class="str">"ステータス: {job.status}"</span>)
+<span class="kw">except</span> Exception <span class="kw">as</span> e:
+    print(<span class="fn">f</span><span class="str">"ジョブ送信エラー: {e}"</span>)</div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">3</div>
+      <h3>ジョブステータスを監視</h3>
+      <p style="margin-top:8px">送信後、リアルタイムでジョブの進行状況を追跡できます — エラーを確認し、結果がいつ準備できるかを推定します。</p>
+      <div class="code">job_id = job.id
+
+current_job = client.get_job_status(job_id)
+print(<span class="fn">f</span><span class="str">"ジョブ {current_job.id}、ステータス: {current_job.status}"</span>)
+
+<span class="kw">while</span> current_job.status <span class="kw">not in</span> [<span class="str">"COMPLETED"</span>, <span class="str">"FAILED"</span>]:
+    time.sleep(30)
+    current_job = client.get_job_status(job_id)
+    print(<span class="fn">f</span><span class="str">"更新されたステータス: {current_job.status}"</span>)
+
+<span class="kw">if</span> current_job.status == <span class="str">"COMPLETED"</span>:
+    print(<span class="str">"ジョブ完了！"</span>)
+<span class="kw">else</span>:
+    print(<span class="str">"ジョブが失敗またはキャンセルされました。"</span>)</div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">4</div>
+      <h3>結果を取得</h3>
+      <p style="margin-top:8px">GPUジョブが完了すると、出力は指定した場所（例：S3バケット）で利用可能になります。Svitlo Chainは結果を安全に取得するために必要な接続の詳細を提供します。</p>
+      <div class="code"><span class="kw">if</span> current_job.status == <span class="str">"COMPLETED"</span>:
+    print(<span class="fn">f</span><span class="str">"結果は次の場所で利用可能です: {current_job.output_data_location}"</span>)
+<span class="kw">else</span>:
+    print(<span class="str">"結果は利用できません — ジョブが未完了または失敗しました。"</span>)</div>
+    </div>
+    <div class="card card-accent">
+      <h3>5. 支払いと請求</h3>
+      <p style="margin-top:8px">Svitlo Chainは、透明性と効率性を確保するため、すべてのプラットフォーム取引にSVITトークンを使用します。実際のGPU使用量とジョブ期間に応じて請求され、従来のクラウドより最大70%安くなることがよくあります。Svitlo Chainダッシュボードから使用履歴と残高を追跡できます。</p>
+    </div>
+  </div>
+</section>
+
+<section id="gpu-owners">
+  <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/bg-gaming-pc.jpg')"></div>
+    <div class="section-head">
+      <div class="eyebrow">仕組み</div>
+      <h2>GPU所有者のために</h2>
+      <p>GPU所有者 — ゲーマー、マイナー、データセンター — は、遊休ハードウェアをSvitlo Chainに接続し、受動的収入を得ることができます。Svitlo Chainクライアントはバックグラウンドで実行され、計算ジョブを受け入れ、分離されたコンテナ内で実行し、暗号学的検証とともに結果を返します。サプライヤーは自分自身で可用性ウィンドウ、価格、ハードウェア仕様を設定します。</p>
+    </div>
+    <div class="grid grid-3" style="margin-bottom:56px">
+    <div class="card card-accent">
+      <h3>クライアントをインストール</h3>
+      <p style="margin-top:8px">Svitlo Chainノードソフトウェアをダウンロードし、GPUを接続して、数分で稼働開始できます。Windows、Linux、Dockerに対応しています。</p>
+    </div>
+    <div class="card card-accent">
+      <h3>条件を設定</h3>
+      <p style="margin-top:8px">時間単価、最低VRAM、可用性スケジュールを設定します。ハードウェアが市場にいつ出るかはあなたが管理します。</p>
+    </div>
+    <div class="card card-accent">
+      <h3>自動的に収益を得る</h3>
+      <p style="margin-top:8px">ジョブは自動的にマッチング、実行、検証されます。支払いはSVITまたはUSDCで直接ウォレットに届きます。</p>
+    </div></div>
+
+    <h2>GPUサプライヤー向けインストールガイド</h2>
+    <p class="lede" style="margin-bottom:28px">Svitlo Chain GPUサプライヤーになるのは簡単で、遊休計算能力から収益を得られます。以下の手順に従ってSvitlo Chainノードクライアントをインストールし、世界中のAI開発者にGPUリソースをレンタルし始めましょう。</p>
+    
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">1</div>
+      <h3>システム要件</h3>
+      <p style="margin-top:8px">インストール前に、システムがこれらの要件を満たしていることを確認してください：<b>OS：</b>Linux（Ubuntu 20.04+推奨）、Windows 10/11、macOS 13 Ventura以降、またはDocker互換環境。<b>GPU：</b>NVIDIA GeForce RTX 30シリーズ以降、NVIDIA A100/H100、AMD Radeon RX 6000シリーズ以降、またはMetal Performance Shaders（MPS）搭載のApple Silicon。<b>RAM：</b>最低16GB。<b>ネットワーク：</b>アップロード/ダウンロード共に最低100Mbpsの安定した接続。</p>
+      
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">2</div>
+      <h3>Svitlo Chainノードクライアントをダウンロード</h3>
+      <p style="margin-top:8px">公式サイトまたはGitHubリポジトリから最新のノードクライアントを入手してください。すべてのプラットフォーム向けのパッケージが利用可能です。</p>
+      <div class="code"><span class="c1"># Linux</span>
+wget https://svitlochain.com/node-client/svitlo-node-linux-amd64.tar.gz
+tar -xzf svitlo-node-linux-amd64.tar.gz
+<span class="kw">cd</span> svitlo-node</div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">3</div>
+      <h3>インストールと設定</h3>
+      <p style="margin-top:8px">ダウンロード後、セットアップスクリプトを実行し、画面の指示に従ってください。Apple Siliconでは、最高のパフォーマンスのためにMetalアクセラレーションバックエンドを有効にします。</p>
+      <div class="code">arch
+<span class="c1"># Apple Siliconではarm64が期待されます</span>
+<span class="kw">export</span> SVITLO_GPU_BACKEND=mps
+<span class="kw">export</span> SVITLO_OPTIMIZE_APPLE_SILICON=<span class="kw">true</span>
+svitlo-node start</div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">4</div>
+      <h3>ウォレットを接続</h3>
+      <p style="margin-top:8px">支払いを受け取るには、互換性のあるウォレットを接続する必要があります。このウォレットにはSVITの収益が保管されます。</p>
+      <div class="code">./svitlo-node wallet connect &lt;あなたのウォレットアドレス&gt;</div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">5</div>
+      <h3>価格設定と可用性を設定</h3>
+      <p style="margin-top:8px">GPUのレンタル方法を完全にコントロールできます。</p>
+      <div class="code">./svitlo-node config <span class="kw">set</span> backend mps
+./svitlo-node config <span class="kw">set</span> optimize_apple_silicon
+./svitlo-node config <span class="kw">set</span> availability 24/7</div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">6</div>
+      <h3>収益を得始める</h3>
+      <p style="margin-top:8px">ノードが実行され、接続され、設定されると、GPUはAI計算ジョブとマッチングされ始めます。Svitlo Chainダッシュボードから収入とジョブ履歴を監視できます。</p>
+      
+    </div>
+  </div>
+</section>
+
+<section id="miner-mode" class="tight">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">マイナーモード</div>
+      <h2>マイナーとGPUファームを招待します</h2>
+      <p>暗号資産マイニングは変化しました。プルーフ・オブ・ワークの報酬が低下し、電気代が上昇する中、GPUファームには新しい収入源が必要です。Svitlo Chainの<b>マイナーモード</b>は、マイニング事業者がインフラを再構成することなく、遊休ハードウェアを即座にAI計算にリダイレクトできるようにします。</p><p>マイナーモードは、リグをマイニングから計算能力のレンタルへと移行させる軽量なスイッチです。ジョブは事前検証を経て、サンドボックス内で実行され、収益はリアルタイムで追跡されます。10台以上のGPUを持つファームは、優先的なジョブルーティングと専用サポートを受けられます。</p>
+    </div>
+    <div class="grid grid-3" style="margin-bottom:56px">
+    <div class="card"><h3>ダウンタイムなしで切り替え</h3><p style="margin-top:8px">数秒でマイニングと計算能力のレンタルを切り替えられます。ハードウェアの変更は不要です。</p></div>
+    <div class="card"><h3>より高い収益ポテンシャル</h3><p style="margin-top:8px">AI計算の需要は供給を上回ることが多く、サプライヤーはほとんどのマイニング事業よりもGPU時間あたりで多く稼ぐことが頻繁にあります。</p></div>
+    <div class="card"><h3>ファームコントロールパネル</h3><p style="margin-top:8px">ファーム全体を1つのインターフェースから管理できます。すべてのノードで収入、ジョブステータス、稼働時間を追跡します。</p></div></div>
+
+    <div class="grid grid-2" style="align-items:start">
+      <div class="card" style="background:var(--brown);color:#fff;border:none">
+        <h3 style="color:#fff">なぜマイナーモードなのか？</h3>
+        <div style="color:rgba(255,255,255,.88);margin-top:8px"><p>マイニングの収益性は不安定です。Svitlo ChainでのGPUレンタルは、特に弱気相場やネットワーク難易度が上昇する時期に、安定した予測可能な収入基盤を提供します。</p><p>マイナーモードはバッチジョブキューをサポートしているため、ファームが遊休状態になることはありません。AI需要が低下したら、1つのコマンドでマイニングに戻ることができます。この市場状況を通じた柔軟性こそが、Svitlo Chainを際立たせています。</p></div>
+        <a href="#faq" class="btn btn-glass glass-sm" style="margin-top:14px;background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.3)">マイナーモードについてもっと詳しく</a>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:14px">仕組み</h3>
+        
+    <div>
+      <div class="when">01</div>
+      <h3 style="margin:6px 0 6px">ファームを接続</h3>
+      <p style="font-size:13.5px">既存のマイニングリグにSvitlo Chainノードクライアントをインストールします。</p>
+    </div><hr style="border:none;border-top:1px solid var(--bd2);margin:16px 0">
+    <div>
+      <div class="when">02</div>
+      <h3 style="margin:6px 0 6px">マイナーモードを有効化</h3>
+      <p style="font-size:13.5px">マイニングと並行して、またはその代わりに計算能力をレンタルします。</p>
+    </div><hr style="border:none;border-top:1px solid var(--bd2);margin:16px 0">
+    <div>
+      <div class="when">03</div>
+      <h3 style="margin:6px 0 6px">収益を得て追跡</h3>
+      <p style="font-size:13.5px">リアルタイムで収入、ジョブスループット、GPU使用率を追跡します。</p>
+    </div><hr style="border:none;border-top:1px solid var(--bd2);margin:16px 0">
+    <div>
+      <div class="when">04</div>
+      <h3 style="margin:6px 0 6px">自由に切り替え</h3>
+      <p style="font-size:13.5px">市場状況が有利なときはいつでもマイニングに戻れます。</p>
+    </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">サービス</div>
+      <h2>サービスと価格</h2>
+      <p>Svitlo Chainは、テキストベースのタスクからリアルタイム音声処理まで、さまざまなAIワークロードに適した3つの主要なサービス階層を提供しています。すべてのサービスはGPU時間ごとに請求され、SVITで支払われる長期予約には割引が適用されます。</p>
+    </div>
+    <div class="grid grid-3" style="margin-bottom:20px">
+    <div class="card">
+      <h3>テキスト推論 / LLM</h3>
+      <p style="margin-top:8px">大規模言語モデル、チャットボット、テキスト生成タスクを実行します。RTX 4060からA100までのハードウェアに最適化されています。</p>
+      <div class="pill">$0.12/時間から</div>
+    </div>
+    <div class="card">
+      <h3>画像生成</h3>
+      <p style="margin-top:8px">Stable Diffusion、FLUX、カスタム画像モデルを大規模に実行します。バッチ生成には高VRAMのGPUを推奨します。</p>
+      <div class="pill">$0.28/時間から</div>
+    </div>
+    <div class="card">
+      <h3>音声認識 (STT)</h3>
+      <p style="margin-top:8px">リアルタイム文字起こしと音声処理パイプライン。世界中で低遅延インスタンスが利用可能です。</p>
+      <div class="pill">$0.18/時間から</div>
+    </div></div>
+    <div class="callout" style="margin-bottom:56px">💡 すべての価格は計算機v2の更新を反映しています。SVITでの支払いにはさらに10%の割引が適用されます。</div>
+
+    <h2>サプライヤーの収益：実際の数字</h2>
+    <p class="lede" style="margin-bottom:24px">Svitlo Chainでの収益はハードウェアに直接依存します。以下は、現在の市場需要と価格計算機v2に基づく、一般的なGPU構成の現実的な時間あたり収益の推定値です。実際の収益は可用性、ジョブタイプ、地域によって異なります。</p>
+    <div class="table-wrap" style="margin-bottom:32px">
+      <table class="data"><thead><tr><th>GPU</th><th>時間単価</th><th>月間推定額（80%稼働率）</th></tr></thead><tbody><tr><td>RTX 4060</td><td>$0.12/時間</td><td>~$70</td></tr><tr><td>RTX 4070 Ti</td><td>$0.22/時間</td><td>~$127</td></tr><tr><td>RTX 4080</td><td>$0.35/時間</td><td>~$202</td></tr><tr><td>RTX 4090</td><td>$0.55/時間</td><td>~$317</td></tr><tr><td>A40 / L40</td><td>$0.80/時間</td><td>~$461</td></tr><tr><td>A100 (40GB)</td><td>$1.40/時間</td><td>~$806</td></tr><tr><td>8× A100フリート</td><td>$11.20/時間</td><td>~$6,451</td></tr></tbody></table>
+    </div>
+    <div class="grid grid-3">
+    <div class="card glass stat-glass">
+      <div class="stat-num">$6,451</div>
+      <div class="stat-label">8× A100フリート</div>
+      <div class="stat-desc">80%稼働率での月間推定収益 — 規模のメリットです。</div>
+    </div>
+    <div class="card glass stat-glass">
+      <div class="stat-num">80%</div>
+      <div class="stat-label">目標稼働率</div>
+      <div class="stat-desc">控えめな推定です。需要の高いサプライヤーはしばしば90%を超えます。</div>
+    </div>
+    <div class="card glass stat-glass">
+      <div class="stat-num">10+</div>
+      <div class="stat-label">GPU階層</div>
+      <div class="stat-desc">コンシューマー向けRTXカードからエンタープライズ向けA100まで — あらゆるGPUに市場があります。</div>
+    </div></div>
+  </div>
+</section>
+
+<section id="token">
+  <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/bg-circuit-devices-1.jpg')"></div>
+    <div class="section-head">
+      <div class="eyebrow">トークノミクス</div>
+      <h2>SVITトークン：3つの実用性の柱</h2>
+      <p>SVITは、Svitlo Chainエコシステムおよび独自のL1ブロックチェーンのネイティブ通貨です。SVITは、セキュリティと取引からステーキング、バーン、資本化まで、エコシステム全体を推進します。ネイティブコインとして、SVITは高速な取引、低い手数料、高いスループットの恩恵を受けます。トークノミクスは、デフレーション型のバーンメカニズム、ステーキング、上限付き供給量によって、長期的な持続可能性のために設計されています。</p>
+    </div>
+    <div class="grid grid-3" style="margin-bottom:20px">
+    <div class="card">
+      <div class="ico">💳</div>
+      <h3>支払いと割引</h3>
+      <p style="margin-top:8px">SVITで取引するサプライヤーと開発者は、すべてのマーケットプレイス手数料に10%の割引を受けられます。SVITは、Svitlo Chain L1エコシステム全体でのジョブ支払いとステーキングにおいて、高速で安価な取引で好まれる通貨です。</p>
+    </div>
+    <div class="card">
+      <div class="ico">🛡️</div>
+      <h3>ステーキングと評判</h3>
+      <p style="margin-top:8px">サプライヤーはネットワークに参加するためにSVITをステークします。正直な行動は評判スコアを上げ、優先的なジョブ割り当てを解除します。悪意のある行為者はスラッシング（罰則）を受け、Svitlo ChainのL1ブロックチェーンは高負荷時でも効率的な調整を提供します。</p>
+    </div>
+    <div class="card">
+      <div class="ico">🔥</div>
+      <h3>バーンとデフレーション</h3>
+      <p style="margin-top:8px">各取引手数料の一部は永久にバーンされ、時間の経過とともに総供給量を減少させます。エコシステムの活動が増加するにつれて、バーン率は加速し、SVITにデフレ圧力を生み出す一方、Svitlo Chainの低手数料はメカニズムの効率性を維持します。</p>
+    </div></div>
+    <div class="callout" style="margin-bottom:48px">ℹ️ SVITの総供給量には上限があります。バーンイベントはオンチェーンで公開検証可能です。トークン保有者は、プラットフォームのアップデートや手数料構造についても投票します。</div>
+    <h2>SVITのためのブロックチェーンインフラ</h2>
+    <p class="lede" style="margin-bottom:24px">直接的な実用性を超えて、Svitlo Chainはエコシステムを強化し、SVITの使用をよりスムーズにする独自のインフラを構築しています。</p>
+    <div class="grid grid-2">
+    <div class="card card-accent"><h3>SVIT用L1ブロックチェーン</h3><p style="margin-top:8px">SVITは、総発行量10億コインのSvitlo Chain独自のL1ブロックチェーンのネイティブコインです。エコシステムのセキュリティ、取引フロー、ステーキング、バーン、長期的な資本化の基盤として機能します。すべての活動は、SVITの価値と持続可能性に直接結びついています。</p></div>
+    <div class="card card-accent"><h3>Svitlo Wallet</h3><p style="margin-top:8px">Svitlo Walletは、Svitlo Chainエコシステム全体でSVITを保管、送信、使用するためのシンプルなウォレットです。</p><a href="/ja/wallet/" class="btn btn-glass glass-sm" style="margin-top:14px">詳細を見る →</a></div></div>
+  </div>
+</section>
+
+<section id="enterprise">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">ビジネス向け</div><h2>ビジネス、信頼、そして始め方</h2></div>
+    <div class="grid grid-2" style="align-items:start;margin-bottom:56px">
+      <div>
+        <h3 style="font-family:var(--serif);font-size:20px;margin-bottom:10px">企業向けプラン</h3>
+        <p>SLA、専用サポート、プライベートフリートへのアクセスが必要な組織は、Svitlo Chainのエンタープライズプログラムを通じて導入できます。各プランには、計算ジョブの暗号学的検証、オンチェーンの評判追跡、企業調達におけるコンプライアンスのための完全なドキュメントが含まれます。</p>
+        <div class="table-wrap"><table class="data"><thead><tr><th>プラン</th><th>機能</th></tr></thead><tbody><tr><td><b>スターター</b></td><td>APIアクセス、公開マーケットプレイス、SVIT支払い</td></tr><tr><td><b>グロース</b></td><td>優先ルーティング、専用サポート、フリートCLI</td></tr><tr><td><b>エンタープライズ</b></td><td>SLA保証、プライベートフリート、コンプライアンスパッケージ、ホワイトグローブオンボーディング</td></tr></tbody></table></div>
+      </div>
+      <div>
+        <h3 style="font-family:var(--serif);font-size:20px;margin-bottom:10px">信頼とセキュリティ</h3>
+        
+    <div class="card-accent" style="padding:14px 0 14px 16px;margin-bottom:4px">
+      <h3>SHA-256検証</h3><p style="margin-top:6px;font-size:13.5px">すべての計算ジョブは暗号学的に検証されます — サプライヤーは結果を改ざんできません。</p>
+    </div>
+    <div class="card-accent" style="padding:14px 0 14px 16px;margin-bottom:4px">
+      <h3>評判システム</h3><p style="margin-top:6px;font-size:13.5px">オンチェーンのスコアリングは、一貫して誠実なサプライヤーに報酬を与え、悪意ある行為者をフィルタリングします。</p>
+    </div>
+    <div class="card-accent" style="padding:14px 0 14px 16px;margin-bottom:4px">
+      <h3>コンプライアンス対応</h3><p style="margin-top:6px;font-size:13.5px">希望する地域でのエンタープライズドキュメント、監査ログ、データ所在地オプション。</p>
+    </div>
+      </div>
+    </div>
+    <h3 style="font-family:var(--serif);font-size:20px;margin-bottom:16px">今すぐSvitlo Chainに参加</h3>
+    <div class="grid grid-3">
+    <div class="card"><div class="ico">🖥️</div><h3>サプライヤー</h3><p style="margin-top:8px">遊休GPUを収益化し、受動的収入を得ましょう。</p></div>
+    <div class="card"><div class="ico">⚡</div><h3>開発者</h3><p style="margin-top:8px">AIプロジェクトのために手頃で拡張性のあるGPUパワーを手に入れましょう。</p></div>
+    <div class="card"><div class="ico">⛏️</div><h3>マイニング事業者</h3><p style="margin-top:8px">マイナーモードでマイニングインフラをAI計算に変えましょう。</p></div></div>
+  </div>
+</section>
+
+<section id="roadmap">
+  <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/banner-phoenix-dawn.jpg')"></div>
+    <div class="section-head"><div class="eyebrow">ロードマップ</div><h2>私たちのロードマップ：Svitlo Chainの未来</h2><p>Svitlo Chainは、分散型GPU計算への高まる需要に応えるために継続的に開発を進めています。私たちのロードマップは、戦略的な成長と、サプライヤーと開発者の両方への価値提供に焦点を当てています。</p></div>
+    <div class="timeline">
+      <div class="timeline-items">
+    <div><div class="when">2026年第3四半期</div><h3>ローンチ</h3><p style="font-size:13.5px;margin-top:4px">GPUレンタルとマイナーモードのコア機能を備えたSvitlo Chainプラットフォームの公式ローンチ。</p></div>
+    <div><div class="when">2026年第4四半期</div><h3>エンタープライズ機能</h3><p style="font-size:13.5px;margin-top:4px">より大規模な顧客向けの、エンタープライズプラン、専用サポート、SLA、高度なセキュリティプロトコル。</p></div>
+    <div><div class="when">2027年第1四半期</div><h3>グローバル展開</h3><p style="font-size:13.5px;margin-top:4px">地理的カバレッジの拡大、新しい地域データセンター、より広い視聴者にリーチするためのパートナーシップ。</p></div>
+    <div><div class="when">2027年第2四半期</div><h3>高度な分析</h3><p style="font-size:13.5px;margin-top:4px">GPU使用の最適化と収益追跡のための洗練された分析ツール。</p></div></div>
+      <div class="timeline-track"><span class="pt" style="left:0%"></span><span class="pt" style="left:33.33333333333333%"></span><span class="pt" style="left:66.66666666666666%"></span><span class="pt" style="left:100%"></span></div>
+    </div>
+    <p style="margin-top:24px;color:var(--ink-m);font-size:13.5px">このロードマップは現在の戦略的優先事項を反映していますが、Svitlo Chainチームは市場状況とコミュニティからのフィードバックに対して機敏かつ柔軟に対応し続けます。</p>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">よくある質問</div><h2>よくある質問</h2><p>Svitlo Chainについて質問がありますか？サプライヤーと開発者の両方からよく寄せられる質問への回答をいくつかご紹介します。</p></div>
+    <div class="card glass" style="padding:8px 26px"><div class="faq-item"><h3>サプライヤーとしてどう始めればいいですか？</h3><p style="margin-top:8px">既存のマイニングリグにSvitlo Chainノードクライアントをインストールします。その後、「マイナーモード」を有効にして、既存のマイニングと並行して、またはその代わりに計算能力のレンタルを開始します。このプロセスはスムーズでシンプルに設計されています。</p></div><div class="faq-item"><h3>Svitlo Chainではどのような手数料がかかりますか？</h3><p style="margin-top:8px">Svitlo Chainには、プラットフォームを維持するための透明な手数料体系があります。ネイティブユーティリティトークンであるSVITで取引するユーザーは、すべてのマーケットプレイス手数料に10%の割引を受けられます。具体的な手数料はジョブタイプや市場状況によって異なる場合があります。</p></div><div class="faq-item"><h3>私のデータと計算は安全ですか？</h3><p style="margin-top:8px">はい。セキュリティは私たちの設計の中核です。すべての計算ジョブはSHA-256を介して暗号学的に検証されるため、サプライヤーは結果を改ざんできません。また、サプライヤーの評判をオンチェーンで追跡し、高度なセキュリティニーズのためのエンタープライズコンプライアンスパッケージも提供しています。</p></div><div class="faq-item"><h3>どのGPUでも使用できますか？</h3><p style="margin-top:8px">Svitlo Chainは柔軟性を持って構築されており、RTX 4060のようなコンシューマーモデルから、A100のような強力なエンタープライズGPUまで、幅広いGPUをサポートしています。プラットフォームにはほぼすべてのGPU構成に対応する市場があり、所有するあらゆるハードウェアを収益化できます。</p></div><div class="faq-item"><h3>SVITトークンとは何ですか？</h3><p style="margin-top:8px">SVITはSvitlo Chainのネイティブユーティリティトークンで、支払いを可能にし、ステーキングを通じて誠実な行動を奨励し、プラットフォームの開発を統治するように設計されています。長期的な持続可能性のために、デフレーション型のバーンメカニズムと上限付き供給量を備えています。</p></div><div class="faq-item"><h3>収益はどうやって引き出せますか？</h3><p style="margin-top:8px">Svitlo Chainの収益は、接続されたウォレットに蓄積されます。SVITで、またはプラットフォームの統合された交換オプションを通じて他の暗号資産/法定通貨に変換して、いつでも引き出すことができます。詳細はドキュメントに記載されています。</p></div></div>
+  </div>
+</section>
+
+<section id="stats" class="atmosphere">
+  <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/banner-comet-icefield.jpg')"></div>
+    <div class="section-head center"><div class="eyebrow">数字で見る</div><h2>数字で見るSvitlo Chain：プラットフォームの強さ</h2><p class="center">Svitlo Chainは指数関数的に成長を続け、分散型AI計算の未来を推進しています。以下は、従来のクラウドプロバイダーと比較して費用対効果の高いソリューションである、プラットフォームの印象的な規模と効率性の一端です。</p></div>
+    <div class="grid grid-4">
+    <div class="card glass stat-glass">
+      <div class="stat-num">250万+</div>
+      <div class="stat-label">利用可能なGPU時間</div>
+      <div class="stat-desc">当社のネットワークによって、AIジョブのために250万時間以上のGPU時間が提供され、毎月着実に増加しています。</div>
+    </div>
+    <div class="card glass stat-glass">
+      <div class="stat-num">8,500+</div>
+      <div class="stat-label">アクティブなサプライヤー</div>
+      <div class="stat-desc">8,500以上のユニークなサプライヤーからなる成長中のネットワークが計算能力を提供し、堅牢性と可用性を確保しています。</div>
+    </div>
+    <div class="card glass stat-glass">
+      <div class="stat-num">70%</div>
+      <div class="stat-label">平均コスト削減</div>
+      <div class="stat-desc">パフォーマンスを損なうことなく、主要なクラウドプラットフォームと比較して最大70%のGPU計算コストを削減できます。</div>
+    </div>
+    <div class="card glass stat-glass">
+      <div class="stat-num">500+ PFLOPS</div>
+      <div class="stat-label">総計算能力</div>
+      <div class="stat-desc">合計で、Svitlo Chainは500 PFLOPS以上のAI計算能力を提供します — あらゆる規模において強力なリソースです。</div>
+    </div></div>
+  </div>
+</section>
+
+<section id="architecture">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">内部の仕組み</div><h2>Svitlo Chainの技術アーキテクチャ：システムの仕組み</h2><p>Svitlo Chainは、効率性、セキュリティ、透明性を保証する堅牢な分散型アーキテクチャで動作しています。以下は、プラットフォームの背後にある技術的メカニズムの内訳です。</p></div>
+    <div class="arch" style="margin-bottom:28px">
+    <div class="arch-row">
+      <div class="arch-lane">開発者（クライアント）</div>
+      <div class="arch-cells"><span class="arch-box">AIジョブを送信</span></div>
+    </div>
+    <div class="arch-row">
+      <div class="arch-lane">Svitlo Chainプラットフォーム</div>
+      <div class="arch-cells"><span class="arch-box">マッチングとスケジューリング</span><span class="arch-arrow">→</span><span class="arch-box">結果と証明</span><span class="arch-arrow">→</span><span class="arch-box">検証と決済</span></div>
+    </div>
+    <div class="arch-row">
+      <div class="arch-lane">GPUサプライヤー</div>
+      <div class="arch-cells"><span class="arch-box">ジョブの取得と実行</span></div>
+    </div>
+    <div class="arch-row">
+      <div class="arch-lane">ブロックチェーン</div>
+      <div class="arch-cells"><span class="arch-box">SHA-256検証</span><span class="arch-arrow">→</span><span class="arch-box">SVIT支払い</span><span class="arch-arrow">→</span><span class="arch-box">評判システム</span></div>
+    </div></div>
+    <p style="margin-bottom:32px">Svitlo Chainはブロックチェーン技術を使用して信頼不要な環境を構築し、計算プロセスのすべてのステップが検証可能で透明である一方、ユーザーのデータと計算を保護するための堅牢なセキュリティを提供します。</p>
+    <div class="grid grid-3"><div class="card"><h3>分散型ジョブ実行</h3><p style="margin-top:8px">AIジョブは分割され、GPUサプライヤーのネットワーク全体に分散されることで、利用可能な計算能力の使用を最適化し、単一障害点を回避します。</p></div><div class="card"><h3>安全なコンテナ化</h3><p style="margin-top:8px">すべての計算ジョブは、サプライヤーのハードウェア上の分離されたコンテナ環境で実行され、不正アクセスを防止し、データの整合性を確保します。</p></div><div class="card"><h3>ブロックチェーンの透明性</h3><p style="margin-top:8px">すべての取引、ジョブ仕様、検証証明は、完全な透明性と否認防止のためにオンチェーンで記録されます。</p></div></div>
+  </div>
+</section>
+
+<section id="glossary">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">リファレンス</div><h2>用語集</h2><p>Svitlo Chainとより広い分散型AIエコシステムを理解しやすくするために、一般的な専門用語の用語集をまとめました — 経験豊富な技術ユーザーであっても、この分野に新しい方であっても、明確で簡潔に説明します。</p></div>
+    <div class="grid grid-3" style="gap:0 32px">
+    <div class="glossary-item"><div class="glossary-term">ブロックチェーン</div><p style="font-size:13.5px;margin:0">暗号学的にリンクされた取引の「ブロック」からなる、分散型で不変のデジタル台帳。各ブロックにはタイムスタンプと前のブロックへの参照が含まれており、安全で透明な履歴を作成します。</p></div>
+    <div class="glossary-item"><div class="glossary-term">コンテナ化</div><p style="font-size:13.5px;margin:0">アプリケーションコードをすべての依存関係（ライブラリ、ツール、設定）とともに、分離された「コンテナ」にパッケージ化する仮想化技術。これにより、どこにデプロイされてもアプリケーションが一貫して実行されることが保証されます。</p></div>
+    <div class="glossary-item"><div class="glossary-term">暗号学的証明</div><p style="font-size:13.5px;margin:0">データや取引の真正性と整合性を検証するために使用される数学的手法。当事者が互いを信頼する必要なく、安全な通信と検証を可能にします。</p></div>
+    <div class="glossary-item"><div class="glossary-term">CUDA</div><p style="font-size:13.5px;margin:0">NVIDIAが開発した並列計算プラットフォームおよびプログラミングモデル。CUDAにより、開発者はNVIDIA GPUを汎用計算に使用でき、特にAIにおいて計算集約的なタスクを劇的に高速化します。</p></div>
+    <div class="glossary-item"><div class="glossary-term">分散化</div><p style="font-size:13.5px;margin:0">単一の権限に集中させるのではなく、ネットワーク全体に制御と意思決定を分散させる原則。Svitlo Chainでは、これはGPUリソースが世界中の多くのノードに分散されていることを意味します。</p></div>
+    <div class="glossary-item"><div class="glossary-term">Docker</div><p style="font-size:13.5px;margin:0">コンテナ技術を使用してアプリケーションを開発、配布、実行するための人気のプラットフォーム。Dockerコンテナは、Svitlo Chainクライアントとaiジョブが分離された効率的な状態で実行されることを保証します。</p></div>
+    <div class="glossary-item"><div class="glossary-term">Svitlo Chain L1ブロックチェーン</div><p style="font-size:13.5px;margin:0">Rustで書かれ、セキュリティ、高速性、効率的なデータ処理のために設計された、Svitlo Chain独自のL1ブロックチェーン。取引、プログラムロジック、ネットワークインフラの基盤を形成します。</p></div>
+    <div class="glossary-item"><div class="glossary-term">GPU（グラフィックス処理装置）</div><p style="font-size:13.5px;margin:0">フレームバッファ内での画像作成を高速化するために、メモリを迅速に操作・変更するように設計された特殊な電子回路。GPUは大規模データセットの並列処理にも非常に効果的で、AI計算に理想的です。</p></div>
+    <div class="glossary-item"><div class="glossary-term">推論</div><p style="font-size:13.5px;margin:0">訓練されたAIモデルを使用して、新しい未見のデータに基づいて予測や決定を行うプロセス。これは、AIモデルが学習したことを適用する段階です。</p></div>
+    <div class="glossary-item"><div class="glossary-term">マイニング</div><p style="font-size:13.5px;margin:0">複雑な暗号パズルを解くことによって、新しい取引を検証しブロックチェーンに追加するプロセス。Svitlo Chainの「マイナーモード」では、ノードは取引を検証するかAI計算を実行することで収益を得られます。</p></div>
+    <div class="glossary-item"><div class="glossary-term">ノード</div><p style="font-size:13.5px;margin:0">Svitlo Chainクライアントソフトウェアを実行し、ネットワークに接続されたコンピュータまたはサーバー。ノードはネットワークに計算リソース（GPU）を提供します。</p></div>
+    <div class="glossary-item"><div class="glossary-term">ピアツーピア（P2P）</div><p style="font-size:13.5px;margin:0">中央サーバーを必要とせず、ノードが直接互いに通信するネットワーク。Svitlo ChainはP2Pネットワーク上に構築され、AIワークロードを分散させます。</p></div>
+    <div class="glossary-item"><div class="glossary-term">SVITコイン</div><p style="font-size:13.5px;margin:0">Svitlo ChainのL1ブロックチェーンのネイティブ暗号資産。SVITはGPUリソースの支払い、サプライヤーへの報酬、ネットワークガバナンスへの参加に使用されます。</p></div>
+    <div class="glossary-item"><div class="glossary-term">評判スコア</div><p style="font-size:13.5px;margin:0">Svitlo ChainのGPUサプライヤーの信頼性とパフォーマンスを評価するシステム。高いスコアはより多くのジョブとより高い収益につながります。</p></div>
+    <div class="glossary-item"><div class="glossary-term">SHA-256</div><p style="font-size:13.5px;margin:0">256ビット（32バイト）のハッシュ値を生成する暗号学的ハッシュ関数。データの整合性を確保し、ブロックの一意の識別子を作成するために、ブロックチェーン技術で広く使用されています。</p></div>
+    <div class="glossary-item"><div class="glossary-term">スラッシング</div><p style="font-size:13.5px;margin:0">GPUサプライヤーが悪意を持って行動したり義務を果たさなかったりした場合に、そのステークの一部が削除される、分散型ネットワークにおけるペナルティメカニズム。</p></div>
+    <div class="glossary-item"><div class="glossary-term">スマートコントラクト</div><p style="font-size:13.5px;margin:0">契約条件が直接コードに書き込まれた自己実行型契約。事前に定義された条件が満たされると、ブロックチェーン上で自動的に実行され、仲介者の必要性を排除します。</p></div>
+    <div class="glossary-item"><div class="glossary-term">ステーキング</div><p style="font-size:13.5px;margin:0">ネットワーク運用をサポートするための担保として、一定量の暗号資産（Svitlo ChainではSVIT）をロックするプロセス。GPUサプライヤーはSVITをステークして評判スコアを上げ、より多くのジョブを獲得できます。</p></div>
+    <div class="glossary-item"><div class="glossary-term">VRAM（ビデオランダムアクセスメモリ）</div><p style="font-size:13.5px;margin:0">画面に表示される画像データを保存するために特別に設計されたRAMの一種。AI計算、特に大規模モデルでは、十分なVRAMがパフォーマンスにとって重要です。</p></div></div>
+    <p style="margin-top:24px;color:var(--ink-m);font-size:13.5px">この用語集は定期的に更新されます。特定の用語について質問がある場合や、追加を提案したい場合は、遠慮なくSvitlo Chainコミュニティにお問い合わせください。</p>
+  </div>
+</section>
+
+<section id="compare">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">比較</div><h2>Svitlo Chain対従来のクラウドプロバイダー</h2><p>Svitlo Chainは、AIおよび機械学習プロジェクトのためのGPUリソースへのアクセスに革命を起こしています。この比較では、Svitlo ChainがAWS、Google Cloud、Azureなどの従来のクラウドサービスや、他の集中型GPUクラウドプロバイダーとどのように異なるかを強調しています。</p></div>
+    <div class="table-wrap"><table class="data"><thead><tr><th>項目</th><th>Svitlo Chain</th><th>従来のクラウド</th></tr></thead><tbody><tr><td>価格（GPU時間あたり）</td><td>最大70%安く、動的</td><td>しばしばより高価、段階的なオンデマンド</td></tr><tr><td>分散化</td><td>完全に分散化（ピアツーピア）</td><td>集中型</td></tr><tr><td>柔軟性</td><td>長期契約なし、従量課金、ロックインなし</td><td>しばしば契約、ロックイン期間、複雑な契約が必要</td></tr><tr><td>速度（ジョブのマッチングと実行）</td><td>P2Pネットワークによる高速マッチング</td><td>可変、高需要時にボトルネックが発生する可能性あり</td></tr><tr><td>透明性</td><td>ブロックチェーンによる完全な透明性と検証可能性</td><td>限定的、企業によって管理される</td></tr><tr><td>コミュニティ</td><td>オープンソースかつコミュニティ主導の開発</td><td>大規模なエコシステムだが、コミュニティ主導ではない</td></tr><tr><td>トークンインセンティブ</td><td>あり、サプライヤーとユーザー向けのSVITトークン</td><td>なし</td></tr></tbody></table></div>
+    <p style="margin-top:24px">表が示すように、Svitlo Chainは、分散型モデルとコミュニティの関与によって推進される、GPU計算のための費用対効果が高く、柔軟で透明性のあるソリューションを提供します。これにより、Svitlo Chainは分散型AI計算の未来として位置づけられます。</p>
+  </div>
+</section>
+
+<section id="cta" class="atmosphere tight">
+  <div class="wrap center" style="max-width:640px">
+    <div class="section-banner" style="background-image:url('/assets/images/banner-cosmic-lotus.jpg');height:180px"></div>
+    <h2>分散型GPU革命に参加する準備はできましたか？</h2>
+    <p class="lede center">遊休計算能力から収益を得たい場合でも、手頃で拡張性のあるAIパワーが必要な場合でも、Svitlo Chainには適切なソリューションがあります。数分で未来を築き始めるか、既存のハードウェアを収益化しましょう。</p>
+    <div class="cta-row" style="justify-content:center">
+      <a href="/platform/" class="btn btn-primary">サプライヤーになる</a>
+      <a href="/platform/" class="btn btn-glass glass-sm">開発を始める</a>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">お問い合わせ</div><h2>お問い合わせとサポート</h2><p>ご質問がある、助けが必要、またはSvitlo Chainコミュニティに参加したいですか？以下はすべての連絡チャネルとサポートリソースです。</p></div>
+    <div class="grid grid-2">
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">✉️</div>
+      <div><h3>メールサポート</h3><p style="margin-top:4px;font-size:13.5px"><a href="mailto:svitlochain@gmail.com">svitlochain@gmail.com</a></p></div>
+    </div>
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">✈️</div>
+      <div><h3>Telegram</h3><p style="margin-top:4px;font-size:13.5px"><a href="https://t.me/+8t6LS2j4CyJiOTU0" target="_blank" rel="noopener">クイックアップデートとコミュニティチャットのために、当社のTelegramグループに参加してください。</a></p></div>
+    </div>
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">💬</div>
+      <div><h3>Discordコミュニティ</h3><p style="margin-top:4px;font-size:13.5px"><a href="https://discord.gg/9wqA3fMfg" target="_blank" rel="noopener">チームや他のユーザーとのリアルタイムサポートとディスカッションのために、当社のDiscordに参加してください。</a></p></div>
+    </div>
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">🐦</div>
+      <div><h3>Xでフォロー</h3><p style="margin-top:4px;font-size:13.5px"><a href="https://x.com/Svitlochain" target="_blank" rel="noopener">最新のニュースと製品アップデートをチェックしましょう。</a></p></div>
+    </div>
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">📘</div>
+      <div><h3>Facebook</h3><p style="margin-top:4px;font-size:13.5px"><a href="https://www.facebook.com/share/1D53mnv4kk/" target="_blank" rel="noopener">ニュースとコミュニティアップデートのために、当社のFacebookページをフォローしてください。</a></p></div>
+    </div>
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">🐙</div>
+      <div><h3>GitHubリポジトリ</h3><p style="margin-top:4px;font-size:13.5px">当社のオープンソースコードを探索し、プラットフォームの開発に貢献しましょう。</p></div>
+    </div>
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">📄</div>
+      <div><h3>ドキュメント</h3><p style="margin-top:4px;font-size:13.5px">始めるための包括的なガイドと技術仕様をお読みください。</p></div>
+    </div>
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">📰</div>
+      <div><h3>Svitlo Chainブログ</h3><p style="margin-top:4px;font-size:13.5px">分散型AIに関する最新の洞察、分析、ニュースを入手しましょう。</p></div>
+    </div></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>
+      <a href="/ja/" class="brand" style="margin-bottom:10px;display:flex"><span class="dot"></span>Svitlo<b>Chain</b></a>
+      <p style="max-width:32ch">AI計算と推論決済のためのレイヤー1ブロックチェーン。</p>
+      <p>© 2026 Svitlo Chain. 無断複写・転載を禁じます。</p>
+    </div>
+    <div class="cols">
+    <div><h4>製品</h4><ul><li><a href="/ja/platform/">プラットフォーム</a></li><li><a href="/ja/documentation/">ドキュメント</a></li><li><a href="#developers">開発者向け</a></li><li><a href="#gpu-owners">GPU所有者向け</a></li><li><a href="#token">SVITトークン</a></li></ul></div>
+    <div><h4>会社</h4><ul><li><a href="#roadmap">ロードマップ</a></li><li><a href="#faq">よくある質問</a></li><li><a href="#contact">お問い合わせ</a></li></ul></div>
+    <div><h4>ウォレット</h4><ul><li><a href="/ja/wallet/">ウォレットを開く</a></li><li><a href="/privacy/">プライバシーポリシー</a></li><li><a href="/support/">サポート</a></li></ul></div></div>
+  </div>
+</footer>
+<script>
+document.addEventListener('click', (e) => {
+  const sw = document.getElementById('lang-switch');
+  if (sw && !sw.contains(e.target)) sw.classList.remove('open');
+  const nav = document.getElementById('nav-links');
+  const toggle = document.getElementById('nav-toggle');
+  if (nav && nav.classList.contains('open') && !nav.contains(e.target) && !toggle.contains(e.target)) {
+    nav.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+});
+window.__toggleTheme = function() {
+  var cur = document.documentElement.getAttribute('data-theme');
+  var isDark = cur ? cur === 'dark' : window.matchMedia('(prefers-color-scheme:dark)').matches;
+  var next = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('svitlo-theme', next); } catch (e) {}
+};
+try { localStorage.setItem('svitlo-lang', 'ja'); } catch (e) {}
+</script>
+</body>
+</html>

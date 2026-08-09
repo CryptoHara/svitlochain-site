@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Svitlo Chain — Dezentralisierte GPU-Cloud</title>
+<meta name="description" content="Ein dezentraler GPU-Marktplatz für KI — vermiete ungenutzte GPUs oder stelle deine eigene Hardware bereit, gesichert durch Blockchain.">
+<link rel="stylesheet" href="/assets/platform.css">
+<script>
+try {
+  var t = localStorage.getItem('svitlo-theme');
+  if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+} catch (e) {}
+</script>
+</head>
+<body>
+
+<nav class="site-nav glass">
+  <a href="/de/" class="brand"><img class="logo" src="/assets/images/logo.jpg" alt="Svitlo Chain">Svitlo<b>Chain</b></a>
+  <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" onclick="document.getElementById('nav-links').classList.toggle('open');this.setAttribute('aria-expanded', document.getElementById('nav-links').classList.contains('open'))">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div class="links" id="nav-links">
+    <a href="/de/wallet/">Wallet</a><a href="/de/platform/">Plattform</a><a href="/de/documentation/">Dokumentation</a>
+    <div class="lang-switch" id="lang-switch">
+      <button type="button" onclick="document.getElementById('lang-switch').classList.toggle('open')">🇩🇪 DE <span aria-hidden="true">▾</span></button>
+      <ul><li><a href="/en/" class="">🇬🇧 English</a></li><li><a href="/uk/" class="">🇺🇦 Українська</a></li><li><a href="/sv/" class="">🇸🇪 Svenska</a></li><li><a href="/no/" class="">🇳🇴 Norsk</a></li><li><a href="/it/" class="">🇮🇹 Italiano</a></li><li><a href="/es/" class="">🇪🇸 Español</a></li><li><a href="/fr/" class="">🇫🇷 Français</a></li><li><a href="/de/" class="current">🇩🇪 Deutsch</a></li><li><a href="/fi/" class="">🇫🇮 Suomi</a></li><li><a href="/pt/" class="">🇵🇹 Português</a></li><li><a href="/ja/" class="">🇯🇵 日本語</a></li><li><a href="/ko/" class="">🇰🇷 한국어</a></li><li><a href="/zh/" class="">🇨🇳 中文</a></li></ul>
+    </div>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" onclick="window.__toggleTheme()"><span class="theme-icon-light">☀️</span><span class="theme-icon-dark">🌙</span></button>
+  </div>
+</nav>
+
+<section class="hero hero-cosmic">
+  <div class="hero-spheres" aria-hidden="true">
+    <span class="hero-sphere s1"></span>
+    <span class="hero-sphere s2"></span>
+    <span class="hero-sphere s3"></span>
+    <span class="hero-sphere s4"></span>
+  </div>
+  <div class="wrap hero-copy">
+    <div class="eyebrow">Layer-1-Blockchain</div>
+    <h1>Svitlo Chain: dezentralisierte GPU-Cloud</h1>
+    <p class="lede">Befreie dich vom Preismonopol der großen Cloud-Anbieter für GPUs. Vermiete ungenutzte GPUs, oder stelle deine eigene Hardware bereit und verdiene echtes Einkommen — angetrieben von KI, gesichert durch Blockchain.</p>
+    <div class="cta-row">
+      <a href="/platform/" class="btn btn-primary">Anbieter werden</a>
+      <a href="/platform/" class="btn btn-glass glass-sm">Mit der Entwicklung beginnen</a>
+    </div>
+  </div>
+</section>
+
+<section id="idea">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Warum Svitlo Chain</div>
+      <h2>Die Idee hinter Svitlo Chain</h2>
+      <p>Der Markt für Cloud-GPUs wird von einer Handvoll Giganten kontrolliert — AWS, Google, Azure — die Premiumpreise verlangen, während Millionen von GPUs in Gaming-PCs, Mining-Rigs und Unternehmensrechenzentren ungenutzt bleiben. Svitlo Chain existiert, um das zu ändern.</p><p>Das Konzept ist einfach: ein dezentraler GPU-Marktplatz, auf dem Hardware-Besitzer mit ungenutzter Rechenleistung verdienen und KI-Entwickler erschwingliche, skalierbare Kapazität erhalten, ohne an einen einzelnen Anbieter gebunden zu sein. Keine Zwischenhändler. Keine Aufschläge. Nur eine direkte, vertrauensfreie Verbindung zwischen Angebot und Nachfrage — gesichert durch kryptografische Beweise und ein transparentes Reputationssystem.</p>
+    </div>
+    <div class="grid grid-3">
+    <div class="card">
+      <div class="eyebrow" style="margin-bottom:10px">Problem</div>
+      <h3>Zentralisierte Cloud-GPUs</h3>
+      <p style="margin-top:8px">Zentralisierte Cloud-Anbieter kontrollieren Preis, Verfügbarkeit und Zugang — und schaffen so Engpässe für die KI-Innovation.</p>
+    </div>
+    <div class="card">
+      <div class="eyebrow" style="margin-bottom:10px">Lösung</div>
+      <h3>Ein Peer-to-Peer-Markt</h3>
+      <p style="margin-top:8px">Ein Peer-to-Peer-GPU-Marktplatz, der ungenutzte Hardware in produktive Infrastruktur verwandelt, die ihre Besitzer bezahlt.</p>
+    </div>
+    <div class="card">
+      <div class="eyebrow" style="margin-bottom:10px">Vision</div>
+      <h3>Eine globale Rechenschicht</h3>
+      <p style="margin-top:8px">Eine globale, zensurresistente Schicht für Rechenleistung, die die nächste Generation von KI-Anwendungen antreibt.</p>
+    </div></div>
+  </div>
+</section>
+
+<section id="developers">
+  <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/bg-laptop-desk.jpg')"></div>
+    <div class="section-head">
+      <div class="eyebrow">So funktioniert es</div>
+      <h2>Für KI-Entwickler und Builder</h2>
+      <p>Svitlo Chain gibt KI-Entwicklern sofortigen Zugang zu einem globalen GPU-Pool — von Consumer-RTX-Karten bis zu Enterprise-A100 — zu einem Bruchteil der traditionellen Cloud-Kosten. Ob du ein großes Sprachmodell trainierst, Inferenz im großen Maßstab ausführst oder komplexe Simulationen renderst, Svitlo Chain ordnet deine Arbeitslast in Sekunden der richtigen Hardware zu.</p><p>Die Plattform übernimmt automatisch Job-Scheduling, sichere Containerisierung und Abrechnung. Builder deployen via CLI oder API, geben ihre GPU-Anforderungen an und zahlen nur für tatsächlich genutzte Rechenleistung — keine langfristigen Verträge, keine Mindestverpflichtungen.</p>
+    </div>
+    <div class="grid" style="gap:22px;margin-bottom:56px">
+    <div class="step">
+      <span class="arrow">→</span>
+      <div><h3>GPU-Anforderungen angeben</h3><p style="margin-top:4px">Wähle VRAM, Rechenleistung und Region.</p></div>
+    </div>
+    <div class="step">
+      <span class="arrow">→</span>
+      <div><h3>Via CLI oder API deployen</h3><p style="margin-top:4px">Reiche deinen Container ein und starte sofort mit dem Rechnen.</p></div>
+    </div>
+    <div class="step">
+      <span class="arrow">→</span>
+      <div><h3>Nach Nutzung bezahlen</h3><p style="margin-top:4px">Keine Verträge. Abrechnung in SVIT oder Stablecoin.</p></div>
+    </div></div>
+
+    <h2 style="margin-top:8px">Entwicklerhandbuch: Schnellstart mit Svitlo Chain</h2>
+    <p class="lede" style="margin-bottom:28px">Als KI-Entwickler brauchst du schnellen, kosteneffizienten und skalierbaren Zugang zu GPU-Ressourcen. Dieser Schnellstart bringt dich von der Authentifizierung bis zu deinem ersten Job und Ergebnis.</p>
+    
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">1</div>
+      <h3>API-Authentifizierung und Einrichtung</h3>
+      <p style="margin-top:8px">Um mit der Svitlo Chain API zu interagieren, benötigst du deinen API-Schlüssel aus deinem Entwickler-Dashboard nach der Registrierung. Für Python-Entwickler empfehlen wir unser SDK für eine reibungslose Integration; andere Sprachen können die REST-API direkt aufrufen.</p>
+      <div class="code"><span class="kw">import</span> os
+<span class="kw">import</span> svitlo_sdk
+
+<span class="c1"># API-Schlüssel sicher aus einer Umgebungsvariable lesen</span>
+API_KEY = os.environ.get(<span class="str">"SVIT_API_KEY"</span>)
+
+<span class="kw">if not</span> API_KEY:
+    <span class="kw">raise</span> ValueError(<span class="str">"SVIT_API_KEY ist nicht gesetzt."</span>)
+
+<span class="c1"># Svitlo Chain SDK-Client initialisieren</span>
+client = svitlo_sdk.SvitloClient(api_key=API_KEY)
+print(<span class="str">"API-Client erfolgreich initialisiert."</span>)</div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">2</div>
+      <h3>Deinen ersten GPU-Job einreichen</h3>
+      <p style="margin-top:8px">Einen GPU-Job einzureichen ist einfach. Definiere, welches KI-Modell ausgeführt werden soll, welche Eingabedaten verwendet werden und welche GPU-Ressourcen benötigt werden. Svitlo Chain ordnet deinen Job automatisch verfügbaren Anbietern im Netzwerk zu.</p>
+      <div class="code">job_config = {
+    <span class="str">"model_name"</span>: <span class="str">"stable_diffusion_v2"</span>,
+    <span class="str">"input_data_url"</span>: <span class="str">"s3://my-bucket/input-image.jpg"</span>,
+    <span class="str">"output_data_url"</span>: <span class="str">"s3://my-bucket/output-results/"</span>,
+    <span class="str">"gpu_type"</span>: <span class="str">"RTX_3090"</span>,
+    <span class="str">"gpu_count"</span>: 1,
+    <span class="str">"duration_hours"</span>: 0.5,
+}
+
+<span class="kw">try</span>:
+    job = client.submit_job(job_config)
+    print(<span class="fn">f</span><span class="str">"Job eingereicht! Job-ID: {job.id}"</span>)
+    print(<span class="fn">f</span><span class="str">"Status: {job.status}"</span>)
+<span class="kw">except</span> Exception <span class="kw">as</span> e:
+    print(<span class="fn">f</span><span class="str">"Fehler beim Einreichen des Jobs: {e}"</span>)</div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">3</div>
+      <h3>Job-Status überwachen</h3>
+      <p style="margin-top:8px">Nach dem Einreichen kannst du den Fortschritt deines Jobs in Echtzeit verfolgen — Fehler einsehen und abschätzen, wann Ergebnisse bereit sind.</p>
+      <div class="code">job_id = job.id
+
+current_job = client.get_job_status(job_id)
+print(<span class="fn">f</span><span class="str">"Job {current_job.id}, Status: {current_job.status}"</span>)
+
+<span class="kw">while</span> current_job.status <span class="kw">not in</span> [<span class="str">"COMPLETED"</span>, <span class="str">"FAILED"</span>]:
+    time.sleep(30)
+    current_job = client.get_job_status(job_id)
+    print(<span class="fn">f</span><span class="str">"Aktualisierter Status: {current_job.status}"</span>)
+
+<span class="kw">if</span> current_job.status == <span class="str">"COMPLETED"</span>:
+    print(<span class="str">"Job abgeschlossen!"</span>)
+<span class="kw">else</span>:
+    print(<span class="str">"Job fehlgeschlagen oder abgebrochen."</span>)</div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">4</div>
+      <h3>Ergebnisse abrufen</h3>
+      <p style="margin-top:8px">Sobald dein GPU-Job abgeschlossen ist, steht die Ausgabe am von dir angegebenen Ort zur Verfügung (z. B. ein S3-Bucket). Svitlo Chain stellt die Verbindungsdetails bereit, die du benötigst, um Ergebnisse sicher abzurufen.</p>
+      <div class="code"><span class="kw">if</span> current_job.status == <span class="str">"COMPLETED"</span>:
+    print(<span class="fn">f</span><span class="str">"Ergebnisse verfügbar unter: {current_job.output_data_location}"</span>)
+<span class="kw">else</span>:
+    print(<span class="str">"Ergebnisse nicht verfügbar — Job nicht abgeschlossen oder fehlgeschlagen."</span>)</div>
+    </div>
+    <div class="card card-accent">
+      <h3>5. Zahlung und Abrechnung</h3>
+      <p style="margin-top:8px">Svitlo Chain verwendet den SVIT-Token für alle Plattformtransaktionen, um Transparenz und Effizienz zu gewährleisten. Du wirst für die tatsächliche GPU-Nutzung und Job-Dauer abgerechnet — oft bis zu 70 % günstiger als traditionelle Cloud-Angebote. Verfolge deinen Nutzungsverlauf und Kontostand über dein Svitlo-Chain-Dashboard.</p>
+    </div>
+  </div>
+</section>
+
+<section id="gpu-owners">
+  <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/bg-gaming-pc.jpg')"></div>
+    <div class="section-head">
+      <div class="eyebrow">So funktioniert es</div>
+      <h2>Für GPU-Besitzer</h2>
+      <p>GPU-Besitzer — Gamer, Miner und Rechenzentren — können ungenutzte Hardware mit Svitlo Chain verbinden und passives Einkommen erzielen. Der Svitlo-Chain-Client läuft im Hintergrund, nimmt Rechenjobs an, führt sie in isolierten Containern aus und liefert Ergebnisse mit kryptografischer Verifizierung. Anbieter legen selbst Verfügbarkeitsfenster, Preise und Hardware-Spezifikationen fest.</p>
+    </div>
+    <div class="grid grid-3" style="margin-bottom:56px">
+    <div class="card card-accent">
+      <h3>Client installieren</h3>
+      <p style="margin-top:8px">Lade die Svitlo-Chain-Node-Software herunter, verbinde deine GPU und sei in wenigen Minuten einsatzbereit. Windows, Linux und Docker werden unterstützt.</p>
+    </div>
+    <div class="card card-accent">
+      <h3>Deine Bedingungen festlegen</h3>
+      <p style="margin-top:8px">Lege Stundenpreise, minimale VRAM und Verfügbarkeitsplan fest. Du kontrollierst, wann deine Hardware auf dem Markt ist.</p>
+    </div>
+    <div class="card card-accent">
+      <h3>Automatisch verdienen</h3>
+      <p style="margin-top:8px">Jobs werden automatisch zugeordnet, ausgeführt und verifiziert. Auszahlungen erfolgen in SVIT oder USDC direkt in deine Wallet.</p>
+    </div></div>
+
+    <h2>Installationsanleitung für GPU-Anbieter</h2>
+    <p class="lede" style="margin-bottom:28px">Svitlo-Chain-GPU-Anbieter zu werden ist einfach und lässt dich mit deiner ungenutzten Rechenleistung verdienen. Folge diesen Schritten, um den Svitlo-Chain-Node-Client zu installieren und deine GPU-Ressourcen weltweit an KI-Entwickler zu vermieten.</p>
+    
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">1</div>
+      <h3>Systemanforderungen</h3>
+      <p style="margin-top:8px">Stelle vor der Installation sicher, dass dein System diese Anforderungen erfüllt: <b>Betriebssystem:</b> Linux (Ubuntu 20.04+ empfohlen), Windows 10/11, macOS 13 Ventura oder neuer, oder eine Docker-kompatible Umgebung. <b>GPU:</b> NVIDIA GeForce RTX-30er-Serie oder neuer, NVIDIA A100/H100, AMD Radeon RX-6000er-Serie oder neuer, oder Apple Silicon mit Metal Performance Shaders (MPS). <b>RAM:</b> mindestens 16 GB. <b>Netzwerk:</b> eine stabile Verbindung mit mindestens 100 Mbit/s Up-/Download.</p>
+      
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">2</div>
+      <h3>Svitlo-Chain-Node-Client herunterladen</h3>
+      <p style="margin-top:8px">Hole dir den neuesten Node-Client von unserer offiziellen Website oder dem GitHub-Repository. Pakete für jede Plattform verfügbar.</p>
+      <div class="code"><span class="c1"># Linux</span>
+wget https://svitlochain.com/node-client/svitlo-node-linux-amd64.tar.gz
+tar -xzf svitlo-node-linux-amd64.tar.gz
+<span class="kw">cd</span> svitlo-node</div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">3</div>
+      <h3>Installieren und konfigurieren</h3>
+      <p style="margin-top:8px">Führe nach dem Download das Setup-Skript aus und folge den Anweisungen auf dem Bildschirm. Aktiviere auf Apple Silicon das Metal-beschleunigte Backend für beste Leistung.</p>
+      <div class="code">arch
+<span class="c1"># erwartet arm64 auf Apple Silicon</span>
+<span class="kw">export</span> SVITLO_GPU_BACKEND=mps
+<span class="kw">export</span> SVITLO_OPTIMIZE_APPLE_SILICON=<span class="kw">true</span>
+svitlo-node start</div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">4</div>
+      <h3>Wallet verbinden</h3>
+      <p style="margin-top:8px">Um Zahlungen zu erhalten, musst du eine kompatible Wallet verbinden. Diese Wallet enthält deine SVIT-Einnahmen.</p>
+      <div class="code">./svitlo-node wallet connect &lt;deine-wallet-adresse&gt;</div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">5</div>
+      <h3>Preise und Verfügbarkeit festlegen</h3>
+      <p style="margin-top:8px">Du hast die volle Kontrolle darüber, wie deine GPUs vermietet werden.</p>
+      <div class="code">./svitlo-node config <span class="kw">set</span> backend mps
+./svitlo-node config <span class="kw">set</span> optimize_apple_silicon
+./svitlo-node config <span class="kw">set</span> availability 24/7</div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">6</div>
+      <h3>Verdienen beginnen</h3>
+      <p style="margin-top:8px">Sobald dein Node läuft, verbunden und konfiguriert ist, beginnen deine GPUs, mit KI-Rechenjobs zugeordnet zu werden. Verfolge Einnahmen und Job-Verlauf über das Svitlo-Chain-Dashboard.</p>
+      
+    </div>
+  </div>
+</section>
+
+<section id="miner-mode" class="tight">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Miner Mode</div>
+      <h2>Wir laden Miner und GPU-Farmen ein</h2>
+      <p>Krypto-Mining hat sich verändert. Mit sinkenden Proof-of-Work-Belohnungen und steigenden Stromkosten brauchen GPU-Farmen neue Einnahmequellen. <b>Miner Mode</b> von Svitlo Chain lässt Mining-Betreiber ungenutzte Hardware sofort auf KI-Rechenleistung umleiten — ohne die Infrastruktur neu konfigurieren zu müssen.</p><p>Miner Mode ist ein leichtgewichtiger Schalter, der dein Rig vom Mining zur Vermietung von Rechenleistung verschiebt. Jobs durchlaufen eine Vorvalidierung, laufen isoliert (Sandbox) und Einnahmen werden in Echtzeit verfolgt. Farmen mit 10+ GPUs erhalten priorisiertes Job-Routing und dedizierten Support.</p>
+    </div>
+    <div class="grid grid-3" style="margin-bottom:56px">
+    <div class="card"><h3>Wechsel ohne Ausfallzeit</h3><p style="margin-top:8px">Wechsle in Sekunden zwischen Mining und Vermietung von Rechenleistung. Keine Hardware-Änderungen nötig.</p></div>
+    <div class="card"><h3>Höheres Ertragspotenzial</h3><p style="margin-top:8px">Die Nachfrage nach KI-Rechenleistung übersteigt oft das Angebot — Anbieter verdienen häufig mehr pro GPU-Stunde als bei den meisten Mining-Operationen.</p></div>
+    <div class="card"><h3>Farm-Kontrollpanel</h3><p style="margin-top:8px">Verwalte deine gesamte Farm von einer einzigen Oberfläche aus. Verfolge Einnahmen, Job-Status und Betriebszeit über jeden Node.</p></div></div>
+
+    <div class="grid grid-2" style="align-items:start">
+      <div class="card" style="background:var(--brown);color:#fff;border:none">
+        <h3 style="color:#fff">Warum Miner Mode?</h3>
+        <div style="color:rgba(255,255,255,.88);margin-top:8px"><p>Die Mining-Rentabilität ist instabil. Die GPU-Vermietung auf Svitlo Chain bietet eine stabile, vorhersehbare Einkommensbasis — besonders in Bärenmärkten oder wenn die Netzwerk-Difficulty steigt.</p><p>Miner Mode unterstützt eine Batch-Job-Warteschlange, sodass deine Farm nie untätig bleibt. Wenn die KI-Nachfrage sinkt, wechsle mit einem einzigen Befehl zurück zum Mining. Genau diese Flexibilität über Marktbedingungen hinweg zeichnet Svitlo Chain aus.</p></div>
+        <a href="#faq" class="btn btn-glass glass-sm" style="margin-top:14px;background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.3)">Mehr über Miner Mode erfahren</a>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:14px">So funktioniert es</h3>
+        
+    <div>
+      <div class="when">01</div>
+      <h3 style="margin:6px 0 6px">Deine Farm verbinden</h3>
+      <p style="font-size:13.5px">Installiere den Svitlo-Chain-Node-Client auf deinem bestehenden Mining-Rig.</p>
+    </div><hr style="border:none;border-top:1px solid var(--bd2);margin:16px 0">
+    <div>
+      <div class="when">02</div>
+      <h3 style="margin:6px 0 6px">Miner Mode aktivieren</h3>
+      <p style="font-size:13.5px">Vermiete Rechenleistung zusätzlich zum Mining oder anstelle davon.</p>
+    </div><hr style="border:none;border-top:1px solid var(--bd2);margin:16px 0">
+    <div>
+      <div class="when">03</div>
+      <h3 style="margin:6px 0 6px">Verdienen und verfolgen</h3>
+      <p style="font-size:13.5px">Verfolge Einnahmen in Echtzeit, Job-Durchsatz und GPU-Auslastung.</p>
+    </div><hr style="border:none;border-top:1px solid var(--bd2);margin:16px 0">
+    <div>
+      <div class="when">04</div>
+      <h3 style="margin:6px 0 6px">Frei wechseln</h3>
+      <p style="font-size:13.5px">Kehre jederzeit zum Mining zurück, wenn die Marktbedingungen dies begünstigen.</p>
+    </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Dienste</div>
+      <h2>Dienste und Preise</h2>
+      <p>Svitlo Chain bietet drei Kern-Servicestufen, jede geeignet für unterschiedliche KI-Workloads — von textbasierten Aufgaben bis zur Echtzeit-Sprachverarbeitung. Alle Dienste werden pro GPU-Stunde abgerechnet, mit Rabatten für langfristige Reservierungen, die in SVIT bezahlt werden.</p>
+    </div>
+    <div class="grid grid-3" style="margin-bottom:20px">
+    <div class="card">
+      <h3>Text-Inferenz / LLM</h3>
+      <p style="margin-top:8px">Führe große Sprachmodelle, Chatbots und Textgenerierungsaufgaben aus. Optimiert für Hardware von RTX 4060 bis A100.</p>
+      <div class="pill">Ab $0,12/Std</div>
+    </div>
+    <div class="card">
+      <h3>Bildgenerierung</h3>
+      <p style="margin-top:8px">Stable Diffusion, FLUX und maßgeschneiderte Bildmodelle im großen Maßstab. GPUs mit hohem VRAM empfohlen für Batch-Generierung.</p>
+      <div class="pill">Ab $0,28/Std</div>
+    </div>
+    <div class="card">
+      <h3>Spracherkennung (STT)</h3>
+      <p style="margin-top:8px">Echtzeit-Transkription und Sprachverarbeitungs-Pipelines. Latenzarme Instanzen weltweit verfügbar.</p>
+      <div class="pill">Ab $0,18/Std</div>
+    </div></div>
+    <div class="callout" style="margin-bottom:56px">💡 Alle Preise spiegeln die Aktualisierungen des Rechners v2 wider. Zahlungen in SVIT erhalten zusätzlich 10 % Rabatt.</div>
+
+    <h2>Anbieter-Einnahmen: reale Zahlen</h2>
+    <p class="lede" style="margin-bottom:24px">Deine Einnahmen auf Svitlo Chain hängen direkt von deiner Hardware ab. Unten findest du eine realistische Schätzung der Stundeneinnahmen für gängige GPU-Konfigurationen, basierend auf aktueller Marktnachfrage und Preisrechner v2. Die tatsächlichen Einnahmen hängen von Verfügbarkeit, Job-Typ und Region ab.</p>
+    <div class="table-wrap" style="margin-bottom:32px">
+      <table class="data"><thead><tr><th>GPU</th><th>Stundensatz</th><th>Gesch. pro Monat (80 % Auslastung)</th></tr></thead><tbody><tr><td>RTX 4060</td><td>$0,12/Std</td><td>~$70</td></tr><tr><td>RTX 4070 Ti</td><td>$0,22/Std</td><td>~$127</td></tr><tr><td>RTX 4080</td><td>$0,35/Std</td><td>~$202</td></tr><tr><td>RTX 4090</td><td>$0,55/Std</td><td>~$317</td></tr><tr><td>A40 / L40</td><td>$0,80/Std</td><td>~$461</td></tr><tr><td>A100 (40GB)</td><td>$1,40/Std</td><td>~$806</td></tr><tr><td>8× A100-Flotte</td><td>$11,20/Std</td><td>~$6.451</td></tr></tbody></table>
+    </div>
+    <div class="grid grid-3">
+    <div class="card glass stat-glass">
+      <div class="stat-num">$6.451</div>
+      <div class="stat-label">8× A100-Flotte</div>
+      <div class="stat-desc">Geschätzte monatliche Einnahmen bei 80 % Auslastung — die Auszahlung der Skalierung.</div>
+    </div>
+    <div class="card glass stat-glass">
+      <div class="stat-num">80 %</div>
+      <div class="stat-label">Zielauslastung</div>
+      <div class="stat-desc">Eine konservative Schätzung. Anbieter mit hoher Nachfrage übertreffen oft 90 %.</div>
+    </div>
+    <div class="card glass stat-glass">
+      <div class="stat-num">10+</div>
+      <div class="stat-label">GPU-Stufen</div>
+      <div class="stat-desc">Von Consumer-RTX-Karten bis zu Enterprise-A100 — es gibt einen Markt für jede GPU.</div>
+    </div></div>
+  </div>
+</section>
+
+<section id="token">
+  <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/bg-circuit-devices-1.jpg')"></div>
+    <div class="section-head">
+      <div class="eyebrow">Tokenomics</div>
+      <h2>Der SVIT-Token: drei Säulen des Nutzens</h2>
+      <p>SVIT ist die native Währung des Svitlo-Chain-Ökosystems und der eigenen L1-Blockchain von Svitlo Chain. SVIT treibt das gesamte Ökosystem an — von Sicherheit und Transaktionen bis zu Staking, Burning und Kapitalisierung. Als native Coin profitiert SVIT von schnellen Transaktionen, niedrigen Gebühren und hohem Durchsatz. Die Tokenomics ist auf langfristige Nachhaltigkeit ausgelegt, mit einem deflationären Burn-Mechanismus, Staking und einem gedeckelten Angebot.</p>
+    </div>
+    <div class="grid grid-3" style="margin-bottom:20px">
+    <div class="card">
+      <div class="ico">💳</div>
+      <h3>Zahlungen und Rabatte</h3>
+      <p style="margin-top:8px">Anbieter und Entwickler, die in SVIT abrechnen, erhalten 10 % Rabatt auf alle Marktplatzgebühren. SVIT ist die bevorzugte Währung für Job-Zahlungen und Staking im gesamten Svitlo-Chain-L1-Ökosystem, mit schnellen, günstigen Transaktionen.</p>
+    </div>
+    <div class="card">
+      <div class="ico">🛡️</div>
+      <h3>Staking und Reputation</h3>
+      <p style="margin-top:8px">Anbieter staken SVIT, um dem Netzwerk beizutreten. Ehrliches Verhalten erhöht die Reputationswerte und schaltet priorisierte Job-Zuweisung frei. Böswillige Akteure werden bestraft (Slashing), und die L1-Blockchain von Svitlo Chain sorgt selbst bei hoher Last für effiziente Koordination.</p>
+    </div>
+    <div class="card">
+      <div class="ico">🔥</div>
+      <h3>Burning und Deflation</h3>
+      <p style="margin-top:8px">Ein Teil jeder Transaktionsgebühr wird dauerhaft verbrannt und reduziert so das Gesamtangebot im Laufe der Zeit. Mit wachsender Ökosystem-Aktivität beschleunigt sich die Burn-Rate — das erzeugt deflationären Druck auf SVIT, während die niedrigen Gebühren von Svitlo Chain den Mechanismus effizient halten.</p>
+    </div></div>
+    <div class="callout" style="margin-bottom:48px">ℹ️ Das Gesamtangebot von SVIT ist gedeckelt. Burn-Ereignisse sind öffentlich on-chain verifizierbar. Token-Inhaber stimmen auch über Plattform-Updates und Gebührenstrukturen ab.</div>
+    <h2>Blockchain-Infrastruktur für SVIT</h2>
+    <p class="lede" style="margin-bottom:24px">Über den direkten Nutzen hinaus baut Svitlo Chain auf seiner eigenen Infrastruktur auf, die das Ökosystem stärkt und die Nutzung von SVIT reibungsloser macht.</p>
+    <div class="grid grid-2">
+    <div class="card card-accent"><h3>L1-Blockchain für SVIT</h3><p style="margin-top:8px">SVIT ist die native Coin der eigenen L1-Blockchain von Svitlo Chain, mit einer Gesamtemission von 1 Milliarde Coins. Sie bildet das Rückgrat für die Sicherheit des Ökosystems, den Transaktionsfluss, Staking, Burning und langfristige Kapitalisierung. Jede Aktivität ist direkt mit dem Wert und der Nachhaltigkeit von SVIT verknüpft.</p></div>
+    <div class="card card-accent"><h3>Svitlo Wallet</h3><p style="margin-top:8px">Svitlo Wallet ist eine einfache Wallet zum Speichern, Senden und Verwenden von SVIT im gesamten Svitlo-Chain-Ökosystem.</p><a href="/de/wallet/" class="btn btn-glass glass-sm" style="margin-top:14px">Mehr erfahren →</a></div></div>
+  </div>
+</section>
+
+<section id="enterprise">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Für Unternehmen</div><h2>Business, Vertrauen und Einstieg</h2></div>
+    <div class="grid grid-2" style="align-items:start;margin-bottom:56px">
+      <div>
+        <h3 style="font-family:var(--serif);font-size:20px;margin-bottom:10px">Unternehmensstufen</h3>
+        <p>Organisationen, die SLAs, dedizierten Support und Zugang zu einer privaten Flotte benötigen, können über das Enterprise-Programm von Svitlo Chain einsteigen. Jede Stufe umfasst kryptografische Verifizierung von Rechenjobs, On-Chain-Reputationstracking und vollständige Dokumentation für die Compliance bei Unternehmensbeschaffungen.</p>
+        <div class="table-wrap"><table class="data"><thead><tr><th>Stufe</th><th>Funktionen</th></tr></thead><tbody><tr><td><b>Starter</b></td><td>API-Zugang, öffentlicher Marktplatz, SVIT-Zahlungen</td></tr><tr><td><b>Growth</b></td><td>Priorisiertes Routing, dedizierter Support, Flotten-CLI</td></tr><tr><td><b>Enterprise</b></td><td>SLA-Garantie, private Flotte, Compliance-Paket, White-Glove-Onboarding</td></tr></tbody></table></div>
+      </div>
+      <div>
+        <h3 style="font-family:var(--serif);font-size:20px;margin-bottom:10px">Vertrauen und Sicherheit</h3>
+        
+    <div class="card-accent" style="padding:14px 0 14px 16px;margin-bottom:4px">
+      <h3>SHA-256-Verifizierung</h3><p style="margin-top:6px;font-size:13.5px">Jeder Rechenjob wird kryptografisch verifiziert — Anbieter können Ergebnisse nicht fälschen.</p>
+    </div>
+    <div class="card-accent" style="padding:14px 0 14px 16px;margin-bottom:4px">
+      <h3>Reputationssystem</h3><p style="margin-top:6px;font-size:13.5px">On-Chain-Scoring belohnt zuverlässige, ehrliche Anbieter und filtert böswillige Akteure heraus.</p>
+    </div>
+    <div class="card-accent" style="padding:14px 0 14px 16px;margin-bottom:4px">
+      <h3>Compliance-bereit</h3><p style="margin-top:6px;font-size:13.5px">Unternehmensdokumentation, Audit-Logs und Datenresidenz-Optionen in deiner bevorzugten Region.</p>
+    </div>
+      </div>
+    </div>
+    <h3 style="font-family:var(--serif);font-size:20px;margin-bottom:16px">Werde noch heute Teil von Svitlo Chain</h3>
+    <div class="grid grid-3">
+    <div class="card"><div class="ico">🖥️</div><h3>Anbieter</h3><p style="margin-top:8px">Monetarisiere deine ungenutzten GPUs und erziele passives Einkommen.</p></div>
+    <div class="card"><div class="ico">⚡</div><h3>Entwickler</h3><p style="margin-top:8px">Erhalte erschwingliche, skalierbare GPU-Leistung für deine KI-Projekte.</p></div>
+    <div class="card"><div class="ico">⛏️</div><h3>Mining-Betreiber</h3><p style="margin-top:8px">Verwandle deine Mining-Infrastruktur mit Miner Mode in KI-Rechenleistung.</p></div></div>
+  </div>
+</section>
+
+<section id="roadmap">
+  <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/banner-phoenix-dawn.jpg')"></div>
+    <div class="section-head"><div class="eyebrow">Roadmap</div><h2>Unsere Roadmap: die Zukunft von Svitlo Chain</h2><p>Svitlo Chain entwickelt sich kontinuierlich weiter, um der wachsenden Nachfrage nach dezentralem GPU-Computing gerecht zu werden. Unsere Roadmap konzentriert sich auf strategisches Wachstum und die Bereitstellung von Mehrwert für Anbieter und Entwickler gleichermaßen.</p></div>
+    <div class="timeline">
+      <div class="timeline-items">
+    <div><div class="when">Q3 2026</div><h3>Launch</h3><p style="font-size:13.5px;margin-top:4px">Offizieller Launch der Svitlo-Chain-Plattform mit Kernfunktionen für GPU-Vermietung und Miner Mode.</p></div>
+    <div><div class="when">Q4 2026</div><h3>Enterprise-Funktionen</h3><p style="font-size:13.5px;margin-top:4px">Enterprise-Stufen, dedizierter Support, SLAs und fortgeschrittene Sicherheitsprotokolle für größere Kunden.</p></div>
+    <div><div class="when">Q1 2027</div><h3>Globale Expansion</h3><p style="font-size:13.5px;margin-top:4px">Erweiterte geografische Abdeckung, neue regionale Rechenzentren und Partnerschaften, um ein breiteres Publikum zu erreichen.</p></div>
+    <div><div class="when">Q2 2027</div><h3>Erweiterte Analytik</h3><p style="font-size:13.5px;margin-top:4px">Ausgefeilte Analyse-Tools zur Optimierung der GPU-Nutzung und Einnahmenverfolgung.</p></div></div>
+      <div class="timeline-track"><span class="pt" style="left:0%"></span><span class="pt" style="left:33.33333333333333%"></span><span class="pt" style="left:66.66666666666666%"></span><span class="pt" style="left:100%"></span></div>
+    </div>
+    <p style="margin-top:24px;color:var(--ink-m);font-size:13.5px">Diese Roadmap spiegelt unsere aktuellen strategischen Prioritäten wider, aber das Svitlo-Chain-Team bleibt agil und reagiert auf Marktbedingungen und Community-Feedback.</p>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Fragen</div><h2>Häufig gestellte Fragen</h2><p>Hast du Fragen zu Svitlo Chain? Hier sind Antworten auf einige der häufigsten Fragen von Anbietern und Entwicklern.</p></div>
+    <div class="card glass" style="padding:8px 26px"><div class="faq-item"><h3>Wie werde ich Anbieter?</h3><p style="margin-top:8px">Installiere den Svitlo-Chain-Node-Client auf deinem bestehenden Mining-Rig. Aktiviere dann "Miner Mode", um deine Rechenleistung zu vermieten — zusätzlich zu deinem bestehenden Mining oder anstelle davon. Der Prozess ist so gestaltet, dass er reibungslos und einfach ist.</p></div><div class="faq-item"><h3>Welche Gebühren fallen auf Svitlo Chain an?</h3><p style="margin-top:8px">Svitlo Chain hat eine transparente Gebührenstruktur zur Aufrechterhaltung der Plattform. Nutzer, die in unserem nativen Utility-Token SVIT abrechnen, erhalten 10 % Rabatt auf alle Marktplatzgebühren. Konkrete Gebühren können je nach Job-Typ und Marktbedingungen variieren.</p></div><div class="faq-item"><h3>Sind meine Daten und Berechnungen sicher?</h3><p style="margin-top:8px">Ja. Sicherheit ist zentral für unser Design. Jeder Rechenjob wird kryptografisch über SHA-256 verifiziert, sodass Anbieter Ergebnisse nicht fälschen können. Wir verfolgen auch die Anbieter-Reputation on-chain und bieten ein Enterprise-Compliance-Paket für erweiterte Sicherheitsanforderungen.</p></div><div class="faq-item"><h3>Kann ich jede GPU verwenden?</h3><p style="margin-top:8px">Svitlo Chain ist auf Flexibilität ausgelegt und unterstützt eine breite Palette von GPUs, von Consumer-Modellen wie der RTX 4060 bis zu leistungsstarken Enterprise-GPUs wie der A100. Die Plattform hat einen Markt für nahezu jede GPU-Konfiguration, sodass du beliebige Hardware monetarisieren kannst, die du besitzt.</p></div><div class="faq-item"><h3>Was ist der SVIT-Token?</h3><p style="margin-top:8px">SVIT ist der native Utility-Token von Svitlo Chain, der Zahlungen ermöglicht, ehrliches Verhalten durch Staking fördert und die Plattformentwicklung steuert. Er hat einen deflationären Burn-Mechanismus und ein gedeckeltes Angebot für langfristige Nachhaltigkeit.</p></div><div class="faq-item"><h3>Wie hebe ich meine Einnahmen ab?</h3><p style="margin-top:8px">Deine Svitlo-Chain-Einnahmen sammeln sich in deiner verbundenen Wallet. Du kannst jederzeit abheben, entweder in SVIT oder durch Umwandlung in andere Kryptowährungen/Fiat über die integrierten Tauschoptionen der Plattform. Details findest du in unserer Dokumentation.</p></div></div>
+  </div>
+</section>
+
+<section id="stats" class="atmosphere">
+  <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/banner-comet-icefield.jpg')"></div>
+    <div class="section-head center"><div class="eyebrow">In Zahlen</div><h2>Svitlo Chain in Zahlen: die Stärke der Plattform</h2><p class="center">Svitlo Chain wächst weiterhin exponentiell und treibt die Zukunft des dezentralen KI-Computings voran. Hier ein Einblick in die beeindruckende Reichweite und Effizienz der Plattform — eine kosteneffiziente Lösung im Vergleich zu traditionellen Cloud-Anbietern.</p></div>
+    <div class="grid grid-4">
+    <div class="card glass stat-glass">
+      <div class="stat-num">2,5 Mio.+</div>
+      <div class="stat-label">Verfügbare GPU-Stunden</div>
+      <div class="stat-desc">Über 2,5 Millionen GPU-Stunden wurden von unserem Netzwerk für KI-Jobs geliefert, und die Zahl steigt jeden Monat stetig.</div>
+    </div>
+    <div class="card glass stat-glass">
+      <div class="stat-num">8.500+</div>
+      <div class="stat-label">Aktive Anbieter</div>
+      <div class="stat-desc">Ein wachsendes Netzwerk von über 8.500 einzigartigen Anbietern trägt Rechenleistung bei und sorgt für Robustheit und Verfügbarkeit.</div>
+    </div>
+    <div class="card glass stat-glass">
+      <div class="stat-num">70 %</div>
+      <div class="stat-label">Durchschnittliche Kosteneinsparung</div>
+      <div class="stat-desc">Erziele bis zu 70 % Einsparungen beim GPU-Computing im Vergleich zu führenden Cloud-Plattformen, ohne Kompromisse bei der Leistung.</div>
+    </div>
+    <div class="card glass stat-glass">
+      <div class="stat-num">500+ PFLOPS</div>
+      <div class="stat-label">Gesamte Rechenleistung</div>
+      <div class="stat-desc">Zusammen liefert Svitlo Chain mehr als 500 PFLOPS an KI-Rechenleistung — eine gewaltige Ressource in jedem Maßstab.</div>
+    </div></div>
+  </div>
+</section>
+
+<section id="architecture">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Unter der Haube</div><h2>Technische Architektur von Svitlo Chain: wie das System funktioniert</h2><p>Svitlo Chain läuft auf einer robusten dezentralen Architektur, die Effizienz, Sicherheit und Transparenz gewährleistet. Hier eine Aufschlüsselung der technischen Mechanismen hinter der Plattform.</p></div>
+    <div class="arch" style="margin-bottom:28px">
+    <div class="arch-row">
+      <div class="arch-lane">Entwickler (Client)</div>
+      <div class="arch-cells"><span class="arch-box">KI-Job einreichen</span></div>
+    </div>
+    <div class="arch-row">
+      <div class="arch-lane">Svitlo-Chain-Plattform</div>
+      <div class="arch-cells"><span class="arch-box">Zuordnung und Scheduling</span><span class="arch-arrow">→</span><span class="arch-box">Ergebnis und Beweis</span><span class="arch-arrow">→</span><span class="arch-box">Verifizierung und Abwicklung</span></div>
+    </div>
+    <div class="arch-row">
+      <div class="arch-lane">GPU-Anbieter</div>
+      <div class="arch-cells"><span class="arch-box">Job abrufen und ausführen</span></div>
+    </div>
+    <div class="arch-row">
+      <div class="arch-lane">Blockchain</div>
+      <div class="arch-cells"><span class="arch-box">SHA-256-Verifizierung</span><span class="arch-arrow">→</span><span class="arch-box">SVIT-Zahlung</span><span class="arch-arrow">→</span><span class="arch-box">Reputationssystem</span></div>
+    </div></div>
+    <p style="margin-bottom:32px">Svitlo Chain nutzt Blockchain-Technologie, um eine vertrauensfreie Umgebung zu schaffen, in der jeder Schritt des Rechenprozesses verifizierbar und transparent ist, während gleichzeitig robuste Sicherheit zum Schutz von Nutzerdaten und Berechnungen geboten wird.</p>
+    <div class="grid grid-3"><div class="card"><h3>Dezentrale Job-Ausführung</h3><p style="margin-top:8px">KI-Jobs werden aufgeteilt und über das Netzwerk der GPU-Anbieter verteilt, wodurch die Nutzung verfügbarer Rechenleistung optimiert und einzelne Fehlerquellen vermieden werden.</p></div><div class="card"><h3>Sichere Containerisierung</h3><p style="margin-top:8px">Jeder Rechenjob läuft in einer isolierten Container-Umgebung auf der Hardware des Anbieters, was unbefugten Zugriff verhindert und die Datenintegrität gewährleistet.</p></div><div class="card"><h3>Blockchain-Transparenz</h3><p style="margin-top:8px">Jede Transaktion, Job-Spezifikation und Verifizierungsnachweis wird on-chain aufgezeichnet, für volle Transparenz und Unabstreitbarkeit.</p></div></div>
+  </div>
+</section>
+
+<section id="glossary">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Referenz</div><h2>Glossar</h2><p>Um das Verständnis von Svitlo Chain und dem breiteren dezentralen KI-Ökosystem zu erleichtern, haben wir ein Glossar gängiger Fachbegriffe zusammengestellt — klar und prägnant, egal ob du ein erfahrener technischer Nutzer bist oder neu in diesem Bereich.</p></div>
+    <div class="grid grid-3" style="gap:0 32px">
+    <div class="glossary-item"><div class="glossary-term">Blockchain</div><p style="font-size:13.5px;margin:0">Ein verteiltes, unveränderliches digitales Hauptbuch aus kryptografisch verknüpften "Blöcken" von Transaktionen. Jeder Block enthält einen Zeitstempel und einen Verweis auf den vorherigen Block, wodurch eine sichere und transparente Historie entsteht.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Containerisierung</div><p style="font-size:13.5px;margin:0">Eine Virtualisierungstechnik, die Anwendungscode zusammen mit allen Abhängigkeiten (Bibliotheken, Tools, Konfiguration) in einen isolierten "Container" verpackt. Dies stellt sicher, dass die Anwendung konsistent läuft, unabhängig davon, wo sie bereitgestellt wird.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Kryptografischer Beweis</div><p style="font-size:13.5px;margin:0">Mathematische Methoden zur Verifizierung der Authentizität und Integrität von Daten oder Transaktionen. Sie ermöglichen sichere Kommunikation und Verifizierung, ohne dass die Parteien einander vertrauen müssen.</p></div>
+    <div class="glossary-item"><div class="glossary-term">CUDA</div><p style="font-size:13.5px;margin:0">Eine von NVIDIA entwickelte Parallel-Computing-Plattform und Programmiermodell. CUDA ermöglicht es Entwicklern, NVIDIA-GPUs für Allzweck-Computing zu nutzen und beschleunigt rechenintensive Aufgaben drastisch, besonders in der KI.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Dezentralisierung</div><p style="font-size:13.5px;margin:0">Das Prinzip, Kontrolle und Entscheidungsfindung über ein Netzwerk zu verteilen, anstatt sie bei einer einzigen Autorität zu konzentrieren. Bei Svitlo Chain bedeutet dies, dass GPU-Ressourcen global auf viele Nodes verteilt sind.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Docker</div><p style="font-size:13.5px;margin:0">Eine beliebte Plattform zum Entwickeln, Ausliefern und Ausführen von Anwendungen mittels Container-Technologie. Docker-Container stellen sicher, dass der Svitlo-Chain-Client und KI-Jobs isoliert und effizient laufen.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Svitlo-Chain-L1-Blockchain</div><p style="font-size:13.5px;margin:0">Die eigene L1-Blockchain von Svitlo Chain, geschrieben in Rust und ausgelegt auf Sicherheit, hohe Geschwindigkeit und effiziente Datenverarbeitung. Sie bildet die Grundlage für Transaktionen, Programmlogik und Netzwerkinfrastruktur.</p></div>
+    <div class="glossary-item"><div class="glossary-term">GPU (Graphics Processing Unit)</div><p style="font-size:13.5px;margin:0">Ein spezialisierter elektronischer Schaltkreis, der darauf ausgelegt ist, Speicher schnell zu manipulieren und zu verändern, um die Bilderzeugung in einem Framebuffer zu beschleunigen. GPUs sind auch hocheffektiv für die parallele Verarbeitung großer Datensätze, was sie ideal für KI-Berechnungen macht.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Inferenz</div><p style="font-size:13.5px;margin:0">Der Prozess, ein trainiertes KI-Modell zu verwenden, um Vorhersagen oder Entscheidungen basierend auf neuen, ungesehenen Daten zu treffen. Dies ist die Phase, in der das KI-Modell anwendet, was es gelernt hat.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Mining</div><p style="font-size:13.5px;margin:0">Der Prozess, neue Transaktionen zu verifizieren und einer Blockchain hinzuzufügen, indem komplexe kryptografische Rätsel gelöst werden. Im "Miner Mode" von Svitlo Chain können Nodes durch Validieren von Transaktionen oder Ausführen von KI-Berechnungen verdienen.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Node</div><p style="font-size:13.5px;margin:0">Ein Computer oder Server, der die Svitlo-Chain-Client-Software ausführt und mit dem Netzwerk verbunden ist. Nodes stellen dem Netzwerk Rechenressourcen (GPUs) bereit.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Peer-to-Peer (P2P)</div><p style="font-size:13.5px;margin:0">Ein Netzwerk, in dem Nodes direkt miteinander kommunizieren, ohne einen zentralen Server zu benötigen. Svitlo Chain baut auf einem P2P-Netzwerk auf, um KI-Arbeitslasten zu verteilen.</p></div>
+    <div class="glossary-item"><div class="glossary-term">SVIT-Coin</div><p style="font-size:13.5px;margin:0">Die native Kryptowährung der L1-Blockchain von Svitlo Chain. SVIT wird verwendet, um GPU-Ressourcen zu bezahlen, Anbieter zu belohnen und an der Netzwerk-Governance teilzunehmen.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Reputationswert</div><p style="font-size:13.5px;margin:0">Ein System, das die Zuverlässigkeit und Leistung der GPU-Anbieter von Svitlo Chain bewertet. Hohe Werte führen zu mehr Jobs und höheren Einnahmen.</p></div>
+    <div class="glossary-item"><div class="glossary-term">SHA-256</div><p style="font-size:13.5px;margin:0">Eine kryptografische Hashfunktion, die einen 256-Bit-Hashwert (32 Byte) erzeugt. Sie wird in der Blockchain-Technologie umfassend eingesetzt, um Datenintegrität sicherzustellen und eindeutige Kennungen für Blöcke zu erstellen.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Slashing</div><p style="font-size:13.5px;margin:0">Ein Bestrafungsmechanismus in dezentralen Netzwerken, bei dem ein Teil des Stakes eines GPU-Anbieters entfernt wird, wenn er böswillig handelt oder seinen Verpflichtungen nicht nachkommt.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Smart Contracts</div><p style="font-size:13.5px;margin:0">Selbstausführende Verträge, deren Bedingungen direkt in Code geschrieben sind. Sie laufen automatisch auf einer Blockchain ab, wenn vordefinierte Bedingungen erfüllt sind, wodurch Vermittler überflüssig werden.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Staking</div><p style="font-size:13.5px;margin:0">Der Prozess, eine bestimmte Menge Kryptowährung (SVIT bei Svitlo Chain) als Sicherheit zu hinterlegen, um den Netzwerkbetrieb zu unterstützen. GPU-Anbieter können SVIT staken, um ihren Reputationswert zu erhöhen und mehr Jobs zu erhalten.</p></div>
+    <div class="glossary-item"><div class="glossary-term">VRAM (Video Random Access Memory)</div><p style="font-size:13.5px;margin:0">Ein RAM-Typ, der speziell zum Speichern von auf einem Bildschirm angezeigten Bilddaten entwickelt wurde. Für KI-Berechnungen, besonders bei großen Modellen, ist ausreichend VRAM entscheidend für die Leistung.</p></div></div>
+    <p style="margin-top:24px;color:var(--ink-m);font-size:13.5px">Dieses Glossar wird regelmäßig aktualisiert. Wenn du Fragen zu bestimmten Begriffen hast oder Ergänzungen vorschlagen möchtest, zögere nicht, die Svitlo-Chain-Community zu kontaktieren.</p>
+  </div>
+</section>
+
+<section id="compare">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Vergleich</div><h2>Svitlo Chain vs. traditionelle Cloud-Anbieter</h2><p>Svitlo Chain revolutioniert den Zugang zu GPU-Ressourcen für KI- und Machine-Learning-Projekte. Dieser Vergleich zeigt, wie sich Svitlo Chain von traditionellen Cloud-Diensten wie AWS, Google Cloud und Azure sowie anderen zentralisierten GPU-Cloud-Anbietern unterscheidet.</p></div>
+    <div class="table-wrap"><table class="data"><thead><tr><th>Dimension</th><th>Svitlo Chain</th><th>Traditionelle Cloud</th></tr></thead><tbody><tr><td>Preise (pro GPU-Stunde)</td><td>Bis zu 70 % günstiger, dynamisch</td><td>Oft teurer, gestaffelt on-demand</td></tr><tr><td>Dezentralisierung</td><td>Vollständig dezentralisiert (Peer-to-Peer)</td><td>Zentralisiert</td></tr><tr><td>Flexibilität</td><td>Keine langen Verträge, Pay-per-Use, keine Bindung</td><td>Erfordert oft Verträge, Bindungsfristen, komplexe Vereinbarungen</td></tr><tr><td>Geschwindigkeit (Job-Zuordnung und -Ausführung)</td><td>Schnelle Zuordnung über P2P-Netzwerk</td><td>Variabel, kann bei hoher Nachfrage Engpässe erleiden</td></tr><tr><td>Transparenz</td><td>Volle Transparenz und Verifizierbarkeit via Blockchain</td><td>Begrenzt, unternehmensgesteuert</td></tr><tr><td>Community</td><td>Open-Source- und community-getriebene Entwicklung</td><td>Großes Ökosystem, aber nicht community-getrieben</td></tr><tr><td>Token-Anreize</td><td>Ja, SVIT-Token für Anbieter und Nutzer</td><td>Nein</td></tr></tbody></table></div>
+    <p style="margin-top:24px">Wie die Tabelle zeigt, bietet Svitlo Chain eine kosteneffiziente, flexible und transparente Lösung für GPU-Computing, angetrieben von einem dezentralen Modell und Community-Engagement. Dies positioniert Svitlo Chain als die Zukunft des verteilten KI-Computings.</p>
+  </div>
+</section>
+
+<section id="cta" class="atmosphere tight">
+  <div class="wrap center" style="max-width:640px">
+    <div class="section-banner" style="background-image:url('/assets/images/banner-cosmic-lotus.jpg');height:180px"></div>
+    <h2>Bereit, der dezentralen GPU-Revolution beizutreten?</h2>
+    <p class="lede center">Ob du mit deiner ungenutzten Rechenleistung verdienen möchtest oder erschwingliche, skalierbare KI-Leistung benötigst — Svitlo Chain hat die richtige Lösung. Beginne, deine Zukunft aufzubauen, oder monetarisiere deine bestehende Hardware in wenigen Minuten.</p>
+    <div class="cta-row" style="justify-content:center">
+      <a href="/platform/" class="btn btn-primary">Anbieter werden</a>
+      <a href="/platform/" class="btn btn-glass glass-sm">Mit der Entwicklung beginnen</a>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Kontakt aufnehmen</div><h2>Kontakt und Support</h2><p>Hast du Fragen, brauchst du Hilfe, oder möchtest du der Svitlo-Chain-Community beitreten? Hier sind alle unsere Kontaktkanäle und Support-Ressourcen.</p></div>
+    <div class="grid grid-2">
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">✉️</div>
+      <div><h3>E-Mail-Support</h3><p style="margin-top:4px;font-size:13.5px"><a href="mailto:svitlochain@gmail.com">svitlochain@gmail.com</a></p></div>
+    </div>
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">✈️</div>
+      <div><h3>Telegram</h3><p style="margin-top:4px;font-size:13.5px"><a href="https://t.me/+8t6LS2j4CyJiOTU0" target="_blank" rel="noopener">Tritt unserer Telegram-Gruppe bei für schnelle Updates und Community-Chat.</a></p></div>
+    </div>
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">💬</div>
+      <div><h3>Discord-Community</h3><p style="margin-top:4px;font-size:13.5px"><a href="https://discord.gg/9wqA3fMfg" target="_blank" rel="noopener">Tritt unserem Discord bei für Echtzeit-Support und Diskussionen mit dem Team und anderen Nutzern.</a></p></div>
+    </div>
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">🐦</div>
+      <div><h3>Folge uns auf X</h3><p style="margin-top:4px;font-size:13.5px"><a href="https://x.com/Svitlochain" target="_blank" rel="noopener">Bleib auf dem Laufenden mit den neuesten Nachrichten und Produkt-Updates.</a></p></div>
+    </div>
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">📘</div>
+      <div><h3>Facebook</h3><p style="margin-top:4px;font-size:13.5px"><a href="https://www.facebook.com/share/1D53mnv4kk/" target="_blank" rel="noopener">Folge unserer Facebook-Seite für Neuigkeiten und Community-Updates.</a></p></div>
+    </div>
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">🐙</div>
+      <div><h3>GitHub-Repository</h3><p style="margin-top:4px;font-size:13.5px">Entdecke unseren Open-Source-Code und trage zur Plattformentwicklung bei.</p></div>
+    </div>
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">📄</div>
+      <div><h3>Dokumentation</h3><p style="margin-top:4px;font-size:13.5px">Lies unsere umfassenden Anleitungen und technischen Spezifikationen für den Einstieg.</p></div>
+    </div>
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">📰</div>
+      <div><h3>Svitlo-Chain-Blog</h3><p style="margin-top:4px;font-size:13.5px">Erhalte die neuesten Einblicke, Analysen und Nachrichten zu dezentraler KI.</p></div>
+    </div></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>
+      <a href="/de/" class="brand" style="margin-bottom:10px;display:flex"><span class="dot"></span>Svitlo<b>Chain</b></a>
+      <p style="max-width:32ch">Eine Layer-1-Blockchain für KI-Computing und Inferenz-Abrechnung.</p>
+      <p>© 2026 Svitlo Chain. Alle Rechte vorbehalten.</p>
+    </div>
+    <div class="cols">
+    <div><h4>Produkt</h4><ul><li><a href="/de/platform/">Plattform</a></li><li><a href="/de/documentation/">Dokumentation</a></li><li><a href="#developers">Für Entwickler</a></li><li><a href="#gpu-owners">Für GPU-Besitzer</a></li><li><a href="#token">SVIT-Token</a></li></ul></div>
+    <div><h4>Unternehmen</h4><ul><li><a href="#roadmap">Roadmap</a></li><li><a href="#faq">FAQ</a></li><li><a href="#contact">Kontakt</a></li></ul></div>
+    <div><h4>Wallet</h4><ul><li><a href="/de/wallet/">Wallet öffnen</a></li><li><a href="/privacy/">Datenschutzrichtlinie</a></li><li><a href="/support/">Support</a></li></ul></div></div>
+  </div>
+</footer>
+<script>
+document.addEventListener('click', (e) => {
+  const sw = document.getElementById('lang-switch');
+  if (sw && !sw.contains(e.target)) sw.classList.remove('open');
+  const nav = document.getElementById('nav-links');
+  const toggle = document.getElementById('nav-toggle');
+  if (nav && nav.classList.contains('open') && !nav.contains(e.target) && !toggle.contains(e.target)) {
+    nav.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+});
+window.__toggleTheme = function() {
+  var cur = document.documentElement.getAttribute('data-theme');
+  var isDark = cur ? cur === 'dark' : window.matchMedia('(prefers-color-scheme:dark)').matches;
+  var next = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('svitlo-theme', next); } catch (e) {}
+};
+try { localStorage.setItem('svitlo-lang', 'de'); } catch (e) {}
+</script>
+</body>
+</html>

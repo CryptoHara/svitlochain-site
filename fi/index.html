@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Svitlo Chain — Hajautettu GPU-pilvi</title>
+<meta name="description" content="Hajautettu GPU-markkinapaikka tekoälylle — vuokraa vapaita GPU:ita tai tarjoa omaa laitteistoasi, lohkoketjun suojaamana.">
+<link rel="stylesheet" href="/assets/platform.css">
+<script>
+try {
+  var t = localStorage.getItem('svitlo-theme');
+  if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+} catch (e) {}
+</script>
+</head>
+<body>
+
+<nav class="site-nav glass">
+  <a href="/fi/" class="brand"><img class="logo" src="/assets/images/logo.jpg" alt="Svitlo Chain">Svitlo<b>Chain</b></a>
+  <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" onclick="document.getElementById('nav-links').classList.toggle('open');this.setAttribute('aria-expanded', document.getElementById('nav-links').classList.contains('open'))">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div class="links" id="nav-links">
+    <a href="/fi/wallet/">Lompakko</a><a href="/fi/platform/">Alusta</a><a href="/fi/documentation/">Dokumentaatio</a>
+    <div class="lang-switch" id="lang-switch">
+      <button type="button" onclick="document.getElementById('lang-switch').classList.toggle('open')">🇫🇮 FI <span aria-hidden="true">▾</span></button>
+      <ul><li><a href="/en/" class="">🇬🇧 English</a></li><li><a href="/uk/" class="">🇺🇦 Українська</a></li><li><a href="/sv/" class="">🇸🇪 Svenska</a></li><li><a href="/no/" class="">🇳🇴 Norsk</a></li><li><a href="/it/" class="">🇮🇹 Italiano</a></li><li><a href="/es/" class="">🇪🇸 Español</a></li><li><a href="/fr/" class="">🇫🇷 Français</a></li><li><a href="/de/" class="">🇩🇪 Deutsch</a></li><li><a href="/fi/" class="current">🇫🇮 Suomi</a></li><li><a href="/pt/" class="">🇵🇹 Português</a></li><li><a href="/ja/" class="">🇯🇵 日本語</a></li><li><a href="/ko/" class="">🇰🇷 한국어</a></li><li><a href="/zh/" class="">🇨🇳 中文</a></li></ul>
+    </div>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" onclick="window.__toggleTheme()"><span class="theme-icon-light">☀️</span><span class="theme-icon-dark">🌙</span></button>
+  </div>
+</nav>
+
+<section class="hero hero-cosmic">
+  <div class="hero-spheres" aria-hidden="true">
+    <span class="hero-sphere s1"></span>
+    <span class="hero-sphere s2"></span>
+    <span class="hero-sphere s3"></span>
+    <span class="hero-sphere s4"></span>
+  </div>
+  <div class="wrap hero-copy">
+    <div class="eyebrow">Layer-1-lohkoketju</div>
+    <h1>Svitlo Chain: hajautettu GPU-pilvi</h1>
+    <p class="lede">Vapaudu suurten pilvijättien GPU-hintamonopolista. Vuokraa vapaita GPU:ita, tai tarjoa omaa laitteistoasi ja ansaitse todellista tuloa — tekoälyn voimin, lohkoketjun suojaamana.</p>
+    <div class="cta-row">
+      <a href="/platform/" class="btn btn-primary">Ryhdy toimittajaksi</a>
+      <a href="/platform/" class="btn btn-glass glass-sm">Aloita kehittäminen</a>
+    </div>
+  </div>
+</section>
+
+<section id="idea">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Miksi Svitlo Chain</div>
+      <h2>Svitlo Chainin taustalla oleva idea</h2>
+      <p>GPU-pilvimarkkinoita hallitsee kourallinen jättiläisiä — AWS, Google, Azure — jotka asettavat premium-hintoja, kun miljoonat GPU:t seisovat käyttämättöminä pelitietokoneissa, louhintalaitteissa ja yritysten konesaleissa. Svitlo Chain on olemassa muuttaakseen tämän.</p><p>Konsepti on yksinkertainen: hajautettu GPU-markkinapaikka, jossa laitteiston omistajat ansaitsevat käyttämättömästä laskentatehosta, ja tekoälykehittäjät saavat edullista, skaalautuvaa kapasiteettia sitoutumatta yhteen toimittajaan. Ei välikäsiä. Ei ylihintoja. Vain suora, luottamukseton yhteys kysynnän ja tarjonnan välillä — kryptografisen todistuksen ja läpinäkyvän maineenhallintajärjestelmän suojaamana.</p>
+    </div>
+    <div class="grid grid-3">
+    <div class="card">
+      <div class="eyebrow" style="margin-bottom:10px">Ongelma</div>
+      <h3>Keskitetyt pilvi-GPU:t</h3>
+      <p style="margin-top:8px">Keskitetyt pilvipalveluntarjoajat hallitsevat hintaa, saatavuutta ja pääsyä — luoden pullonkauloja tekoälyinnovaatiolle.</p>
+    </div>
+    <div class="card">
+      <div class="eyebrow" style="margin-bottom:10px">Ratkaisu</div>
+      <h3>Vertaisverkkomarkkina</h3>
+      <p style="margin-top:8px">Vertaisverkon GPU-markkinapaikka, joka muuttaa käyttämättömän laitteiston tuottavaksi infrastruktuuriksi, joka maksaa omistajilleen.</p>
+    </div>
+    <div class="card">
+      <div class="eyebrow" style="margin-bottom:10px">Visio</div>
+      <h3>Globaali laskentakerros</h3>
+      <p style="margin-top:8px">Globaali, sensuurinkestävä kerros laskentatehoa varten, joka vie eteenpäin seuraavan sukupolven tekoälysovelluksia.</p>
+    </div></div>
+  </div>
+</section>
+
+<section id="developers">
+  <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/bg-laptop-desk.jpg')"></div>
+    <div class="section-head">
+      <div class="eyebrow">Miten se toimii</div>
+      <h2>Tekoälykehittäjille ja rakentajille</h2>
+      <p>Svitlo Chain antaa tekoälykehittäjille välittömän pääsyn globaaliin GPU-poolin — kuluttajien RTX-korteista yritystason A100:iin — murto-osalla perinteisen pilven kustannuksista. Koulutatpa suurta kielimallia, ajatpa päättelyä laajassa mittakaavassa tai renderöitpä monimutkaisia simulaatioita, Svitlo Chain sovittaa työkuormasi oikeaan laitteistoon sekunneissa.</p><p>Alusta hoitaa automaattisesti tehtävien ajoituksen, turvallisen konttiterisoinnin ja laskutuksen. Rakentajat ottavat käyttöön CLI:n tai API:n kautta, määrittävät GPU-vaatimuksensa ja maksavat vain todellisesta käytetystä laskentatehosta — ei pitkäaikaisia sopimuksia, ei vähimmäissitoumuksia.</p>
+    </div>
+    <div class="grid" style="gap:22px;margin-bottom:56px">
+    <div class="step">
+      <span class="arrow">→</span>
+      <div><h3>Määritä GPU-vaatimukset</h3><p style="margin-top:4px">Valitse VRAM, laskentateho ja alue.</p></div>
+    </div>
+    <div class="step">
+      <span class="arrow">→</span>
+      <div><h3>Ota käyttöön CLI:n tai API:n kautta</h3><p style="margin-top:4px">Lähetä kontti ja aloita laskenta välittömästi.</p></div>
+    </div>
+    <div class="step">
+      <span class="arrow">→</span>
+      <div><h3>Maksa käytön mukaan</h3><p style="margin-top:4px">Ei sopimuksia. Laskutus SVIT:issä tai vakaakolikossa.</p></div>
+    </div></div>
+
+    <h2 style="margin-top:8px">Kehittäjän opas: pikaopas Svitlo Chainin kanssa</h2>
+    <p class="lede" style="margin-bottom:28px">Tekoälykehittäjänä tarvitset nopean, kustannustehokkaan ja skaalautuvan pääsyn GPU-resursseihin. Tämä pikaopas vie sinut todennuksesta ensimmäiseen tehtävään ja tulokseen.</p>
+    
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">1</div>
+      <h3>API-todennus ja asennus</h3>
+      <p style="margin-top:8px">Vuorovaikuttaaksesi Svitlo Chain -API:n kanssa tarvitset API-avaimesi kehittäjäpaneelistasi rekisteröitymisen jälkeen. Python-kehittäjille suosittelemme SDK:tamme sujuvaa integraatiota varten; muut kielet voivat kutsua REST-API:a suoraan.</p>
+      <div class="code"><span class="kw">import</span> os
+<span class="kw">import</span> svitlo_sdk
+
+<span class="c1"># Lue API-avain turvallisesti ympäristömuuttujasta</span>
+API_KEY = os.environ.get(<span class="str">"SVIT_API_KEY"</span>)
+
+<span class="kw">if not</span> API_KEY:
+    <span class="kw">raise</span> ValueError(<span class="str">"SVIT_API_KEY ei ole asetettu."</span>)
+
+<span class="c1"># Alusta Svitlo Chain SDK -asiakas</span>
+client = svitlo_sdk.SvitloClient(api_key=API_KEY)
+print(<span class="str">"API-asiakas alustettu onnistuneesti."</span>)</div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">2</div>
+      <h3>Lähetä ensimmäinen GPU-tehtäväsi</h3>
+      <p style="margin-top:8px">GPU-tehtävän lähettäminen on yksinkertaista. Määritä, mitä tekoälymallia ajetaan, mitä syötedataa käytetään ja mitä GPU-resursseja tarvitaan. Svitlo Chain sovittaa tehtäväsi automaattisesti verkossa saatavilla oleviin toimittajiin.</p>
+      <div class="code">job_config = {
+    <span class="str">"model_name"</span>: <span class="str">"stable_diffusion_v2"</span>,
+    <span class="str">"input_data_url"</span>: <span class="str">"s3://my-bucket/input-image.jpg"</span>,
+    <span class="str">"output_data_url"</span>: <span class="str">"s3://my-bucket/output-results/"</span>,
+    <span class="str">"gpu_type"</span>: <span class="str">"RTX_3090"</span>,
+    <span class="str">"gpu_count"</span>: 1,
+    <span class="str">"duration_hours"</span>: 0.5,
+}
+
+<span class="kw">try</span>:
+    job = client.submit_job(job_config)
+    print(<span class="fn">f</span><span class="str">"Tehtävä lähetetty! Tehtävän ID: {job.id}"</span>)
+    print(<span class="fn">f</span><span class="str">"Tila: {job.status}"</span>)
+<span class="kw">except</span> Exception <span class="kw">as</span> e:
+    print(<span class="fn">f</span><span class="str">"Virhe tehtävän lähetyksessä: {e}"</span>)</div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">3</div>
+      <h3>Seuraa tehtävän tilaa</h3>
+      <p style="margin-top:8px">Lähettämisen jälkeen seuraa tehtäväsi edistymistä reaaliajassa — näe virheet ja arvioi, milloin tulokset ovat valmiita.</p>
+      <div class="code">job_id = job.id
+
+current_job = client.get_job_status(job_id)
+print(<span class="fn">f</span><span class="str">"Tehtävä {current_job.id}, tila: {current_job.status}"</span>)
+
+<span class="kw">while</span> current_job.status <span class="kw">not in</span> [<span class="str">"COMPLETED"</span>, <span class="str">"FAILED"</span>]:
+    time.sleep(30)
+    current_job = client.get_job_status(job_id)
+    print(<span class="fn">f</span><span class="str">"Päivitetty tila: {current_job.status}"</span>)
+
+<span class="kw">if</span> current_job.status == <span class="str">"COMPLETED"</span>:
+    print(<span class="str">"Tehtävä valmis!"</span>)
+<span class="kw">else</span>:
+    print(<span class="str">"Tehtävä epäonnistui tai peruutettiin."</span>)</div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">4</div>
+      <h3>Nouda tuloksesi</h3>
+      <p style="margin-top:8px">Kun GPU-tehtäväsi on valmis, tuloste on saatavilla määrittämässäsi sijainnissa (esim. S3-säilössä). Svitlo Chain tarjoaa tarvittavat yhteystiedot tulosten turvalliseen noutamiseen.</p>
+      <div class="code"><span class="kw">if</span> current_job.status == <span class="str">"COMPLETED"</span>:
+    print(<span class="fn">f</span><span class="str">"Tulokset saatavilla osoitteessa: {current_job.output_data_location}"</span>)
+<span class="kw">else</span>:
+    print(<span class="str">"Tuloksia ei saatavilla — tehtävä ei valmis tai epäonnistui."</span>)</div>
+    </div>
+    <div class="card card-accent">
+      <h3>5. Maksaminen ja laskutus</h3>
+      <p style="margin-top:8px">Svitlo Chain käyttää SVIT-tokenia kaikissa alustan transaktioissa, varmistaen läpinäkyvyyden ja tehokkuuden. Sinua laskutetaan todellisesta GPU-käytöstä ja tehtävän kestosta — usein jopa 70 % halvemmalla kuin perinteinen pilvi. Seuraa käyttöhistoriaasi ja saldoasi Svitlo Chain -paneelistasi.</p>
+    </div>
+  </div>
+</section>
+
+<section id="gpu-owners">
+  <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/bg-gaming-pc.jpg')"></div>
+    <div class="section-head">
+      <div class="eyebrow">Miten se toimii</div>
+      <h2>GPU:iden omistajille</h2>
+      <p>GPU:iden omistajat — pelaajat, louhijat ja konesalit — voivat yhdistää käyttämättömän laitteiston Svitlo Chainiin ja ansaita passiivista tuloa. Svitlo Chain -asiakas toimii taustalla, hyväksyy laskentatehtäviä, suorittaa ne eristetyissä konteissa ja palauttaa tulokset kryptografisella varmennuksella. Toimittajat asettavat itse saatavuusaikansa, hintansa ja laitteistospesifikaationsa.</p>
+    </div>
+    <div class="grid grid-3" style="margin-bottom:56px">
+    <div class="card card-accent">
+      <h3>Asenna asiakas</h3>
+      <p style="margin-top:8px">Lataa Svitlo Chain -solmuohjelmisto, yhdistä GPU:si ja ole käynnissä minuuteissa. Windows, Linux ja Docker tuettuja.</p>
+    </div>
+    <div class="card card-accent">
+      <h3>Aseta ehtosi</h3>
+      <p style="margin-top:8px">Aseta tuntihinnat, minimi-VRAM ja saatavuusaikataulu. Sinä hallitset, milloin laitteistosi on markkinoilla.</p>
+    </div>
+    <div class="card card-accent">
+      <h3>Ansaitse automaattisesti</h3>
+      <p style="margin-top:8px">Tehtävät sovitetaan, ajetaan ja varmennetaan automaattisesti. Maksut saapuvat SVIT:issä tai USDC:ssä suoraan lompakkoosi.</p>
+    </div></div>
+
+    <h2>Asennusopas GPU-toimittajille</h2>
+    <p class="lede" style="margin-bottom:28px">Svitlo Chain -GPU-toimittajaksi ryhtyminen on yksinkertaista ja antaa sinun ansaita käyttämättömästä laskentatehostasi. Seuraa näitä vaiheita asentaaksesi Svitlo Chain -solmuasiakkaan ja aloittaaksesi GPU-resurssiesi vuokraamisen tekoälykehittäjille ympäri maailmaa.</p>
+    
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">1</div>
+      <h3>Järjestelmävaatimukset</h3>
+      <p style="margin-top:8px">Varmista ennen asennusta, että järjestelmäsi täyttää nämä vaatimukset: <b>Käyttöjärjestelmä:</b> Linux (Ubuntu 20.04+ suositeltu), Windows 10/11, macOS 13 Ventura tai uudempi, tai Docker-yhteensopiva ympäristö. <b>GPU:</b> NVIDIA GeForce RTX 30 -sarja tai uudempi, NVIDIA A100/H100, AMD Radeon RX 6000 -sarja tai uudempi, tai Apple Silicon Metal Performance Shadersilla (MPS). <b>RAM:</b> vähintään 16 Gt. <b>Verkko:</b> vakaa yhteys, jossa vähintään 100 Mbps ylös/alas.</p>
+      
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">2</div>
+      <h3>Lataa Svitlo Chain -solmuasiakas</h3>
+      <p style="margin-top:8px">Hae uusin solmuasiakas viralliselta sivustoltamme tai GitHub-repositoriosta. Paketit saatavilla kaikille alustoille.</p>
+      <div class="code"><span class="c1"># Linux</span>
+wget https://svitlochain.com/node-client/svitlo-node-linux-amd64.tar.gz
+tar -xzf svitlo-node-linux-amd64.tar.gz
+<span class="kw">cd</span> svitlo-node</div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">3</div>
+      <h3>Asenna ja määritä</h3>
+      <p style="margin-top:8px">Lataamisen jälkeen suorita asennusskripti ja seuraa näytön ohjeita. Ota Apple Siliconissa käyttöön Metal-kiihdytetty taustajärjestelmä parhaan suorituskyvyn saavuttamiseksi.</p>
+      <div class="code">arch
+<span class="c1"># odotettu arm64 Apple Siliconilla</span>
+<span class="kw">export</span> SVITLO_GPU_BACKEND=mps
+<span class="kw">export</span> SVITLO_OPTIMIZE_APPLE_SILICON=<span class="kw">true</span>
+svitlo-node start</div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">4</div>
+      <h3>Yhdistä lompakkosi</h3>
+      <p style="margin-top:8px">Vastaanottaaksesi maksuja sinun täytyy yhdistää yhteensopiva lompakko. Tämä lompakko pitää sisällään SVIT-ansiosi.</p>
+      <div class="code">./svitlo-node wallet connect &lt;lompakkosi-osoite&gt;</div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">5</div>
+      <h3>Aseta hinnoittelu ja saatavuus</h3>
+      <p style="margin-top:8px">Sinulla on täysi hallinta siitä, miten GPU:itasi vuokrataan.</p>
+      <div class="code">./svitlo-node config <span class="kw">set</span> backend mps
+./svitlo-node config <span class="kw">set</span> optimize_apple_silicon
+./svitlo-node config <span class="kw">set</span> availability 24/7</div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="eyebrow" style="margin-bottom:8px">6</div>
+      <h3>Aloita ansaitseminen</h3>
+      <p style="margin-top:8px">Kun solmusi on käynnissä, yhdistetty ja määritetty, GPU:si alkavat sovittua tekoälyn laskentatehtäviin. Seuraa tuloja ja tehtävähistoriaa Svitlo Chain -paneelista.</p>
+      
+    </div>
+  </div>
+</section>
+
+<section id="miner-mode" class="tight">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Miner Mode</div>
+      <h2>Kutsumme louhijoita ja GPU-farmeja</h2>
+      <p>Kryptolouhinta on muuttunut. Proof-of-work-palkkioiden laskiessa ja sähkökustannusten noustessa GPU-farmit tarvitsevat uusia tulonlähteitä. Svitlo Chainin <b>Miner Mode</b> antaa louhintaoperaattoreiden ohjata käyttämättömän laitteiston välittömästi tekoälylaskentaan — ilman infrastruktuurin uudelleenmäärittelyä.</p><p>Miner Mode on kevyt kytkin, joka siirtää laitteesi louhinnasta laskentatehon vuokraukseen. Tehtävät käyvät läpi esivalidoinnin, ajetaan hiekkalaatikossa, ja ansiot seurataan reaaliajassa. Yli 10 GPU:n farmit saavat priorisoidun tehtävien reitityksen ja omistautuneen tuen.</p>
+    </div>
+    <div class="grid grid-3" style="margin-bottom:56px">
+    <div class="card"><h3>Vaihda ilman käyttökatkoa</h3><p style="margin-top:8px">Vaihtele louhinnan ja laskentatehon vuokrauksen välillä sekunneissa. Ei laitteistomuutoksia tarvita.</p></div>
+    <div class="card"><h3>Korkeampi ansaintapotentiaali</h3><p style="margin-top:8px">Tekoälylaskennan kysyntä ylittää usein tarjonnan — toimittajat ansaitsevat usein enemmän per GPU-tunti kuin useimmissa louhintaoperaatioissa.</p></div>
+    <div class="card"><h3>Farmin ohjauspaneeli</h3><p style="margin-top:8px">Hallitse koko farmiasi yhdestä käyttöliittymästä. Seuraa tuloja, tehtävien tilaa ja käyttöaikaa jokaisella solmulla.</p></div></div>
+
+    <div class="grid grid-2" style="align-items:start">
+      <div class="card" style="background:var(--brown);color:#fff;border:none">
+        <h3 style="color:#fff">Miksi Miner Mode?</h3>
+        <div style="color:rgba(255,255,255,.88);margin-top:8px"><p>Louhinnan kannattavuus on epävakaa. GPU-vuokraus Svitlo Chainissa tarjoaa vakaan, ennustettavan tulopohjan — erityisesti karhumarkkinoiden aikana tai verkon vaikeuden noustessa.</p><p>Miner Mode tukee eräajotehtäväjonoa, joten farmisi ei ole koskaan käyttämättä. Kun tekoälykysyntä laskee, vaihda takaisin louhintaan yhdellä komennolla. Juuri tämä joustavuus markkinaolosuhteiden yli erottaa Svitlo Chainin.</p></div>
+        <a href="#faq" class="btn btn-glass glass-sm" style="margin-top:14px;background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.3)">Lue lisää Miner Modesta</a>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:14px">Miten se toimii</h3>
+        
+    <div>
+      <div class="when">01</div>
+      <h3 style="margin:6px 0 6px">Yhdistä farmisi</h3>
+      <p style="font-size:13.5px">Asenna Svitlo Chain -solmuasiakas nykyiseen louhintalaitteistoosi.</p>
+    </div><hr style="border:none;border-top:1px solid var(--bd2);margin:16px 0">
+    <div>
+      <div class="when">02</div>
+      <h3 style="margin:6px 0 6px">Ota käyttöön Miner Mode</h3>
+      <p style="font-size:13.5px">Vuokraa laskentatehoa louhinnan ohella tai sen sijaan.</p>
+    </div><hr style="border:none;border-top:1px solid var(--bd2);margin:16px 0">
+    <div>
+      <div class="when">03</div>
+      <h3 style="margin:6px 0 6px">Ansaitse ja seuraa</h3>
+      <p style="font-size:13.5px">Seuraa tuloja reaaliajassa, tehtävien läpivientinopeutta ja GPU-käyttöastetta.</p>
+    </div><hr style="border:none;border-top:1px solid var(--bd2);margin:16px 0">
+    <div>
+      <div class="when">04</div>
+      <h3 style="margin:6px 0 6px">Vaihda vapaasti</h3>
+      <p style="font-size:13.5px">Palaa louhintaan milloin tahansa markkinaolosuhteet suosivat sitä.</p>
+    </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Palvelut</div>
+      <h2>Palvelut ja hinnoittelu</h2>
+      <p>Svitlo Chain tarjoaa kolme ydinpalvelutasoa, jotka kukin sopivat erilaisiin tekoälytyökuormiin — tekstipohjaisista tehtävistä reaaliaikaiseen puheenkäsittelyyn. Kaikki palvelut laskutetaan GPU-tunnin mukaan, ja SVIT:issä maksetuille pitkäaikaisille varauksille on saatavilla alennuksia.</p>
+    </div>
+    <div class="grid grid-3" style="margin-bottom:20px">
+    <div class="card">
+      <h3>Tekstipäättely / LLM</h3>
+      <p style="margin-top:8px">Aja suuria kielimalleja, chatbotteja ja tekstingenerointitehtäviä. Optimoitu laitteistolle RTX 4060:sta A100:aan.</p>
+      <div class="pill">Alkaen $0,12/h</div>
+    </div>
+    <div class="card">
+      <h3>Kuvien generointi</h3>
+      <p style="margin-top:8px">Stable Diffusion, FLUX ja räätälöidyt kuvamallit laajassa mittakaavassa. Korkean VRAM:n GPU:t suositeltuja erägenerointiin.</p>
+      <div class="pill">Alkaen $0,28/h</div>
+    </div>
+    <div class="card">
+      <h3>Puheentunnistus (STT)</h3>
+      <p style="margin-top:8px">Reaaliaikainen litterointi ja puheenkäsittelyputket. Matalan viiveen instanssit saatavilla maailmanlaajuisesti.</p>
+      <div class="pill">Alkaen $0,18/h</div>
+    </div></div>
+    <div class="callout" style="margin-bottom:56px">💡 Kaikki hinnat heijastavat laskurin v2-päivityksiä. SVIT-maksuille myönnetään lisäksi 10 % alennus.</div>
+
+    <h2>Toimittajan tulot: todelliset luvut</h2>
+    <p class="lede" style="margin-bottom:24px">Ansiosi Svitlo Chainissa riippuvat suoraan laitteistostasi. Alla on realistinen arvio tuntitulosta yleisille GPU-kokoonpanoille, perustuen nykyiseen markkinakysyntään ja hinnoittelulaskuriin v2. Todelliset tulot riippuvat saatavuudesta, tehtävätyypistä ja alueesta.</p>
+    <div class="table-wrap" style="margin-bottom:32px">
+      <table class="data"><thead><tr><th>GPU</th><th>Tuntihinta</th><th>Arvio kuukaudessa (80 % käyttöaste)</th></tr></thead><tbody><tr><td>RTX 4060</td><td>$0,12/h</td><td>~$70</td></tr><tr><td>RTX 4070 Ti</td><td>$0,22/h</td><td>~$127</td></tr><tr><td>RTX 4080</td><td>$0,35/h</td><td>~$202</td></tr><tr><td>RTX 4090</td><td>$0,55/h</td><td>~$317</td></tr><tr><td>A40 / L40</td><td>$0,80/h</td><td>~$461</td></tr><tr><td>A100 (40GB)</td><td>$1,40/h</td><td>~$806</td></tr><tr><td>8× A100-laivasto</td><td>$11,20/h</td><td>~$6 451</td></tr></tbody></table>
+    </div>
+    <div class="grid grid-3">
+    <div class="card glass stat-glass">
+      <div class="stat-num">$6 451</div>
+      <div class="stat-label">8× A100-laivasto</div>
+      <div class="stat-desc">Arvioitu kuukausitulo 80 % käyttöasteella — mittakaavan palkkio.</div>
+    </div>
+    <div class="card glass stat-glass">
+      <div class="stat-num">80 %</div>
+      <div class="stat-label">Tavoitekäyttöaste</div>
+      <div class="stat-desc">Varovainen arvio. Korkean kysynnän toimittajat ylittävät usein 90 %.</div>
+    </div>
+    <div class="card glass stat-glass">
+      <div class="stat-num">10+</div>
+      <div class="stat-label">GPU-tasoa</div>
+      <div class="stat-desc">Kuluttajien RTX-korteista yritystason A100:iin — markkina löytyy jokaiselle GPU:lle.</div>
+    </div></div>
+  </div>
+</section>
+
+<section id="token">
+  <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/bg-circuit-devices-1.jpg')"></div>
+    <div class="section-head">
+      <div class="eyebrow">Tokenomiikka</div>
+      <h2>SVIT-token: kolme hyödyn pilaria</h2>
+      <p>SVIT on Svitlo Chain -ekosysteemin ja Svitlo Chainin oman L1-lohkoketjun natiivi valuutta. SVIT ohjaa koko ekosysteemiä — turvallisuudesta ja transaktioista panostukseen, polttoon ja pääomitukseen. Natiivikolikkona SVIT hyötyy nopeista transaktioista, alhaisista maksuista ja korkeasta läpisyötöstä. Tokenomiikka on suunniteltu pitkän aikavälin kestävyyteen deflatorisella polttomekanismilla, panostuksella ja rajoitetulla tarjonnalla.</p>
+    </div>
+    <div class="grid grid-3" style="margin-bottom:20px">
+    <div class="card">
+      <div class="ico">💳</div>
+      <h3>Maksut ja alennukset</h3>
+      <p style="margin-top:8px">Toimittajat ja kehittäjät, jotka tekevät transaktioita SVIT:issä, saavat 10 % alennuksen kaikista markkinapaikkamaksuista. SVIT on suosituin valuutta tehtävämaksuille ja panostukselle koko Svitlo Chain L1 -ekosysteemissä, nopeilla ja halvoilla transaktioilla.</p>
+    </div>
+    <div class="card">
+      <div class="ico">🛡️</div>
+      <h3>Panostus ja maine</h3>
+      <p style="margin-top:8px">Toimittajat panostavat SVIT:iä liittyäkseen verkkoon. Rehellinen käytös nostaa mainepisteitä ja avaa priorisoidun tehtävien jaon. Haitalliset toimijat rangaistaan (slashing), ja Svitlo Chainin L1-lohkoketju tarjoaa tehokkaan koordinaation myös korkealla kuormalla.</p>
+    </div>
+    <div class="card">
+      <div class="ico">🔥</div>
+      <h3>Poltto ja deflaatio</h3>
+      <p style="margin-top:8px">Osa jokaisesta transaktiomaksusta poltetaan pysyvästi, vähentäen kokonaistarjontaa ajan myötä. Ekosysteemin aktiviteetin kasvaessa polttonopeus kiihtyy — luoden deflatorista painetta SVIT:iin, kun taas Svitlo Chainin alhaiset maksut pitävät mekanismin tehokkaana.</p>
+    </div></div>
+    <div class="callout" style="margin-bottom:48px">ℹ️ SVIT:in kokonaistarjonta on rajoitettu. Polttotapahtumat ovat julkisesti todennettavissa ketjussa. Tokenien haltijat äänestävät myös alustapäivityksistä ja maksurakenteista.</div>
+    <h2>Lohkoketjuinfrastruktuuri SVIT:ille</h2>
+    <p class="lede" style="margin-bottom:24px">Suoran hyödyn lisäksi Svitlo Chain rakentuu omalle infrastruktuurilleen, joka vahvistaa ekosysteemiä ja sujuvoittaa SVIT:in käyttöä.</p>
+    <div class="grid grid-2">
+    <div class="card card-accent"><h3>L1-lohkoketju SVIT:ille</h3><p style="margin-top:8px">SVIT on Svitlo Chainin oman L1-lohkoketjun natiivikolikko, jonka kokonaisemissio on 1 miljardi kolikkoa. Se toimii ekosysteemin turvallisuuden, transaktiovirran, panostuksen, polton ja pitkän aikavälin pääomituksen selkärankana. Kaikki aktiviteetti liittyy suoraan SVIT:in arvoon ja kestävyyteen.</p></div>
+    <div class="card card-accent"><h3>Svitlo Wallet</h3><p style="margin-top:8px">Svitlo Wallet on yksinkertainen lompakko SVIT:in säilyttämiseen, lähettämiseen ja käyttämiseen koko Svitlo Chain -ekosysteemissä.</p><a href="/fi/wallet/" class="btn btn-glass glass-sm" style="margin-top:14px">Lue lisää →</a></div></div>
+  </div>
+</section>
+
+<section id="enterprise">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Yrityksille</div><h2>Liiketoiminta, luottamus ja aloittaminen</h2></div>
+    <div class="grid grid-2" style="align-items:start;margin-bottom:56px">
+      <div>
+        <h3 style="font-family:var(--serif);font-size:20px;margin-bottom:10px">Yritystasot</h3>
+        <p>Organisaatiot, jotka tarvitsevat SLA-sopimuksia, omistautunutta tukea ja pääsyä yksityiseen laivastoon, voivat liittyä Svitlo Chainin yritysohjelman kautta. Jokainen taso sisältää laskentatehtävien kryptografisen varmennuksen, ketjussa tapahtuvan maineen seurannan, ja täydellisen dokumentaation yritysten hankintojen vaatimustenmukaisuutta varten.</p>
+        <div class="table-wrap"><table class="data"><thead><tr><th>Taso</th><th>Ominaisuudet</th></tr></thead><tbody><tr><td><b>Starter</b></td><td>API-pääsy, julkinen markkinapaikka, SVIT-maksut</td></tr><tr><td><b>Growth</b></td><td>Priorisoitu reititys, omistautunut tuki, laivaston CLI</td></tr><tr><td><b>Enterprise</b></td><td>SLA-takuu, yksityinen laivasto, vaatimustenmukaisuuspaketti, white-glove-käyttöönotto</td></tr></tbody></table></div>
+      </div>
+      <div>
+        <h3 style="font-family:var(--serif);font-size:20px;margin-bottom:10px">Luottamus ja turvallisuus</h3>
+        
+    <div class="card-accent" style="padding:14px 0 14px 16px;margin-bottom:4px">
+      <h3>SHA-256-varmennus</h3><p style="margin-top:6px;font-size:13.5px">Jokainen laskentatehtävä varmennetaan kryptografisesti — toimittajat eivät voi väärentää tuloksia.</p>
+    </div>
+    <div class="card-accent" style="padding:14px 0 14px 16px;margin-bottom:4px">
+      <h3>Mainejärjestelmä</h3><p style="margin-top:6px;font-size:13.5px">Ketjussa tapahtuva pisteytys palkitsee johdonmukaiset, rehelliset toimittajat ja suodattaa haitalliset toimijat pois.</p>
+    </div>
+    <div class="card-accent" style="padding:14px 0 14px 16px;margin-bottom:4px">
+      <h3>Valmis vaatimustenmukaisuuteen</h3><p style="margin-top:6px;font-size:13.5px">Yritysdokumentaatio, auditointilokit ja datan sijaintivaihtoehdot haluamallasi alueella.</p>
+    </div>
+      </div>
+    </div>
+    <h3 style="font-family:var(--serif);font-size:20px;margin-bottom:16px">Liity Svitlo Chainiin jo tänään</h3>
+    <div class="grid grid-3">
+    <div class="card"><div class="ico">🖥️</div><h3>Toimittajat</h3><p style="margin-top:8px">Rahaksi käyttämättömät GPU:si ja ansaitse passiivista tuloa.</p></div>
+    <div class="card"><div class="ico">⚡</div><h3>Kehittäjät</h3><p style="margin-top:8px">Hanki edullista, skaalautuvaa GPU-tehoa tekoälyprojekteihisi.</p></div>
+    <div class="card"><div class="ico">⛏️</div><h3>Louhintaoperaattorit</h3><p style="margin-top:8px">Muuta louhintainfrastruktuurisi tekoälylaskennaksi Miner Modella.</p></div></div>
+  </div>
+</section>
+
+<section id="roadmap">
+  <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/banner-phoenix-dawn.jpg')"></div>
+    <div class="section-head"><div class="eyebrow">Tiekartta</div><h2>Tiekarttamme: Svitlo Chainin tulevaisuus</h2><p>Svitlo Chain kehittyy jatkuvasti vastatakseen kasvavaan hajautetun GPU-laskennan kysyntään. Tiekarttamme keskittyy strategiseen kasvuun ja arvon tuottamiseen sekä toimittajille että kehittäjille.</p></div>
+    <div class="timeline">
+      <div class="timeline-items">
+    <div><div class="when">Q3 2026</div><h3>Julkaisu</h3><p style="font-size:13.5px;margin-top:4px">Svitlo Chain -alustan virallinen julkaisu, sisältäen ydintoiminnallisuudet GPU-vuokraukseen ja Miner Modeen.</p></div>
+    <div><div class="when">Q4 2026</div><h3>Yritysominaisuudet</h3><p style="font-size:13.5px;margin-top:4px">Yritystasot, omistautunut tuki, SLA-sopimukset ja edistyneet turvallisuusprotokollat suuremmille asiakkaille.</p></div>
+    <div><div class="when">Q1 2027</div><h3>Globaali laajentuminen</h3><p style="font-size:13.5px;margin-top:4px">Laajennettu maantieteellinen kattavuus, uudet alueelliset konesalit ja kumppanuudet laajemman yleisön tavoittamiseksi.</p></div>
+    <div><div class="when">Q2 2027</div><h3>Edistynyt analytiikka</h3><p style="font-size:13.5px;margin-top:4px">Kehittyneet analytiikkatyökalut GPU-käytön optimointiin ja tulojen seurantaan.</p></div></div>
+      <div class="timeline-track"><span class="pt" style="left:0%"></span><span class="pt" style="left:33.33333333333333%"></span><span class="pt" style="left:66.66666666666666%"></span><span class="pt" style="left:100%"></span></div>
+    </div>
+    <p style="margin-top:24px;color:var(--ink-m);font-size:13.5px">Tämä tiekartta heijastaa nykyisiä strategisia prioriteettejamme, mutta Svitlo Chain -tiimi pysyy ketteränä ja reagoivana markkinaolosuhteille ja yhteisön palautteelle.</p>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Kysymyksiä</div><h2>Usein kysytyt kysymykset</h2><p>Onko sinulla kysymyksiä Svitlo Chainista? Tässä vastauksia joihinkin yleisimpiin, sekä toimittajilta että kehittäjiltä.</p></div>
+    <div class="card glass" style="padding:8px 26px"><div class="faq-item"><h3>Miten aloitan toimittajana?</h3><p style="margin-top:8px">Asenna Svitlo Chain -solmuasiakas nykyiseen louhintalaitteistoosi. Ota sitten käyttöön "Miner Mode" aloittaaksesi laskentatehosi vuokrauksen, joko nykyisen louhintasi ohella tai sen sijaan. Prosessi on suunniteltu sujuvaksi ja yksinkertaiseksi.</p></div><div class="faq-item"><h3>Mitä maksuja Svitlo Chainissa sovelletaan?</h3><p style="margin-top:8px">Svitlo Chainilla on läpinäkyvä maksurakenne alustan ylläpitämiseksi. Käyttäjät, jotka tekevät transaktioita natiivissa hyötytokenissamme SVIT:issä, saavat 10 % alennuksen kaikista markkinapaikkamaksuista. Tarkat maksut voivat vaihdella tehtävätyypin ja markkinaolosuhteiden mukaan.</p></div><div class="faq-item"><h3>Ovatko tietoni ja laskentani turvassa?</h3><p style="margin-top:8px">Kyllä. Turvallisuus on suunnittelumme ytimessä. Jokainen laskentatehtävä varmennetaan kryptografisesti SHA-256:lla, varmistaen ettei toimittajat voi väärentää tuloksia. Seuraamme myös toimittajien mainetta ketjussa, ja tarjoamme yritysten vaatimustenmukaisuuspaketin edistyneisiin turvallisuustarpeisiin.</p></div><div class="faq-item"><h3>Voinko käyttää mitä tahansa GPU:ta?</h3><p style="margin-top:8px">Svitlo Chain on rakennettu joustavaksi ja tukee laajaa valikoimaa GPU:ita, kuluttajamalleista kuten RTX 4060:sta tehokkaisiin yritys-GPU:ihin kuten A100:aan. Alustalla on markkina lähes jokaiselle GPU-kokoonpanolle, jolloin voit rahaksi tehdä minkä tahansa omistamasi laitteiston.</p></div><div class="faq-item"><h3>Mikä on SVIT-token?</h3><p style="margin-top:8px">SVIT on Svitlo Chainin natiivi hyötytoken, suunniteltu mahdollistamaan maksut, kannustamaan rehellistä käytöstä panostuksen kautta, ja ohjaamaan alustan kehitystä. Sillä on deflatorinen polttomekanismi ja rajoitettu tarjonta pitkän aikavälin kestävyyttä varten.</p></div><div class="faq-item"><h3>Miten nostan ansioni?</h3><p style="margin-top:8px">Svitlo Chain -ansiosi kertyvät yhdistettyyn lompakkoosi. Voit nostaa milloin tahansa, joko SVIT:issä tai muuntamalla muihin kryptovaluuttoihin/fiat-valuuttoihin alustan integroitujen vaihtovaihtoehtojen kautta. Yksityiskohdat löytyvät dokumentaatiostamme.</p></div></div>
+  </div>
+</section>
+
+<section id="stats" class="atmosphere">
+  <div class="wrap">
+    <div class="section-banner" style="background-image:url('/assets/images/banner-comet-icefield.jpg')"></div>
+    <div class="section-head center"><div class="eyebrow">Lukuina</div><h2>Svitlo Chain lukuina: alustan vahvuus</h2><p class="center">Svitlo Chain jatkaa eksponentiaalista kasvuaan, ohjaten hajautetun tekoälylaskennan tulevaisuutta. Tässä on silmäys alustan vaikuttavaan kattavuuteen ja tehokkuuteen — kustannustehokas ratkaisu verrattuna perinteisiin pilvipalveluntarjoajiin.</p></div>
+    <div class="grid grid-4">
+    <div class="card glass stat-glass">
+      <div class="stat-num">2,5M+</div>
+      <div class="stat-label">Saatavilla olevat GPU-tunnit</div>
+      <div class="stat-desc">Yli 2,5 miljoonaa GPU-tuntia on toimitettu verkostomme kautta tekoälytehtäville, ja määrä kasvaa tasaisesti joka kuukausi.</div>
+    </div>
+    <div class="card glass stat-glass">
+      <div class="stat-num">8 500+</div>
+      <div class="stat-label">Aktiiviset toimittajat</div>
+      <div class="stat-desc">Kasvava, yli 8 500 yksilöllisen toimittajan verkosto tuo laskentatehoa, varmistaen vakauden ja saatavuuden.</div>
+    </div>
+    <div class="card glass stat-glass">
+      <div class="stat-num">70 %</div>
+      <div class="stat-label">Keskimääräinen kustannussäästö</div>
+      <div class="stat-desc">Saavuta jopa 70 % säästöt GPU-laskennassa johtaviin pilvialustoihin verrattuna, tinkimättä suorituskyvystä.</div>
+    </div>
+    <div class="card glass stat-glass">
+      <div class="stat-num">500+ PFLOPS</div>
+      <div class="stat-label">Kokonaislaskentateho</div>
+      <div class="stat-desc">Yhteensä Svitlo Chain toimittaa yli 500 PFLOPS tekoälylaskentatehoa — valtava resurssi kaikissa mittakaavoissa.</div>
+    </div></div>
+  </div>
+</section>
+
+<section id="architecture">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Konepellin alla</div><h2>Svitlo Chainin tekninen arkkitehtuuri: miten järjestelmä toimii</h2><p>Svitlo Chain toimii vankalla hajautetulla arkkitehtuurilla, joka takaa tehokkuuden, turvallisuuden ja läpinäkyvyyden. Tässä on erittely alustan taustalla olevista teknisistä mekanismeista.</p></div>
+    <div class="arch" style="margin-bottom:28px">
+    <div class="arch-row">
+      <div class="arch-lane">Kehittäjä (asiakas)</div>
+      <div class="arch-cells"><span class="arch-box">Lähetä tekoälytehtävä</span></div>
+    </div>
+    <div class="arch-row">
+      <div class="arch-lane">Svitlo Chain -alusta</div>
+      <div class="arch-cells"><span class="arch-box">Sovitus ja ajoitus</span><span class="arch-arrow">→</span><span class="arch-box">Tulos ja todiste</span><span class="arch-arrow">→</span><span class="arch-box">Varmennus ja selvitys</span></div>
+    </div>
+    <div class="arch-row">
+      <div class="arch-lane">GPU-toimittaja</div>
+      <div class="arch-cells"><span class="arch-box">Hae ja suorita tehtävä</span></div>
+    </div>
+    <div class="arch-row">
+      <div class="arch-lane">Lohkoketju</div>
+      <div class="arch-cells"><span class="arch-box">SHA-256-varmennus</span><span class="arch-arrow">→</span><span class="arch-box">SVIT-maksu</span><span class="arch-arrow">→</span><span class="arch-box">Mainejärjestelmä</span></div>
+    </div></div>
+    <p style="margin-bottom:32px">Svitlo Chain käyttää lohkoketjuteknologiaa luodakseen luottamuksettoman ympäristön, jossa jokainen laskentaprosessin vaihe on todennettavissa ja läpinäkyvä, tarjoten samalla vankan turvallisuuden käyttäjätietojen ja laskentojen suojaamiseksi.</p>
+    <div class="grid grid-3"><div class="card"><h3>Hajautettu tehtävien suoritus</h3><p style="margin-top:8px">Tekoälytehtävät jaetaan ja hajautetaan GPU-toimittajien verkkoon, optimoiden saatavilla olevan laskentatehon käytön ja välttäen yksittäisiä vikapisteitä.</p></div><div class="card"><h3>Turvallinen konttiterisointi</h3><p style="margin-top:8px">Jokainen laskentatehtävä ajetaan eristetyssä konttiympäristössä toimittajan laitteistolla, estäen luvattoman pääsyn ja varmistaen tietojen eheyden.</p></div><div class="card"><h3>Lohkoketjun läpinäkyvyys</h3><p style="margin-top:8px">Jokainen transaktio, tehtävän spesifikaatio ja varmennustodiste tallennetaan ketjuun täyden läpinäkyvyyden ja kiistämättömyyden takaamiseksi.</p></div></div>
+  </div>
+</section>
+
+<section id="glossary">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Viitteet</div><h2>Sanasto</h2><p>Helpottaaksemme Svitlo Chainin ja laajemman hajautetun tekoälyekosysteemin ymmärtämistä, olemme koonneet sanaston yleisistä teknisistä termeistä — selkeästi ja tiiviisti, olitpa sitten kokenut tekninen käyttäjä tai alalla uusi.</p></div>
+    <div class="grid grid-3" style="gap:0 32px">
+    <div class="glossary-item"><div class="glossary-term">Lohkoketju</div><p style="font-size:13.5px;margin:0">Hajautettu, muuttumaton digitaalinen tilikirja kryptografisesti linkitetyistä transaktioiden "lohkoista". Jokainen lohko sisältää aikaleiman ja viittauksen edelliseen lohkoon, luoden turvallisen ja läpinäkyvän historian.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Konttiterisointi</div><p style="font-size:13.5px;margin:0">Virtualisointitekniikka, joka pakkaa sovelluskoodin kaikkien riippuvuuksiensa (kirjastot, työkalut, konfiguraatio) kanssa eristettyyn "konttiin". Tämä varmistaa, että sovellus toimii johdonmukaisesti riippumatta siitä, missä se otetaan käyttöön.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Kryptografinen todiste</div><p style="font-size:13.5px;margin:0">Matemaattisia menetelmiä, joita käytetään datan tai transaktioiden aitouden ja eheyden varmentamiseen. Se mahdollistaa turvallisen viestinnän ja varmennuksen ilman, että osapuolten tarvitsee luottaa toisiinsa.</p></div>
+    <div class="glossary-item"><div class="glossary-term">CUDA</div><p style="font-size:13.5px;margin:0">NVIDIAn kehittämä rinnakkaislaskenta-alusta ja ohjelmointimalli. CUDA antaa kehittäjien käyttää NVIDIA-GPU:ita yleiskäyttöiseen laskentaan, nopeuttaen dramaattisesti laskentaintensiivisiä tehtäviä, erityisesti tekoälyssä.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Hajautus</div><p style="font-size:13.5px;margin:0">Periaate, jonka mukaan hallinta ja päätöksenteko jaetaan verkon yli sen sijaan, että ne keskitettäisiin yhdelle taholle. Svitlo Chainissa tämä tarkoittaa, että GPU-resurssit on jaettu monelle solmulle maailmanlaajuisesti.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Docker</div><p style="font-size:13.5px;margin:0">Suosittu alusta sovellusten kehittämiseen, toimittamiseen ja ajamiseen konttiteknologiaa käyttäen. Docker-kontit varmistavat, että Svitlo Chain -asiakas ja tekoälytehtävät toimivat eristetysti ja tehokkaasti.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Svitlo Chainin L1-lohkoketju</div><p style="font-size:13.5px;margin:0">Svitlo Chainin oma L1-lohkoketju, kirjoitettu Rustilla ja suunniteltu turvallisuutta, suurta nopeutta ja tehokasta tiedonkäsittelyä varten. Se muodostaa perustan transaktioille, ohjelmalogiikalle ja verkkoinfrastruktuurille.</p></div>
+    <div class="glossary-item"><div class="glossary-term">GPU (näytönohjainyksikkö)</div><p style="font-size:13.5px;margin:0">Erikoistunut elektroninen piiri, joka on suunniteltu nopeasti käsittelemään ja muuttamaan muistia kuvan luonnin nopeuttamiseksi kehyspuskurissa. GPU:t ovat myös erittäin tehokkaita suurten data-aineistojen rinnakkaiskäsittelyyn, mikä tekee niistä ihanteellisia tekoälylaskentaan.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Päättely</div><p style="font-size:13.5px;margin:0">Prosessi, jossa koulutettua tekoälymallia käytetään ennusteiden tai päätösten tekemiseen uuden, näkemättömän datan perusteella. Tämä on vaihe, jossa tekoälymalli soveltaa oppimaansa.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Louhinta</div><p style="font-size:13.5px;margin:0">Prosessi, jossa uusia transaktioita varmennetaan ja lisätään lohkoketjuun ratkaisemalla monimutkaisia kryptografisia pulmia. Svitlo Chainin "Miner Modessa" solmut voivat ansaita varmentamalla transaktioita tai suorittamalla tekoälylaskentaa.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Solmu</div><p style="font-size:13.5px;margin:0">Tietokone tai palvelin, joka ajaa Svitlo Chain -asiakasohjelmistoa ja on yhdistetty verkkoon. Solmut tarjoavat laskentaresursseja (GPU:ita) verkolle.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Vertaisverkko (P2P)</div><p style="font-size:13.5px;margin:0">Verkko, jossa solmut kommunikoivat suoraan keskenään ilman keskuspalvelinta. Svitlo Chain rakentuu P2P-verkolle jakaakseen tekoälytyökuormia.</p></div>
+    <div class="glossary-item"><div class="glossary-term">SVIT-kolikko</div><p style="font-size:13.5px;margin:0">Svitlo Chainin L1-lohkoketjun natiivi kryptovaluutta. SVIT:iä käytetään GPU-resurssien maksamiseen, toimittajien palkitsemiseen ja verkon hallintoon osallistumiseen.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Mainepisteet</div><p style="font-size:13.5px;margin:0">Järjestelmä, joka arvioi Svitlo Chainin GPU-toimittajien luotettavuutta ja suorituskykyä. Korkeat pisteet johtavat useampiin tehtäviin ja suurempiin ansioihin.</p></div>
+    <div class="glossary-item"><div class="glossary-term">SHA-256</div><p style="font-size:13.5px;margin:0">Kryptografinen tiivistefunktio, joka tuottaa 256-bittisen (32-tavuisen) tiivistearvon. Sitä käytetään laajalti lohkoketjuteknologiassa tietojen eheyden varmistamiseen ja lohkojen yksilöllisten tunnisteiden luomiseen.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Slashing</div><p style="font-size:13.5px;margin:0">Rangaistusmekanismi hajautetuissa verkoissa, jossa osa GPU-toimittajan panoksesta poistetaan, jos hän toimii haitallisesti tai ei täytä velvoitteitaan.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Älysopimukset</div><p style="font-size:13.5px;margin:0">Itse toteutuvat sopimukset, joiden ehdot on kirjoitettu suoraan koodiin. Ne ajetaan automaattisesti lohkoketjussa, kun ennalta määritetyt ehdot täyttyvät, poistaen tarpeen välikäsille.</p></div>
+    <div class="glossary-item"><div class="glossary-term">Panostus</div><p style="font-size:13.5px;margin:0">Prosessi, jossa tietty määrä kryptovaluuttaa (SVIT Svitlo Chainissa) lukitaan vakuudeksi verkon toiminnan tukemiseksi. GPU-toimittajat voivat panostaa SVIT:iä nostaakseen mainepisteitään ja saadakseen enemmän tehtäviä.</p></div>
+    <div class="glossary-item"><div class="glossary-term">VRAM (näyttömuisti)</div><p style="font-size:13.5px;margin:0">RAM-tyyppi, joka on suunniteltu erityisesti näytöllä näytettävän kuvadatan tallentamiseen. Tekoälylaskennassa, erityisesti suurten mallien kanssa, riittävä VRAM on kriittinen suorituskyvylle.</p></div></div>
+    <p style="margin-top:24px;color:var(--ink-m);font-size:13.5px">Tätä sanastoa päivitetään säännöllisesti. Jos sinulla on kysymyksiä tietyistä termeistä tai haluat ehdottaa lisäyksiä, älä epäröi ottaa yhteyttä Svitlo Chain -yhteisöön.</p>
+  </div>
+</section>
+
+<section id="compare">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Vertailu</div><h2>Svitlo Chain vs. perinteiset pilvipalveluntarjoajat</h2><p>Svitlo Chain mullistaa pääsyn GPU-resursseihin tekoäly- ja koneoppimisprojekteille. Tämä vertailu korostaa, miten Svitlo Chain eroaa perinteisistä pilvipalveluista kuten AWS, Google Cloud ja Azure, sekä muista keskitetyistä GPU-pilvipalveluntarjoajista.</p></div>
+    <div class="table-wrap"><table class="data"><thead><tr><th>Ulottuvuus</th><th>Svitlo Chain</th><th>Perinteinen pilvi</th></tr></thead><tbody><tr><td>Hinnoittelu (per GPU-tunti)</td><td>Jopa 70 % halvempi, dynaaminen</td><td>Usein kalliimpi, porrastettu kysynnän mukaan</td></tr><tr><td>Hajautus</td><td>Täysin hajautettu (vertaisverkko)</td><td>Keskitetty</td></tr><tr><td>Joustavuus</td><td>Ei pitkiä sopimuksia, käytön mukaan maksu, ei sitoutumista</td><td>Vaatii usein sopimuksia, sitoutumisjaksoja, monimutkaisia sopimuksia</td></tr><tr><td>Nopeus (tehtävien sovitus ja suoritus)</td><td>Nopea sovitus P2P-verkon kautta</td><td>Vaihteleva, voi kärsiä pullonkauloista korkealla kysynnällä</td></tr><tr><td>Läpinäkyvyys</td><td>Täysi läpinäkyvyys ja todennettavuus lohkoketjun kautta</td><td>Rajoitettu, yrityksen hallinnoima</td></tr><tr><td>Yhteisö</td><td>Avoimen lähdekoodin ja yhteisövetoinen kehitys</td><td>Suuri ekosysteemi, mutta ei yhteisövetoinen</td></tr><tr><td>Token-kannustimet</td><td>Kyllä, SVIT-tokenit toimittajille ja käyttäjille</td><td>Ei</td></tr></tbody></table></div>
+    <p style="margin-top:24px">Kuten taulukko osoittaa, Svitlo Chain tarjoaa kustannustehokkaan, joustavan ja läpinäkyvän ratkaisun GPU-laskentaan, hajautetun mallin ja yhteisön osallistumisen ohjaamana. Tämä asemoi Svitlo Chainin hajautetun tekoälylaskennan tulevaisuudeksi.</p>
+  </div>
+</section>
+
+<section id="cta" class="atmosphere tight">
+  <div class="wrap center" style="max-width:640px">
+    <div class="section-banner" style="background-image:url('/assets/images/banner-cosmic-lotus.jpg');height:180px"></div>
+    <h2>Valmiina liittymään hajautettuun GPU-vallankumoukseen?</h2>
+    <p class="lede center">Halusitpa ansaita käyttämättömästä laskentatehostasi tai tarvitsetpa edullista, skaalautuvaa tekoälytehoa, Svitlo Chainilla on oikea ratkaisu. Aloita tulevaisuutesi rakentaminen tai rahaksi nykyinen laitteistosi minuuteissa.</p>
+    <div class="cta-row" style="justify-content:center">
+      <a href="/platform/" class="btn btn-primary">Ryhdy toimittajaksi</a>
+      <a href="/platform/" class="btn btn-glass glass-sm">Aloita kehittäminen</a>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Ota yhteyttä</div><h2>Yhteystiedot ja tuki</h2><p>Onko sinulla kysymyksiä, tarvitsetko apua, vai haluatko liittyä Svitlo Chain -yhteisöön? Tässä ovat kaikki yhteyskanavamme ja tukiresurssimme.</p></div>
+    <div class="grid grid-2">
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">✉️</div>
+      <div><h3>Sähköpostituki</h3><p style="margin-top:4px;font-size:13.5px"><a href="mailto:svitlochain@gmail.com">svitlochain@gmail.com</a></p></div>
+    </div>
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">✈️</div>
+      <div><h3>Telegram</h3><p style="margin-top:4px;font-size:13.5px"><a href="https://t.me/+8t6LS2j4CyJiOTU0" target="_blank" rel="noopener">Liity Telegram-ryhmäämme nopeita päivityksiä ja yhteisökeskustelua varten.</a></p></div>
+    </div>
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">💬</div>
+      <div><h3>Discord-yhteisö</h3><p style="margin-top:4px;font-size:13.5px"><a href="https://discord.gg/9wqA3fMfg" target="_blank" rel="noopener">Liity Discordiimme reaaliaikaista tukea ja keskustelua varten tiimin ja muiden käyttäjien kanssa.</a></p></div>
+    </div>
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">🐦</div>
+      <div><h3>Seuraa meitä X:ssä</h3><p style="margin-top:4px;font-size:13.5px"><a href="https://x.com/Svitlochain" target="_blank" rel="noopener">Pysy ajan tasalla viimeisimmistä uutisista ja tuotepäivityksistä.</a></p></div>
+    </div>
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">📘</div>
+      <div><h3>Facebook</h3><p style="margin-top:4px;font-size:13.5px"><a href="https://www.facebook.com/share/1D53mnv4kk/" target="_blank" rel="noopener">Seuraa Facebook-sivuamme uutisia ja yhteisöpäivityksiä varten.</a></p></div>
+    </div>
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">🐙</div>
+      <div><h3>GitHub-repositorio</h3><p style="margin-top:4px;font-size:13.5px">Tutustu avoimen lähdekoodin koodiimme ja osallistu alustan kehitykseen.</p></div>
+    </div>
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">📄</div>
+      <div><h3>Dokumentaatio</h3><p style="margin-top:4px;font-size:13.5px">Lue kattavat oppaamme ja tekniset spesifikaatiomme aloittaaksesi.</p></div>
+    </div>
+    <div class="card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:20px">📰</div>
+      <div><h3>Svitlo Chain -blogi</h3><p style="margin-top:4px;font-size:13.5px">Saa uusimmat oivallukset, analyysit ja uutiset hajautetusta tekoälystä.</p></div>
+    </div></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>
+      <a href="/fi/" class="brand" style="margin-bottom:10px;display:flex"><span class="dot"></span>Svitlo<b>Chain</b></a>
+      <p style="max-width:32ch">Layer-1-lohkoketju tekoälylaskentaan ja päättelyn selvitykseen.</p>
+      <p>© 2026 Svitlo Chain. Kaikki oikeudet pidätetään.</p>
+    </div>
+    <div class="cols">
+    <div><h4>Tuote</h4><ul><li><a href="/fi/platform/">Alusta</a></li><li><a href="/fi/documentation/">Dokumentaatio</a></li><li><a href="#developers">Kehittäjille</a></li><li><a href="#gpu-owners">GPU:iden omistajille</a></li><li><a href="#token">SVIT-token</a></li></ul></div>
+    <div><h4>Yritys</h4><ul><li><a href="#roadmap">Tiekartta</a></li><li><a href="#faq">UKK</a></li><li><a href="#contact">Yhteystiedot</a></li></ul></div>
+    <div><h4>Lompakko</h4><ul><li><a href="/fi/wallet/">Avaa lompakko</a></li><li><a href="/privacy/">Tietosuojakäytäntö</a></li><li><a href="/support/">Tuki</a></li></ul></div></div>
+  </div>
+</footer>
+<script>
+document.addEventListener('click', (e) => {
+  const sw = document.getElementById('lang-switch');
+  if (sw && !sw.contains(e.target)) sw.classList.remove('open');
+  const nav = document.getElementById('nav-links');
+  const toggle = document.getElementById('nav-toggle');
+  if (nav && nav.classList.contains('open') && !nav.contains(e.target) && !toggle.contains(e.target)) {
+    nav.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+});
+window.__toggleTheme = function() {
+  var cur = document.documentElement.getAttribute('data-theme');
+  var isDark = cur ? cur === 'dark' : window.matchMedia('(prefers-color-scheme:dark)').matches;
+  var next = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('svitlo-theme', next); } catch (e) {}
+};
+try { localStorage.setItem('svitlo-lang', 'fi'); } catch (e) {}
+</script>
+</body>
+</html>

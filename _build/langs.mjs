@@ -3,4 +3,13 @@ export const LANGS = [
   { code: 'uk', label: 'Українська', flag: '🇺🇦' },
   { code: 'sv', label: 'Svenska',    flag: '🇸🇪' },
   { code: 'no', label: 'Norsk',      flag: '🇳🇴' },
+  { code: 'it', label: 'Italiano',   flag: '🇮🇹' },
+  { code: 'es', label: 'Español',    flag: '🇪🇸' },
+  { code: 'fr', label: 'Français',   flag: '🇫🇷' },
+  { code: 'de', label: 'Deutsch',    flag: '🇩🇪' },
+  { code: 'fi', label: 'Suomi',      flag: '🇫🇮' },
+  { code: 'pt', label: 'Português',  flag: '🇵🇹' },
+  { code: 'ja', label: '日本語',      flag: '🇯🇵' },
+  { code: 'ko', label: '한국어',      flag: '🇰🇷' },
+  { code: 'zh', label: '中文',        flag: '🇨🇳' },
 ];
