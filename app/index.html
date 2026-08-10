@@ -436,6 +436,7 @@ input,textarea,select{font:inherit;}
       </div>
       <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--bd)">
         <div style="font-size:.625rem;color:var(--txm);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:8px" data-i18n="settings.wallet_actions">Wallet Actions</div>
+        <button onclick="lockWallet()" style="width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:9px;font-size:.75rem;color:var(--tx);cursor:pointer;margin-bottom:8px" data-i18n="settings.lock_wallet">Lock wallet</button>
         <button onclick="forgetWallet()" style="width:100%;background:var(--red-bg);border:1px solid rgba(168,48,48,.3);border-radius:8px;padding:9px;font-size:.75rem;color:var(--red);cursor:pointer" data-i18n="settings.forget_wallet">Forget wallet (clear local keystore)</button>
       </div>
     </div>
@@ -982,30 +983,51 @@ let _session=null;
 function loadKeystoreRaw(){
   return localStorage.getItem('svit-keystore');
 }
+// Real gap found live (2026-08-10, memory-dump red-team pass): these three
+// functions all derive seed32 (raw key material) the same way
+// deriveChainAddress() does, but -- unlike that function -- never zeroed
+// it afterward, leaving an unzeroed copy sitting in memory until GC gets
+// around to it, on top of the intentionally-retained copy in
+// _session.signingKey.raw. `mnemonic`/`clean`/`phrase` (JS strings) stay
+// un-zeroable regardless, by language design -- not something a
+// try/finally here can fix, only seed32/entropy (real Uint8Arrays) can be.
 async function walletCreateBrowser(pw){
   const entropy=crypto.getRandomValues(new Uint8Array(32));
   const mnemonic=await entropyToMnemonic(entropy);
   const seed32=(await mnemonicToSeed(mnemonic)).slice(0,32);
-  const{signingKey,address}=await seedToKeypair(seed32);
-  localStorage.setItem('svit-keystore',JSON.stringify(await encryptKeystore(new TextEncoder().encode(mnemonic),pw)));
-  _session={signingKey,address};
-  return{address,address_short:'svit1'+address.slice(0,16),mnemonic};
+  try{
+    const{signingKey,address}=await seedToKeypair(seed32);
+    localStorage.setItem('svit-keystore',JSON.stringify(await encryptKeystore(new TextEncoder().encode(mnemonic),pw)));
+    _session={signingKey,address};
+    return{address,address_short:'svit1'+address.slice(0,16),mnemonic};
+  }finally{
+    entropy.fill(0);
+    seed32.fill(0);
+  }
 }
 async function walletImportBrowser(phrase,pw){
   const clean=phrase.trim();
   const seed32=(await mnemonicToSeed(clean)).slice(0,32);
-  const{signingKey,address}=await seedToKeypair(seed32);
-  localStorage.setItem('svit-keystore',JSON.stringify(await encryptKeystore(new TextEncoder().encode(clean),pw)));
-  _session={signingKey,address};
-  return{address,address_short:'svit1'+address.slice(0,16)};
+  try{
+    const{signingKey,address}=await seedToKeypair(seed32);
+    localStorage.setItem('svit-keystore',JSON.stringify(await encryptKeystore(new TextEncoder().encode(clean),pw)));
+    _session={signingKey,address};
+    return{address,address_short:'svit1'+address.slice(0,16)};
+  }finally{
+    seed32.fill(0);
+  }
 }
 async function walletUnlockBrowser(pw){
   const raw=loadKeystoreRaw();
   if(!raw)throw new Error('No keystore');
   const{seed32}=await decryptKeystore(JSON.parse(raw),pw);
-  const{signingKey,address}=await seedToKeypair(seed32);
-  _session={signingKey,address};
-  return{address,address_short:'svit1'+address.slice(0,16)};
+  try{
+    const{signingKey,address}=await seedToKeypair(seed32);
+    _session={signingKey,address};
+    return{address,address_short:'svit1'+address.slice(0,16)};
+  }finally{
+    seed32.fill(0);
+  }
 }
 
 // ── Multi-chain address derivation (Receive tab) ────────────────────────────
@@ -1118,6 +1140,20 @@ function openSettings(){document.getElementById('node-url-input').value=nodeUrl(
 function closeSettings(){document.getElementById('settings-overlay').style.display='none';}
 function saveSettings(){const u=document.getElementById('node-url-input').value.trim();if(u)localStorage.setItem('svit-node-url',u);closeSettings();pollNodeData();}
 function forgetWallet(){if(!confirm('Delete local keystore? Make sure you have your recovery phrase!'))return;localStorage.removeItem('svit-keystore');_session=null;closeSettings();location.reload();}
+// Real gap found live (2026-08-10, memory-dump red-team pass): unlike
+// deriveChainAddress() (which properly zeroes its temp seed32/seed64 in a
+// finally block), the raw signing key derived at unlock time --
+// _session.signingKey.raw -- had NO way to be cleared short of the
+// destructive forgetWallet() (deletes the keystore entirely). lockWallet()
+// zeroes it, drops the session, and reloads -- keystore stays intact.
+function lockWallet(){
+  if(_session&&_session.signingKey&&_session.signingKey.raw){
+    try{_session.signingKey.raw.fill(0);}catch(e){}
+  }
+  _session=null;
+  closeSettings();
+  location.reload();
+}
 
 // ── Theme ──────────────────────────────────────────────────────────────────
 const root=document.documentElement;
