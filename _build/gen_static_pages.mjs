@@ -35,11 +35,11 @@ es: {
   },
   platform:{
     title:'Plataforma — Svitlo Chain',
-    desc:'La plataforma Svitlo Chain — un mercado de GPU descentralizado para IA. Los clientes de Windows, macOS y Linux están en desarrollo.',
+    desc:'La plataforma Svitlo Chain — un mercado de GPU descentralizado para IA. Clientes para macOS y Linux ya disponibles; Windows próximamente.',
     eyebrow:'Plataforma Svitlo Chain', h1:'Un mercado de GPU descentralizado para IA',
     lede:'Libérate del monopolio de precios de GPU de las grandes nubes. Alquila GPU inactivas, o pon tu hardware a trabajar y gana ingresos reales — impulsado por IA, protegido por blockchain.',
-    winSoon:'🪟 Windows — Próximamente', macSoon:'🍎 macOS — Próximamente', linuxSoon:'🐧 Linux — Próximamente',
-    note:'El cliente de la plataforma aún no se ha lanzado — esta página pasará a descargas reales en cuanto lo haga. Mientras tanto, el wallet ya está disponible si quieres adelantarte.',
+    winSoon:'🪟 Windows — Próximamente', macDownload:'🍎 macOS — Descargar', linuxDownload:'🐧 Linux (.deb) — Descargar',
+    note:'Los clientes de macOS y Linux ya están disponibles — descárgalos arriba. El soporte para Windows llega próximamente. ¿Tienes una granja minera con HiveOS? Escríbenos para el paquete Flight Sheet.',
     ctaWallet:'Abrir el wallet →', ctaLearn:'Lee cómo funciona →',
     s1H3:'1. Instala el cliente', s1P:'Descarga el cliente de Svitlo Chain para tu sistema operativo y conecta tu GPU. Windows, macOS y Linux estarán todos soportados en el lanzamiento.',
     s2H3:'2. Conecta tu wallet', s2P:'Vincula una dirección de Svitlo Wallet — el mismo wallet no custodial ya <a href="/es/wallet/">disponible hoy</a> — para recibir ganancias o pagar por cómputo.',
@@ -92,11 +92,11 @@ D.fr = {
   },
   platform:{
     title:'Plateforme — Svitlo Chain',
-    desc:'La plateforme Svitlo Chain — un marché de GPU décentralisé pour l’IA. Les clients Windows, macOS et Linux sont en développement.',
+    desc:'La plateforme Svitlo Chain — un marché de GPU décentralisé pour l’IA. Clients macOS et Linux disponibles ; Windows bientôt disponible.',
     eyebrow:'Plateforme Svitlo Chain', h1:'Un marché de GPU décentralisé pour l’IA',
     lede:'Libérez-vous du monopole des prix GPU du Big Cloud. Louez des GPU inactifs, ou mettez votre matériel au travail et gagnez un revenu réel — propulsé par l’IA, sécurisé par la blockchain.',
-    winSoon:'🪟 Windows — Bientôt disponible', macSoon:'🍎 macOS — Bientôt disponible', linuxSoon:'🐧 Linux — Bientôt disponible',
-    note:'Le client de la plateforme n’a pas encore été lancé — cette page passera à de vrais téléchargements dès que ce sera le cas. En attendant, le wallet est déjà disponible si vous voulez prendre de l’avance.',
+    winSoon:'🪟 Windows — Bientôt disponible', macDownload:'🍎 macOS — Télécharger', linuxDownload:'🐧 Linux (.deb) — Télécharger',
+    note:'Les clients macOS et Linux sont disponibles — téléchargez-les ci-dessus. Le support Windows arrive bientôt. Ferme de minage sous HiveOS ? Contactez-nous pour le paquet Flight Sheet.',
     ctaWallet:'Ouvrir le wallet →', ctaLearn:'Découvrir comment ça marche →',
     s1H3:'1. Installez le client', s1P:'Téléchargez le client Svitlo Chain pour votre OS et connectez votre GPU. Windows, macOS et Linux seront tous pris en charge au lancement.',
     s2H3:'2. Connectez votre wallet', s2P:'Liez une adresse Svitlo Wallet — le même wallet non-dépositaire déjà <a href="/fr/wallet/">disponible aujourd’hui</a> — pour recevoir des gains ou payer du calcul.',
@@ -148,11 +148,11 @@ D.fi = {
   },
   platform:{
     title:'Alusta — Svitlo Chain',
-    desc:'Svitlo Chain -alusta — hajautettu GPU-markkinapaikka tekoälylle. Windows-, macOS- ja Linux-asiakasohjelmat ovat kehitteillä.',
+    desc:'Svitlo Chain -alusta — hajautettu GPU-markkinapaikka tekoälylle. macOS- ja Linux-asiakasohjelmat saatavilla; Windows tulossa pian.',
     eyebrow:'Svitlo Chain -alusta', h1:'Hajautettu GPU-markkinapaikka tekoälylle',
     lede:'Vapaudu suurten pilvitoimijoiden GPU-hintamonopolista. Vuokraa käyttämättömiä GPU:ita tai laita omat laitteesi töihin ja ansaitse oikeaa tuloa — tekoälyn voimin, lohkoketjun turvaamana.',
-    winSoon:'🪟 Windows — Tulossa pian', macSoon:'🍎 macOS — Tulossa pian', linuxSoon:'🐧 Linux — Tulossa pian',
-    note:'Alustan asiakasohjelmaa ei ole vielä julkaistu — tämä sivu vaihtuu oikeisiin latauksiin heti kun se julkaistaan. Sillä välin lompakko on jo saatavilla, jos haluat valmistautua etukäteen.',
+    winSoon:'🪟 Windows — Tulossa pian', macDownload:'🍎 macOS — Lataa', linuxDownload:'🐧 Linux (.deb) — Lataa',
+    note:'macOS- ja Linux-asiakasohjelmat ovat jo saatavilla — lataa yllä. Windows-tuki tulee pian. Louhintaräkki HiveOS:lla? Ota yhteyttä Flight Sheet -paketin saamiseksi.',
     ctaWallet:'Avaa lompakko →', ctaLearn:'Lue, miten se toimii →',
     s1H3:'1. Asenna asiakasohjelma', s1P:'Lataa Svitlo Chain -asiakasohjelma käyttöjärjestelmällesi ja yhdistä GPU:si. Windows, macOS ja Linux tuetaan kaikki julkaisussa.',
     s2H3:'2. Yhdistä lompakkosi', s2P:'Liitä Svitlo Wallet -osoite — sama säilytyksetön lompakko, joka on jo <a href="/fi/wallet/">käytettävissä tänään</a> — ansioiden vastaanottamiseen tai laskentatehon maksamiseen.',
@@ -204,11 +204,11 @@ D.pt = {
   },
   platform:{
     title:'Plataforma — Svitlo Chain',
-    desc:'A plataforma Svitlo Chain — um mercado de GPU descentralizado para IA. Clientes para Windows, macOS e Linux estão em desenvolvimento.',
+    desc:'A plataforma Svitlo Chain — um mercado de GPU descentralizado para IA. Clientes para macOS e Linux já disponíveis; Windows em breve.',
     eyebrow:'Plataforma Svitlo Chain', h1:'Um mercado de GPU descentralizado para IA',
     lede:'Liberte-se do monopólio de preços de GPU das grandes nuvens. Alugue GPUs ociosas, ou coloque o seu hardware para trabalhar e ganhe renda real — impulsionado por IA, protegido por blockchain.',
-    winSoon:'🪟 Windows — Em breve', macSoon:'🍎 macOS — Em breve', linuxSoon:'🐧 Linux — Em breve',
-    note:'O cliente da plataforma ainda não foi lançado — esta página mudará para downloads reais assim que estiver disponível. Enquanto isso, a wallet já está disponível se quiser adiantar-se.',
+    winSoon:'🪟 Windows — Em breve', macDownload:'🍎 macOS — Baixar', linuxDownload:'🐧 Linux (.deb) — Baixar',
+    note:'Os clientes macOS e Linux já estão disponíveis — baixe acima. O suporte para Windows chega em breve. Tem uma fazenda de mineração com HiveOS? Fale connosco para o pacote Flight Sheet.',
     ctaWallet:'Abrir a wallet →', ctaLearn:'Veja como funciona →',
     s1H3:'1. Instale o cliente', s1P:'Baixe o cliente Svitlo Chain para o seu sistema operacional e conecte a sua GPU. Windows, macOS e Linux serão todos suportados no lançamento.',
     s2H3:'2. Conecte a sua wallet', s2P:'Vincule um endereço Svitlo Wallet — a mesma wallet não-custodial já <a href="/pt/wallet/">disponível hoje</a> — para receber ganhos ou pagar por computação.',
@@ -260,11 +260,11 @@ D.ja = {
   },
   platform:{
     title:'プラットフォーム — Svitlo Chain',
-    desc:'Svitlo Chainプラットフォーム — AIのための分散型GPUマーケットプレイス。Windows、macOS、Linuxクライアントは開発中です。',
+    desc:'Svitlo Chainプラットフォーム — AIのための分散型GPUマーケットプレイス。macOS・Linuxクライアントは利用可能、Windowsは近日公開。',
     eyebrow:'Svitlo Chainプラットフォーム', h1:'AIのための分散型GPUマーケットプレイス',
     lede:'大手クラウドのGPU価格独占から解放されましょう。遊休GPUをレンタルするか、自分のハードウェアを稼働させて実収入を得る — AIが動力源、ブロックチェーンが安全性の担保です。',
-    winSoon:'🪟 Windows — 近日公開', macSoon:'🍎 macOS — 近日公開', linuxSoon:'🐧 Linux — 近日公開',
-    note:'プラットフォームクライアントはまだリリースされていません — 公開され次第、このページは実際のダウンロードに切り替わります。事前に準備しておきたい方は、既に利用可能なウォレットをご利用ください。',
+    winSoon:'🪟 Windows — 近日公開', macDownload:'🍎 macOS — ダウンロード', linuxDownload:'🐧 Linux (.deb) — ダウンロード',
+    note:'macOSとLinuxクライアントは公開中です — 上のボタンからダウンロードできます。Windows版は近日公開予定です。HiveOSのマイニングリグをお持ちですか?Flight Sheetパッケージについてはお問い合わせください。',
     ctaWallet:'ウォレットを開く →', ctaLearn:'仕組みを読む →',
     s1H3:'1. クライアントをインストール', s1P:'お使いのOS向けにSvitlo Chainクライアントをダウンロードし、GPUを接続します。ローンチ時にはWindows、macOS、Linuxすべてに対応します。',
     s2H3:'2. ウォレットを接続', s2P:'Svitlo Walletアドレスをリンクします — 既に<a href="/ja/wallet/">今日から利用可能</a>な同じ非管理型ウォレットで、収益の受け取りや計算リソースの支払いに使用します。',
@@ -316,11 +316,11 @@ D.ko = {
   },
   platform:{
     title:'플랫폼 — Svitlo Chain',
-    desc:'Svitlo Chain 플랫폼 — AI를 위한 탈중앙화 GPU 마켓플레이스. Windows, macOS, Linux 클라이언트는 개발 중입니다.',
+    desc:'Svitlo Chain 플랫폼 — AI를 위한 탈중앙화 GPU 마켓플레이스. macOS·Linux 클라이언트 이용 가능, Windows는 곧 제공됩니다.',
     eyebrow:'Svitlo Chain 플랫폼', h1:'AI를 위한 탈중앙화 GPU 마켓플레이스',
     lede:'대형 클라우드의 GPU 가격 독점에서 벗어나세요. 유휴 GPU를 대여하거나, 자신의 하드웨어를 가동해 실질적인 수익을 올리세요 — AI가 동력을, 블록체인이 보안을 담당합니다.',
-    winSoon:'🪟 Windows — 출시 예정', macSoon:'🍎 macOS — 출시 예정', linuxSoon:'🐧 Linux — 출시 예정',
-    note:'플랫폼 클라이언트는 아직 출시되지 않았습니다 — 출시되는 즉시 이 페이지는 실제 다운로드로 전환됩니다. 그동안 미리 준비하고 싶다면 이미 사용 가능한 월렛을 이용하세요.',
+    winSoon:'🪟 Windows — 출시 예정', macDownload:'🍎 macOS — 다운로드', linuxDownload:'🐧 Linux (.deb) — 다운로드',
+    note:'macOS 및 Linux 클라이언트가 출시되었습니다 — 위에서 다운로드하세요. Windows 지원은 곧 제공됩니다. HiveOS 마이닝 리그를 운영 중이신가요? Flight Sheet 패키지는 문의해 주세요.',
     ctaWallet:'월렛 열기 →', ctaLearn:'작동 방식 알아보기 →',
     s1H3:'1. 클라이언트 설치', s1P:'사용 중인 OS용 Svitlo Chain 클라이언트를 다운로드하고 GPU를 연결하세요. 출시 시 Windows, macOS, Linux 모두 지원됩니다.',
     s2H3:'2. 월렛 연결', s2P:'수익을 받거나 컴퓨팅 비용을 지불하기 위해 Svitlo Wallet 주소를 연결하세요 — <a href="/ko/wallet/">오늘 이미 사용 가능한</a> 동일한 비수탁형 월렛입니다.',
@@ -372,11 +372,11 @@ D.zh = {
   },
   platform:{
     title:'平台 — Svitlo Chain',
-    desc:'Svitlo Chain 平台 —— 面向 AI 的去中心化 GPU 市场。Windows、macOS 和 Linux 客户端正在开发中。',
+    desc:'Svitlo Chain 平台 —— 面向 AI 的去中心化 GPU 市场。macOS 和 Linux 客户端已可用,Windows 即将推出。',
     eyebrow:'Svitlo Chain 平台', h1:'面向 AI 的去中心化 GPU 市场',
     lede:'摆脱大型云厂商对 GPU 价格的垄断。租用闲置 GPU,或让您的硬件为您工作,赚取真实收入 —— 由 AI 驱动,由区块链保障安全。',
-    winSoon:'🪟 Windows — 即将推出', macSoon:'🍎 macOS — 即将推出', linuxSoon:'🐧 Linux — 即将推出',
-    note:'平台客户端尚未发布 —— 一旦发布,本页面将替换为真实的下载链接。与此同时,如果您想提前做好准备,钱包已经可用。',
+    winSoon:'🪟 Windows — 即将推出', macDownload:'🍎 macOS — 下载', linuxDownload:'🐧 Linux (.deb) — 下载',
+    note:'macOS 和 Linux 客户端已上线 —— 请在上方下载。Windows 支持即将推出。使用 HiveOS 的矿场?请联系我们获取 Flight Sheet 包。',
     ctaWallet:'打开钱包 →', ctaLearn:'了解运作方式 →',
     s1H3:'1. 安装客户端', s1P:'下载适用于您操作系统的 Svitlo Chain 客户端并连接您的 GPU。发布时将全面支持 Windows、macOS 和 Linux。',
     s2H3:'2. 连接您的钱包', s2P:'关联一个 Svitlo Wallet 地址 —— 即今天已经<a href="/zh/wallet/">可用</a>的同一个非托管钱包 —— 用于接收收益或支付算力费用。',
@@ -428,11 +428,11 @@ D.de = {
   },
   platform:{
     title:'Plattform — Svitlo Chain',
-    desc:'Die Svitlo-Chain-Plattform — ein dezentraler GPU-Marktplatz für KI. Windows-, macOS- und Linux-Clients befinden sich in Entwicklung.',
+    desc:'Die Svitlo-Chain-Plattform — ein dezentraler GPU-Marktplatz für KI. macOS- und Linux-Clients verfügbar; Windows folgt demnächst.',
     eyebrow:'Svitlo-Chain-Plattform', h1:'Ein dezentraler GPU-Marktplatz für KI',
     lede:'Befreie dich vom GPU-Preismonopol der Big-Cloud-Anbieter. Miete ungenutzte GPUs, oder lass deine Hardware arbeiten und verdiene echtes Einkommen — angetrieben von KI, gesichert durch Blockchain.',
-    winSoon:'🪟 Windows — Demnächst', macSoon:'🍎 macOS — Demnächst', linuxSoon:'🐧 Linux — Demnächst',
-    note:'Der Plattform-Client wurde noch nicht veröffentlicht — diese Seite wechselt zu echten Downloads, sobald er verfügbar ist. In der Zwischenzeit steht die Wallet bereits zur Verfügung, falls du vorbereitet sein möchtest.',
+    winSoon:'🪟 Windows — Demnächst', macDownload:'🍎 macOS — Herunterladen', linuxDownload:'🐧 Linux (.deb) — Herunterladen',
+    note:'Die macOS- und Linux-Clients sind bereits verfügbar — oben herunterladen. Windows-Unterstützung folgt demnächst. Mining-Rig mit HiveOS? Kontaktiere uns für das Flight-Sheet-Paket.',
     ctaWallet:'Wallet öffnen →', ctaLearn:'Lies, wie es funktioniert →',
     s1H3:'1. Client installieren', s1P:'Lade den Svitlo-Chain-Client für dein Betriebssystem herunter und verbinde deine GPU. Windows, macOS und Linux werden beim Start alle unterstützt.',
     s2H3:'2. Wallet verbinden', s2P:'Verknüpfe eine Svitlo-Wallet-Adresse — dieselbe non-custodial Wallet, die schon <a href="/de/wallet/">heute verfügbar</a> ist — um Einnahmen zu empfangen oder Rechenleistung zu bezahlen.',
@@ -589,9 +589,9 @@ function platformPage(lang, t) {
   <h1>${p.h1}</h1>
   <p class="lede">${p.lede}</p>
   <div class="cta-row">
-    <span class="btn btn-primary" style="opacity:.55;cursor:default;pointer-events:none;">${p.winSoon}</span>
-    <span class="btn btn-outline" style="opacity:.65;cursor:default;pointer-events:none;">${p.macSoon}</span>
-    <span class="btn btn-outline" style="opacity:.65;cursor:default;pointer-events:none;">${p.linuxSoon}</span>
+    <span class="btn btn-outline" style="opacity:.55;cursor:default;pointer-events:none;">${p.winSoon}</span>
+    <a href="/downloads/Svitlo-Node-Agent.dmg" class="btn btn-primary">${p.macDownload}</a>
+    <a href="/downloads/svitlo-node-agent_1.0.0_all.deb" class="btn btn-primary">${p.linuxDownload}</a>
   </div>
   <p class="lede" style="margin-top:12px;font-size:.85em;opacity:.75;">${p.note}</p>
   <div class="cta-row">
