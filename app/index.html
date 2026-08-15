@@ -12,7 +12,7 @@
      'unsafe-inline' is unavoidable given this file's extensive onclick="..."
      usage -- see the escapeHtml()/delegated-listener fix in renderMarkets()
      for the actual XSS mitigation, CSP is defense-in-depth on top of that. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://coin-images.coingecko.com; connect-src 'self' https://dares-suffering-swimwear.ngrok-free.dev https://api.coingecko.com; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; manifest-src 'self'; worker-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://coin-images.coingecko.com; connect-src 'self' https://rpc.svitlochain.com https://api.coingecko.com; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; manifest-src 'self'; worker-src 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#6B4226" id="meta-theme">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -428,7 +428,7 @@ input,textarea,select{font:inherit;}
            independent of language, and now a single access point instead of
            a duplicated, easy-to-desync second control here. -->
       <div style="font-size:.625rem;color:var(--txm);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:6px" data-i18n="settings.rpc_url">RPC URL</div>
-      <input id="node-url-input" type="url" style="width:100%;background:var(--bg);border:1.5px solid var(--bd2);border-radius:8px;color:var(--tx);padding:9px 12px;font-family:var(--mono);font-size:.75rem;box-sizing:border-box;outline:none" placeholder="https://dares-suffering-swimwear.ngrok-free.dev">
+      <input id="node-url-input" type="url" style="width:100%;background:var(--bg);border:1.5px solid var(--bd2);border-radius:8px;color:var(--tx);padding:9px 12px;font-family:var(--mono);font-size:.75rem;box-sizing:border-box;outline:none" placeholder="https://rpc.svitlochain.com">
       <div style="font-size:.6875rem;color:var(--txm);margin-top:5px" data-i18n="settings.rpc_default">Default: http://localhost:8080</div>
       <div style="display:flex;gap:8px;margin-top:14px">
         <button onclick="saveSettings()" style="flex:1;background:var(--acc-fill);border:none;border-radius:8px;padding:10px;font-size:.8125rem;font-weight:700;color:#fff;cursor:pointer" data-i18n="settings.save_connect">Save &amp; connect</button>
@@ -1088,7 +1088,7 @@ function migrateCancel(){
 // so this defaults to the same public relay platforma/mobile's chain.ts
 // uses (SEED_RPCS[0]). Still fully overridable via Settings for anyone
 // running their own node.
-function nodeUrl(){return(localStorage.getItem('svit-node-url')||'https://dares-suffering-swimwear.ngrok-free.dev').replace(/\/$/,'');}
+function nodeUrl(){return(localStorage.getItem('svit-node-url')||'https://rpc.svitlochain.com').replace(/\/$/,'');}
 // ngrok's free tier serves an HTML interstitial page (200 OK, text/html) to
 // requests it judges "browser-like" instead of proxying to the real node --
 // this is ngrok's own documented opt-out header. Same fix already shipped in
