@@ -140,6 +140,8 @@ img,svg{max-width:100%;display:block;}
 .site-nav .links{display:flex;align-items:center;gap:22px;font-size:14px;}
 .site-nav .links a{color:var(--ink-m);text-decoration:none;font-weight:600;}
 .site-nav .links a:hover,.site-nav .links a.current{color:var(--brown);}
+.site-nav .links a.btn-nav-signup{background:var(--brown);color:#fff;padding:8px 16px;border-radius:999px;}
+.site-nav .links a.btn-nav-signup:hover{background:var(--brown-h);color:#fff;}
 .lang-switch{position:relative;}
 .lang-switch button{
   display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:12px;font-weight:700;
