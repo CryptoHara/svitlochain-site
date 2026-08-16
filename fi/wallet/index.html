@@ -116,12 +116,22 @@ try { localStorage.setItem('svitlo-lang', 'fi'); } catch (e) {}
 // Carry the current site theme/language choice over to the wallet app
 // (same origin, but a different localStorage key namespace -- see
 // app/index.html's own bootstrap script for the receiving side).
+// Real bug found live: rewriting href once at page load missed anyone
+// who toggled the theme *after* the page loaded (e.g. right before
+// clicking through) -- the link kept whatever theme was active at load.
+// Computed just-in-time on click/keyboard-activate instead.
 (function() {
-  try {
-    var theme = localStorage.getItem('svitlo-theme') || '';
-    var qs = '?lang=fi' + (theme ? '&theme=' + theme : '');
-    document.querySelectorAll('a[href="/app/"]').forEach(function(a) { a.href = '/app/' + qs; });
-  } catch (e) {}
+  function updateHref(a) {
+    try {
+      var theme = localStorage.getItem('svitlo-theme') || '';
+      a.href = '/app/?lang=fi' + (theme ? '&theme=' + theme : '');
+    } catch (e) {}
+  }
+  document.querySelectorAll('a[href="/app/"]').forEach(function(a) {
+    updateHref(a);
+    a.addEventListener('pointerdown', function() { updateHref(a); });
+    a.addEventListener('keydown', function() { updateHref(a); });
+  });
 })();
 </script>
 </body>
