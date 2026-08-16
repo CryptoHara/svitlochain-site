@@ -9,6 +9,13 @@
 <link rel="stylesheet" href="/assets/auth-modal.css">
 <script>
 try {
+  // Cross-app continuity: app.svitlochain.com links back here with
+  // ?theme= set to whatever the visitor already chose there (different
+  // origin, can't share localStorage directly -- see platforma's
+  // _app.tsx "back to site" link). Apply + persist it before falling
+  // back to whatever was already saved locally.
+  var qt = new URLSearchParams(location.search).get('theme');
+  if (qt === 'light' || qt === 'dark') localStorage.setItem('svitlo-theme', qt);
   var t = localStorage.getItem('svitlo-theme');
   if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
 } catch (e) {}

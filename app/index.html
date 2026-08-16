@@ -2,6 +2,30 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>
+// Cross-app theme/language continuity: svitlochain.com's own pages link
+// here with ?lang=&theme= set to whatever the visitor already chose there
+// (see assets/platform.css pages' outbound-link rewriting) -- same-origin,
+// so in principle localStorage could just be shared directly by using the
+// same key names, but this wallet's existing keys (svit-theme,
+// svit-wallet-lang) predate that convention and renaming them risks
+// breaking a real, already-live, money-handling app for no real benefit.
+// Bridging via a one-time query-param handoff instead: if present, seed
+// this wallet's OWN keys before its normal init (below, and the
+// initLanguage() IIFE near the end of this file) ever reads them, so nothing
+// downstream needs to change. Must run before any theme/lang code executes.
+try {
+  var __qp = new URLSearchParams(location.search);
+  var __t = __qp.get('theme');
+  if (__t === 'light' || __t === 'dark') localStorage.setItem('svit-theme', __t);
+  var __l = __qp.get('lang');
+  // Exact match against the same 13 codes window.svitI18N (app/i18n.js)
+  // actually has dictionaries for -- an unrecognized code reaching
+  // setLanguage() downstream isn't guaranteed to fall back cleanly.
+  var __supportedLangs = ['en','uk','no','sv','it','es','pt','fr','fi','ja','ko','zh','de'];
+  if (__l && __supportedLangs.indexOf(__l) !== -1) localStorage.setItem('svit-wallet-lang', __l);
+} catch (e) {}
+</script>
 <!-- This is the self-hosted/dev/Tauri build -- nodeUrl() defaults to
      localhost and is routinely repointed at an arbitrary self-hosted node
      (that's the documented point of the Settings "RPC URL" field), so

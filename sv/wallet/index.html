@@ -112,5 +112,17 @@ window.__toggleTheme = function() {
 };
 try { localStorage.setItem('svitlo-lang', 'sv'); } catch (e) {}
 </script>
+<script>
+// Carry the current site theme/language choice over to the wallet app
+// (same origin, but a different localStorage key namespace -- see
+// app/index.html's own bootstrap script for the receiving side).
+(function() {
+  try {
+    var theme = localStorage.getItem('svitlo-theme') || '';
+    var qs = '?lang=sv' + (theme ? '&theme=' + theme : '');
+    document.querySelectorAll('a[href="/app/"]').forEach(function(a) { a.href = '/app/' + qs; });
+  } catch (e) {}
+})();
+</script>
 </body>
 </html>

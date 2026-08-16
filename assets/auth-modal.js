@@ -286,7 +286,13 @@
   var t = STR[LANG] || STR.en;
 
   var DOWNLOADS_URL = "/" + LANG + "/platform/";
-  var DASHBOARD_URL = "https://app.svitlochain.com/dashboard";
+  // Cross-app theme/language continuity: app.svitlochain.com is a
+  // different origin (separate Next.js app), so localStorage can't be
+  // shared directly -- hand the current choice over via query params
+  // instead. The app reads+applies these once on load (see its own
+  // lib/useTheme.tsx / lib/i18n.tsx Provider bootstrap).
+  var __siteTheme = (function () { try { return localStorage.getItem("svitlo-theme") || ""; } catch (e) { return ""; } })();
+  var DASHBOARD_URL = "https://app.svitlochain.com/dashboard?lang=" + LANG + (__siteTheme ? "&theme=" + __siteTheme : "");
 
   // ── Markup ────────────────────────────────────────────────────────────
   var overlay = document.createElement("div");
