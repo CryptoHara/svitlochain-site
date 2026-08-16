@@ -291,8 +291,18 @@
   // shared directly -- hand the current choice over via query params
   // instead. The app reads+applies these once on load (see its own
   // lib/useTheme.tsx / lib/i18n.tsx Provider bootstrap).
-  var __siteTheme = (function () { try { return localStorage.getItem("svitlo-theme") || ""; } catch (e) { return ""; } })();
-  var DASHBOARD_URL = "https://app.svitlochain.com/dashboard?lang=" + LANG + (__siteTheme ? "&theme=" + __siteTheme : "");
+  //
+  // Real bug found live (same class as the wallet-link one, see
+  // svitlochain-site@67ae60d): computing this once here, at script-load
+  // time, captures whatever theme was active THEN -- toggling theme after
+  // the page loads but before actually signing in (completely normal)
+  // left the link carrying a stale value. Made into a function, called
+  // fresh each time renderConnect() actually builds the link instead.
+  function dashboardUrl() {
+    var siteTheme = "";
+    try { siteTheme = localStorage.getItem("svitlo-theme") || ""; } catch (e) {}
+    return "https://app.svitlochain.com/dashboard?lang=" + LANG + (siteTheme ? "&theme=" + siteTheme : "");
+  }
 
   // ── Markup ────────────────────────────────────────────────────────────
   var overlay = document.createElement("div");
@@ -446,7 +456,7 @@
         "<li>" + esc(t.step2) + "</li>" +
         "<li>" + esc(t.step3) + "</li>" +
       "</ol>" +
-      '<a class="auth-dashboard-link" href="' + DASHBOARD_URL + '">' + esc(t.dashboard) + "</a>";
+      '<a class="auth-dashboard-link" href="' + dashboardUrl() + '">' + esc(t.dashboard) + "</a>";
 
     // Upgrade the dashboard link from a bare lang/theme handoff (lands the
     // visitor on app.svitlochain.com/login, since it's a different origin/
@@ -457,7 +467,7 @@
     // over there, same as before this existed.
     api("/auth/handoff/create", { method: "POST" }).then(function (res) {
       var link = modalBody.querySelector(".auth-dashboard-link");
-      if (link && res && res.code) link.href = DASHBOARD_URL + "&code=" + encodeURIComponent(res.code);
+      if (link && res && res.code) link.href = dashboardUrl() + "&code=" + encodeURIComponent(res.code);
     }).catch(function () {});
 
     var keySlot = modalBody.querySelector(".auth-key-slot");
