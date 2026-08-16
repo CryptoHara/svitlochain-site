@@ -448,6 +448,18 @@
       "</ol>" +
       '<a class="auth-dashboard-link" href="' + DASHBOARD_URL + '">' + esc(t.dashboard) + "</a>";
 
+    // Upgrade the dashboard link from a bare lang/theme handoff (lands the
+    // visitor on app.svitlochain.com/login, since it's a different origin/
+    // session -- see backend's /auth/handoff docstrings) to a real
+    // single-use auth code so they land already signed in. Best-effort:
+    // the plain link above still works fine if this fails (Redis down,
+    // network hiccup, etc.) -- worst case they just have to log in again
+    // over there, same as before this existed.
+    api("/auth/handoff/create", { method: "POST" }).then(function (res) {
+      var link = modalBody.querySelector(".auth-dashboard-link");
+      if (link && res && res.code) link.href = DASHBOARD_URL + "&code=" + encodeURIComponent(res.code);
+    }).catch(function () {});
+
     var keySlot = modalBody.querySelector(".auth-key-slot");
     var existingKey = localStorage.getItem(APIKEY_KEY);
     renderKeySlot(keySlot, null);
