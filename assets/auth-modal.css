@@ -1,0 +1,93 @@
+/* ── Auth modal ("standard login/signup window" + post-auth API-key step) ──
+   Loaded on every language homepage. Reuses platform.css's design tokens
+   (--bg/--ink/--brown/--gold/--r/.glass etc.) so it looks like a native part
+   of the site, not a bolted-on widget. */
+
+.auth-modal-overlay{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(23,13,8,.45);
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;opacity:0;pointer-events:none;
+  transition:opacity .18s;
+}
+.auth-modal-overlay.open{opacity:1;pointer-events:auto;}
+
+.auth-modal{
+  width:100%;max-width:420px;max-height:88vh;overflow-y:auto;
+  background:var(--s1);border:1px solid var(--bd2);border-radius:var(--r);
+  box-shadow:0 30px 60px -20px rgba(23,13,8,.35);
+  padding:28px 26px 26px;position:relative;
+  transform:translateY(10px) scale(.98);transition:transform .18s;
+}
+.auth-modal-overlay.open .auth-modal{transform:translateY(0) scale(1);}
+
+.auth-modal-close{
+  position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;background:var(--s2);
+  border:none;cursor:pointer;color:var(--ink-m);font-size:16px;line-height:1;
+}
+.auth-modal-close:hover{background:var(--s3);color:var(--ink);}
+
+.auth-modal-head{text-align:center;margin-bottom:22px;}
+.auth-modal-head .mark{font-size:30px;margin-bottom:6px;}
+.auth-modal-head h2{font-family:var(--serif);font-size:21px;font-weight:700;color:var(--ink);margin:0 0 4px;}
+.auth-modal-head p{font-size:13.5px;color:var(--ink-m);margin:0;line-height:1.5;}
+
+.auth-field{margin-bottom:13px;}
+.auth-field label{display:block;font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:5px;}
+.auth-field input{
+  width:100%;padding:11px 13px;border-radius:9px;border:1.5px solid var(--bd2);
+  background:var(--bg);color:var(--ink);font-size:14px;box-sizing:border-box;font-family:var(--sans);
+}
+.auth-field input:focus{outline:none;border-color:var(--gold);}
+
+.auth-submit{
+  width:100%;padding:12px;border-radius:10px;border:none;background:var(--brown);color:#fff;
+  font-size:14.5px;font-weight:700;cursor:pointer;margin-top:6px;transition:background .15s,opacity .15s;
+  font-family:var(--sans);
+}
+.auth-submit:hover{background:var(--brown-h);}
+.auth-submit:disabled{opacity:.65;cursor:default;}
+
+.auth-divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--ink-d);font-size:12px;}
+.auth-divider::before,.auth-divider::after{content:"";flex:1;height:1px;background:var(--bd2);}
+
+.auth-google-btn{
+  width:100%;padding:10px;border-radius:10px;border:1.5px solid var(--bd2);background:var(--s1);
+  color:var(--ink);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;gap:10px;font-family:var(--sans);
+}
+.auth-google-btn:hover{background:var(--s2);}
+.auth-google-btn svg{width:18px;height:18px;flex:none;}
+
+.auth-error{
+  background:color-mix(in srgb, #c0392b 12%, transparent);border:1px solid color-mix(in srgb, #c0392b 35%, transparent);
+  color:#c0392b;border-radius:8px;padding:9px 12px;font-size:12.5px;margin-bottom:12px;line-height:1.4;
+}
+:root[data-theme="dark"] .auth-error,
+@media (prefers-color-scheme:dark){.auth-error{color:#ff8a75;}}
+
+.auth-switch{text-align:center;margin-top:16px;font-size:13px;color:var(--ink-m);}
+.auth-switch button{background:none;border:none;color:var(--brown);font-weight:700;cursor:pointer;font-size:13px;padding:0;font-family:var(--sans);}
+.auth-switch button:hover{text-decoration:underline;}
+
+/* ── Post-auth: API key generation step ──────────────────────────────── */
+.auth-key-box{
+  background:var(--bg);border:1px solid var(--bd2);border-radius:9px;padding:11px 13px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:6px;
+}
+.auth-key-box code{font-family:var(--mono);font-size:12px;color:var(--ink);word-break:break-all;}
+.auth-key-copy{
+  flex:none;background:none;border:1px solid var(--bd2);border-radius:6px;color:var(--ink-m);
+  font-size:11.5px;padding:5px 10px;cursor:pointer;font-family:var(--sans);
+}
+.auth-key-copy:hover{background:var(--s2);}
+.auth-key-warn{font-size:12px;color:var(--gold);margin:10px 0 0;line-height:1.5;}
+.auth-key-steps{margin:18px 0 0;padding:0 0 0 20px;color:var(--ink-m);font-size:13px;line-height:1.9;}
+.auth-key-steps a{color:var(--brown);}
+.auth-dashboard-link{display:block;text-align:center;margin-top:18px;font-size:13.5px;color:var(--brown);font-weight:700;text-decoration:none;}
+.auth-dashboard-link:hover{text-decoration:underline;}
+
+@media (max-width:480px){
+  .auth-modal{padding:24px 18px 20px;}
+}
