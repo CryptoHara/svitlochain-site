@@ -472,7 +472,11 @@
 
     var keySlot = modalBody.querySelector(".auth-key-slot");
     var existingKey = localStorage.getItem(APIKEY_KEY);
-    renderKeySlot(keySlot, null);
+    if (existingKey) {
+      showKey(keySlot, existingKey);
+    } else {
+      renderKeySlot(keySlot);
+    }
 
     function renderKeySlot(slot) {
       slot.innerHTML =
