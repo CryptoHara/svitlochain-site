@@ -5,19 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Plattform — Svitlo Chain</title>
 <meta name="description" content="Die Svitlo-Chain-Plattform — ein dezentraler GPU-Marktplatz für KI. macOS-, Linux- und Windows-Clients sind alle verfügbar.">
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/platform.css">
+<script>
+try {
+  var t = localStorage.getItem('svitlo-theme');
+  if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+} catch (e) {}
+</script>
 </head>
 <body>
 
-<nav class="site-nav">
-  <a href="/" class="brand">Svitlo<span>Chain</span></a>
-  <div class="links">
-    <a href="/de/platform/" class="current">Plattform</a>
-    <a href="/de/wallet/">Wallet</a>
-    <a href="/de/documentation/">Dokumentation</a>
-    <a href="/privacy/">Datenschutz</a>
-    <a href="/support/">Support</a>
-    <span class="lang-mini"><a href="/en/platform/">EN</a><a href="/uk/platform/">UK</a><a href="/sv/platform/">SV</a><a href="/no/platform/">NO</a><a href="/it/platform/">IT</a><a href="/es/platform/">ES</a><a href="/fr/platform/">FR</a><a href="/de/platform/" class="current">DE</a><a href="/fi/platform/">FI</a><a href="/pt/platform/">PT</a><a href="/ja/platform/">JA</a><a href="/ko/platform/">KO</a><a href="/zh/platform/">ZH</a></span>
+<nav class="site-nav glass">
+  <a href="/de/" class="brand"><img class="logo" src="/assets/images/logo.jpg" alt="Svitlo Chain">Svitlo<b>Chain</b></a>
+  <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" onclick="document.getElementById('nav-links').classList.toggle('open');this.setAttribute('aria-expanded', document.getElementById('nav-links').classList.contains('open'))">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div class="links" id="nav-links">
+    <a href="/de/wallet/">Wallet</a><a href="/de/platform/" class="current">Plattform</a><a href="/de/documentation/">Dokumentation</a><div class="lang-switch" id="lang-switch">
+      <button type="button" onclick="document.getElementById('lang-switch').classList.toggle('open')">🇩🇪 DE <span aria-hidden="true">▾</span></button>
+      <ul><li><a href="/en/platform/" class="">🇬🇧 English</a></li><li><a href="/uk/platform/" class="">🇺🇦 Українська</a></li><li><a href="/sv/platform/" class="">🇸🇪 Svenska</a></li><li><a href="/no/platform/" class="">🇳🇴 Norsk</a></li><li><a href="/it/platform/" class="">🇮🇹 Italiano</a></li><li><a href="/es/platform/" class="">🇪🇸 Español</a></li><li><a href="/fr/platform/" class="">🇫🇷 Français</a></li><li><a href="/de/platform/" class="current">🇩🇪 Deutsch</a></li><li><a href="/fi/platform/" class="">🇫🇮 Suomi</a></li><li><a href="/pt/platform/" class="">🇵🇹 Português</a></li><li><a href="/ja/platform/" class="">🇯🇵 日本語</a></li><li><a href="/ko/platform/" class="">🇰🇷 한국어</a></li><li><a href="/zh/platform/" class="">🇨🇳 中文</a></li></ul>
+    </div>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" onclick="window.__toggleTheme()"><span class="theme-icon-light">☀️</span><span class="theme-icon-dark">🌙</span></button>
   </div>
 </nav>
 
@@ -33,7 +41,7 @@
   </div>
   <p class="lede" style="margin-top:12px;font-size:.85em;opacity:.75;">Die macOS-, Linux- und Windows-Clients sind alle verfügbar — oben herunterladen. Mining-Rig mit HiveOS? Kontaktiere uns für das Flight-Sheet-Paket.</p>
   <div class="cta-row">
-    <a href="/de/wallet/" class="btn btn-outline">Wallet öffnen →</a>    <a href="/de/#developers" class="btn btn-outline">Lies, wie es funktioniert →</a>
+    <a href="/de/wallet/" class="btn btn-glass">Wallet öffnen →</a>    <a href="/de/#developers" class="btn btn-glass">Lies, wie es funktioniert →</a>
   </div>
 </div>
 
@@ -69,8 +77,28 @@
 
 <footer class="site-footer">
   <span>© 2026 Svitlo Chain.</span>
-  <span><a href="/">Home</a> · <a href="/de/wallet/">Wallet</a> · <a href="/de/documentation/">Dokumentation</a> · <a href="/privacy/">Datenschutz</a> · <a href="/support/">Support</a></span>
+  <span><a href="/">Home</a> · <a href="/de/wallet/">Wallet</a> · <a href="/de/documentation/">Dokumentation</a></span>
 </footer>
 
+<script>
+document.addEventListener('click', function(e) {
+  const sw = document.getElementById('lang-switch');
+  if (sw && !sw.contains(e.target)) sw.classList.remove('open');
+  const nav = document.getElementById('nav-links');
+  const toggle = document.getElementById('nav-toggle');
+  if (nav && nav.classList.contains('open') && !nav.contains(e.target) && !toggle.contains(e.target)) {
+    nav.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+});
+window.__toggleTheme = function() {
+  var cur = document.documentElement.getAttribute('data-theme');
+  var isDark = cur ? cur === 'dark' : window.matchMedia('(prefers-color-scheme:dark)').matches;
+  var next = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('svitlo-theme', next); } catch (e) {}
+};
+try { localStorage.setItem('svitlo-lang', 'de'); } catch (e) {}
+</script>
 </body>
 </html>

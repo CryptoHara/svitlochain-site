@@ -292,6 +292,11 @@ p.lede{font-size:17.5px;color:var(--ink-m);max-width:60ch;}
 .btn-glass{color:var(--ink);}
 .btn-glass:hover{background:var(--glass-bg);}
 
+/* ── Plain lists (wallet/documentation step-by-step instructions) ─────── */
+ul.plain,ol.plain{margin:0 0 14px;padding-left:22px;color:var(--ink-m);}
+ul.plain li,ol.plain li{margin-bottom:7px;padding-left:2px;}
+ul.plain li:last-child,ol.plain li:last-child{margin-bottom:0;}
+
 /* ── Cards / grids ──────────────────────────────────────────────────── */
 .grid{display:grid;gap:18px;}
 .grid-2{grid-template-columns:repeat(2,1fr);}

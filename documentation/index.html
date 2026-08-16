@@ -5,24 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Documentation — Svitlo Chain</title>
 <meta name="description" content="Documentation for Svitlo Chain: white paper, platform, wallet, and the SVIT smart-contract language.">
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/platform.css">
+<script>
+try {
+  var t = localStorage.getItem('svitlo-theme');
+  if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+} catch (e) {}
+</script>
 </head>
 <body>
 
-<nav class="site-nav">
-  <a href="/" class="brand">Svitlo<span>Chain</span></a>
-  <div class="links">
-    <a href="/en/platform/">Platform</a>
-    <a href="/en/wallet/">Wallet</a>
-    <a href="/documentation/" class="current">Documentation</a>
-    <a href="/privacy/">Privacy</a>
-    <a href="/support/">Support</a>
-    <span class="lang-mini">
-      <a href="/documentation/" class="current">EN</a>
-      <a href="/uk/documentation/">UK</a>
-      <a href="/sv/documentation/">SV</a>
-      <a href="/no/documentation/">NO</a>
-    </span>
+<nav class="site-nav glass">
+  <a href="/" class="brand"><img class="logo" src="/assets/images/logo.jpg" alt="Svitlo Chain">Svitlo<b>Chain</b></a>
+  <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" onclick="document.getElementById('nav-links').classList.toggle('open');this.setAttribute('aria-expanded', document.getElementById('nav-links').classList.contains('open'))">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div class="links" id="nav-links">
+    <a href="/en/wallet/">Wallet</a><a href="/en/platform/">Platform</a><a href="/documentation/" class="current">Documentation</a><div class="lang-switch" id="lang-switch">
+      <button type="button" onclick="document.getElementById('lang-switch').classList.toggle('open')">🇬🇧 EN <span aria-hidden="true">▾</span></button>
+      <ul><li><a href="/en/documentation/" class="current">🇬🇧 English</a></li><li><a href="/uk/documentation/" class="">🇺🇦 Українська</a></li><li><a href="/sv/documentation/" class="">🇸🇪 Svenska</a></li><li><a href="/no/documentation/" class="">🇳🇴 Norsk</a></li><li><a href="/it/documentation/" class="">🇮🇹 Italiano</a></li><li><a href="/es/documentation/" class="">🇪🇸 Español</a></li><li><a href="/fr/documentation/" class="">🇫🇷 Français</a></li><li><a href="/de/documentation/" class="">🇩🇪 Deutsch</a></li><li><a href="/fi/documentation/" class="">🇫🇮 Suomi</a></li><li><a href="/pt/documentation/" class="">🇵🇹 Português</a></li><li><a href="/ja/documentation/" class="">🇯🇵 日本語</a></li><li><a href="/ko/documentation/" class="">🇰🇷 한국어</a></li><li><a href="/zh/documentation/" class="">🇨🇳 中文</a></li></ul>
+    </div>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" onclick="window.__toggleTheme()"><span class="theme-icon-light">☀️</span><span class="theme-icon-dark">🌙</span></button>
   </div>
 </nav>
 
@@ -73,8 +76,28 @@
 
 <footer class="site-footer">
   <span>© 2026 Svitlo Chain.</span>
-  <span><a href="/">Home</a> · <a href="/en/platform/">Platform</a> · <a href="/en/wallet/">Wallet</a> · <a href="/privacy/">Privacy</a> · <a href="/support/">Support</a></span>
+  <span><a href="/">Home</a> · <a href="/en/platform/">Platform</a> · <a href="/en/wallet/">Wallet</a></span>
 </footer>
 
+<script>
+document.addEventListener('click', function(e) {
+  const sw = document.getElementById('lang-switch');
+  if (sw && !sw.contains(e.target)) sw.classList.remove('open');
+  const nav = document.getElementById('nav-links');
+  const toggle = document.getElementById('nav-toggle');
+  if (nav && nav.classList.contains('open') && !nav.contains(e.target) && !toggle.contains(e.target)) {
+    nav.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+});
+window.__toggleTheme = function() {
+  var cur = document.documentElement.getAttribute('data-theme');
+  var isDark = cur ? cur === 'dark' : window.matchMedia('(prefers-color-scheme:dark)').matches;
+  var next = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('svitlo-theme', next); } catch (e) {}
+};
+try { localStorage.setItem('svitlo-lang', 'en'); } catch (e) {}
+</script>
 </body>
 </html>

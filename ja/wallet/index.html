@@ -5,19 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ウォレット — Svitlo Chain</title>
 <meta name="description" content="Svitlo Wallet — SVIT、BTC、ETHなど10以上のブロックチェーンに対応した非管理型ウォレット。ブラウザですぐに使えるほか、Android/iOSアプリもインストール可能です。">
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/platform.css">
+<script>
+try {
+  var t = localStorage.getItem('svitlo-theme');
+  if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+} catch (e) {}
+</script>
 </head>
 <body>
 
-<nav class="site-nav">
-  <a href="/" class="brand">Svitlo<span>Chain</span></a>
-  <div class="links">
-    <a href="/ja/platform/">プラットフォーム</a>
-    <a href="/ja/wallet/" class="current">ウォレット</a>
-    <a href="/ja/documentation/">ドキュメント</a>
-    <a href="/privacy/">プライバシー</a>
-    <a href="/support/">サポート</a>
-    <span class="lang-mini"><a href="/en/wallet/">EN</a><a href="/uk/wallet/">UK</a><a href="/sv/wallet/">SV</a><a href="/no/wallet/">NO</a><a href="/it/wallet/">IT</a><a href="/es/wallet/">ES</a><a href="/fr/wallet/">FR</a><a href="/de/wallet/">DE</a><a href="/fi/wallet/">FI</a><a href="/pt/wallet/">PT</a><a href="/ja/wallet/" class="current">JA</a><a href="/ko/wallet/">KO</a><a href="/zh/wallet/">ZH</a></span>
+<nav class="site-nav glass">
+  <a href="/ja/" class="brand"><img class="logo" src="/assets/images/logo.jpg" alt="Svitlo Chain">Svitlo<b>Chain</b></a>
+  <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" onclick="document.getElementById('nav-links').classList.toggle('open');this.setAttribute('aria-expanded', document.getElementById('nav-links').classList.contains('open'))">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div class="links" id="nav-links">
+    <a href="/ja/wallet/" class="current">ウォレット</a><a href="/ja/platform/">プラットフォーム</a><a href="/ja/documentation/">ドキュメント</a><div class="lang-switch" id="lang-switch">
+      <button type="button" onclick="document.getElementById('lang-switch').classList.toggle('open')">🇯🇵 JA <span aria-hidden="true">▾</span></button>
+      <ul><li><a href="/en/wallet/" class="">🇬🇧 English</a></li><li><a href="/uk/wallet/" class="">🇺🇦 Українська</a></li><li><a href="/sv/wallet/" class="">🇸🇪 Svenska</a></li><li><a href="/no/wallet/" class="">🇳🇴 Norsk</a></li><li><a href="/it/wallet/" class="">🇮🇹 Italiano</a></li><li><a href="/es/wallet/" class="">🇪🇸 Español</a></li><li><a href="/fr/wallet/" class="">🇫🇷 Français</a></li><li><a href="/de/wallet/" class="">🇩🇪 Deutsch</a></li><li><a href="/fi/wallet/" class="">🇫🇮 Suomi</a></li><li><a href="/pt/wallet/" class="">🇵🇹 Português</a></li><li><a href="/ja/wallet/" class="current">🇯🇵 日本語</a></li><li><a href="/ko/wallet/" class="">🇰🇷 한국어</a></li><li><a href="/zh/wallet/" class="">🇨🇳 中文</a></li></ul>
+    </div>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" onclick="window.__toggleTheme()"><span class="theme-icon-light">☀️</span><span class="theme-icon-dark">🌙</span></button>
   </div>
 </nav>
 
@@ -27,12 +35,12 @@
   <p class="lede">SVITをBTC、ETH、USDT、SOL、XRPなどと一緒に保管・送受信 — すべて1つのウォレットで。秘密鍵はお使いのデバイス上で生成・暗号化され、当社が閲覧・保存することは一切なく、代わりに復元することもできません。</p>
   <div class="cta-row">
     <a href="/app/" class="btn btn-primary">Webウォレットを開く →</a>
-    <a href="/downloads/SvitloApp.apk" class="btn btn-outline">Android用をダウンロード (APK)</a>
-    <a href="https://testflight.apple.com/join/BrCquhAS" class="btn btn-outline">iOS — TestFlightベータに参加</a>
+    <a href="/downloads/SvitloApp.apk" class="btn btn-glass">Android用をダウンロード (APK)</a>
+    <a href="https://testflight.apple.com/join/BrCquhAS" class="btn btn-glass">iOS — TestFlightベータに参加</a>
   </div>
   <p class="lede" style="margin-top:12px;font-size:.85em;opacity:.75;">Webウォレットはブラウザ内で完結し、インストール不要です。Androidでは、このビルドがまだPlayストアにないため「提供元不明のアプリ」を一度だけ許可する必要があります。iOSでは無料のTestFlightアプリが必要です。</p>
   <div class="cta-row">
-    <a href="/privacy/" class="btn btn-outline">プライバシーポリシーを読む →</a>
+    <a href="/privacy/" class="btn btn-glass">プライバシーポリシーを読む →</a>
   </div>
 </div>
 
@@ -81,8 +89,28 @@
 
 <footer class="site-footer">
   <span>© 2026 Svitlo Chain. Svitlo Walletは現状有姿で提供される非管理型ソフトウェアです。</span>
-  <span><a href="/">Home</a> · <a href="/ja/platform/">プラットフォーム</a> · <a href="/ja/documentation/">ドキュメント</a> · <a href="/privacy/">プライバシー</a> · <a href="/support/">サポート</a></span>
+  <span><a href="/">Home</a> · <a href="/ja/platform/">プラットフォーム</a> · <a href="/ja/documentation/">ドキュメント</a></span>
 </footer>
 
+<script>
+document.addEventListener('click', function(e) {
+  const sw = document.getElementById('lang-switch');
+  if (sw && !sw.contains(e.target)) sw.classList.remove('open');
+  const nav = document.getElementById('nav-links');
+  const toggle = document.getElementById('nav-toggle');
+  if (nav && nav.classList.contains('open') && !nav.contains(e.target) && !toggle.contains(e.target)) {
+    nav.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+});
+window.__toggleTheme = function() {
+  var cur = document.documentElement.getAttribute('data-theme');
+  var isDark = cur ? cur === 'dark' : window.matchMedia('(prefers-color-scheme:dark)').matches;
+  var next = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('svitlo-theme', next); } catch (e) {}
+};
+try { localStorage.setItem('svitlo-lang', 'ja'); } catch (e) {}
+</script>
 </body>
 </html>
