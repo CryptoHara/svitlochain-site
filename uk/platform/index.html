@@ -60,6 +60,31 @@ try {
   </div>
 </div>
 
+<div class="hero" style="padding-top:0">
+  <div class="eyebrow">Нове — svitlo-provider</div>
+  <h2>Provider CLI для compute-оркестратора</h2>
+  <p class="lede">Легкий демон для виконання загальних compute-задач — LLM inference, генерація зображень, розпізнавання мовлення, tensor inference для платформ ШІ-тренування — розподілених оркестратором Svitlo Chain. Це інший інструмент, ніж Node Agent вище: Node Agent обслуговує LLM-чати через власний бекенд платформи, а svitlo-provider підключається напряму до конвеєра розбиття/агрегації задач оркестратора.</p>
+  <div class="cta-row">
+    <a href="/downloads/svitlo-provider-linux-x86_64" class="btn btn-primary">🐧 svitlo-provider — Linux (x86_64)</a>
+    <a href="/downloads/svitlo-wallet-linux-x86_64" class="btn btn-primary">🐧 svitlo-wallet — Linux (x86_64)</a>
+  </div>
+  <p class="lede" style="margin-top:12px;font-size:.85em;opacity:.75;">macOS і Windows — незабаром. svitlo-provider потребує <em>provider keyfile</em> (простий секретний ключ), не звичайний зашифрований wallet.json — звичайний гаманець <a href="/uk/wallet/">з гаманець-застосунку</a> тут напряму не підійде. Повне налаштування:</p>
+  <pre style="margin-top:8px;padding:14px 16px;border-radius:10px;overflow-x:auto;font-size:.82em;"><code>chmod +x svitlo-provider-linux-x86_64 svitlo-wallet-linux-x86_64
+
+# 1. Створити гаманець (запитає пароль, покаже 24-словну recovery-фразу
+#    ОДИН РАЗ — запиши її, вона ніде більше не зберігається й не показується)
+./svitlo-wallet-linux-x86_64 keygen --output wallet.json
+
+# 2. Експортувати у простий формат, який читає svitlo-provider
+#    (provider-wallet.json, права 600 автоматично — тримай приватно,
+#    це твій підписуючий ключ)
+./svitlo-wallet-linux-x86_64 export-provider-key --wallet wallet.json --output provider-wallet.json
+
+# 3. Перевірити, яке залізо бачить, і почати приймати задачі
+./svitlo-provider-linux-x86_64 detect
+./svitlo-provider-linux-x86_64 start --node https://rpc.svitlochain.com --wallet provider-wallet.json</code></pre>
+</div>
+
 <div class="grid-3">
   <div class="card">
     <h3>Для розробників ШІ</h3>

@@ -80,9 +80,24 @@ try {
   <h2>Provider CLI for the compute orchestrator</h2>
   <p class="lede">A lightweight daemon for running general compute jobs — LLM inference, image generation, speech-to-text, and tensor inference for AI training platforms — dispatched by Svitlo Chain's job orchestrator. This is a different tool from the Node Agent above: Node Agent serves LLM chat completions through its own backend, while svitlo-provider connects to the orchestrator's job-splitting/aggregation pipeline directly.</p>
   <div class="cta-row">
-    <a href="/downloads/svitlo-provider-linux-x86_64" class="btn btn-primary">🐧 Linux (x86_64) — Download</a>
+    <a href="/downloads/svitlo-provider-linux-x86_64" class="btn btn-primary">🐧 svitlo-provider — Linux (x86_64)</a>
+    <a href="/downloads/svitlo-wallet-linux-x86_64" class="btn btn-primary">🐧 svitlo-wallet — Linux (x86_64)</a>
   </div>
-  <p class="lede" style="margin-top:12px;font-size:.85em;opacity:.75;">macOS and Windows builds are coming soon. Once downloaded: <code>chmod +x svitlo-provider-linux-x86_64 && ./svitlo-provider-linux-x86_64 start --node https://rpc.svitlochain.com --wallet wallet.json</code> — auto-detects your hardware, registers with the orchestrator, and starts polling for jobs. Run <code>./svitlo-provider-linux-x86_64 detect</code> first to check what it sees on your machine.</p>
+  <p class="lede" style="margin-top:12px;font-size:.85em;opacity:.75;">macOS and Windows builds are coming soon. svitlo-provider needs a <em>provider keyfile</em> (plain secret key), not a regular encrypted wallet.json — a regular wallet.json <a href="/en/wallet/">from the wallet app</a> won't work directly here. Full setup:</p>
+  <pre style="margin-top:8px;padding:14px 16px;border-radius:10px;overflow-x:auto;font-size:.82em;"><code>chmod +x svitlo-provider-linux-x86_64 svitlo-wallet-linux-x86_64
+
+# 1. Create a wallet (prompts for a password, shows a 24-word recovery
+#    phrase ONCE -- write it down, it's never stored or shown again)
+./svitlo-wallet-linux-x86_64 keygen --output wallet.json
+
+# 2. Export it into the plain-secret format svitlo-provider reads
+#    (provider-wallet.json, chmod 600 automatically -- keep it private,
+#    it's your signing key)
+./svitlo-wallet-linux-x86_64 export-provider-key --wallet wallet.json --output provider-wallet.json
+
+# 3. Check what hardware it sees, then start polling for jobs
+./svitlo-provider-linux-x86_64 detect
+./svitlo-provider-linux-x86_64 start --node https://rpc.svitlochain.com --wallet provider-wallet.json</code></pre>
 </div>
 
 <footer class="site-footer">
