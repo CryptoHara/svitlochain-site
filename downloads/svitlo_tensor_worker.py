@@ -15,8 +15,16 @@ TorchScript is self-contained — this script never needs to import any
 model-specific code.
 
 Usage (called by svitlo_provider.rs, not meant to be run by hand):
-    python3 svitlo_tensor_worker.py --model <path.pt> --shape "1,127" \\
-        --data-b64 <base64 float32 bytes>
+    echo -n <base64 float32 bytes> | python3 svitlo_tensor_worker.py \\
+        --model <path.pt> --shape "1,127"
+
+Input tensor data is read from stdin as base64 rather than an argv flag --
+2026-08-19: found live via a real external provider, a plain 256x256
+float32 sample is already ~350KB base64, and combined with a normal dev
+machine's PATH/env that reliably blew the kernel's ARG_MAX when it was
+still passed as a --data-b64 argument (OSError: Argument list too long).
+stdin has no such limit -- same reasoning svitlo_train_worker.py already
+uses for its (typically larger) training envelope.
 
 Prints exactly one line to stdout: base64-encoded float32 output bytes.
 Everything else (errors, progress) goes to stderr so stdout stays clean
@@ -31,8 +39,8 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", required=True, help="Path to a TorchScript .pt file")
     ap.add_argument("--shape", required=True, help="Comma-separated input shape, e.g. '1,127'")
-    ap.add_argument("--data-b64", required=True, help="Base64-encoded float32 input tensor")
     args = ap.parse_args()
+    data_b64 = sys.stdin.read().strip()
 
     try:
         import torch
@@ -46,7 +54,7 @@ def main() -> int:
         print(f"malformed --shape {args.shape!r}", file=sys.stderr)
         return 1
 
-    raw = base64.b64decode(args.data_b64)
+    raw = base64.b64decode(data_b64)
     x = torch.frombuffer(bytearray(raw), dtype=torch.float32).clone().reshape(shape)
 
     try:
