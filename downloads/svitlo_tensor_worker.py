@@ -32,6 +32,7 @@ for the Rust caller to parse.
 """
 import argparse
 import base64
+import ctypes
 import sys
 
 
@@ -73,7 +74,17 @@ def main() -> int:
             out = out[0]
         out = out.detach().to(torch.float32).contiguous()
 
-    out_bytes = out.numpy().tobytes()
+    # 2026-08-19: found live -- out.numpy().tobytes() requires numpy to be
+    # importable, which `pip install torch` does NOT guarantee (numpy
+    # interop is optional/lazy in recent torch versions); a real external
+    # provider had torch working fine but no numpy, and hit exactly this as
+    # the very last step after everything else already succeeded. Read the
+    # contiguous float32 storage directly via ctypes instead -- zero-copy,
+    # no numpy dependency for a provider that only ever needs torch.
+    flat = out.flatten().contiguous()
+    n = flat.numel()
+    buf = (ctypes.c_float * n).from_address(flat.data_ptr())
+    out_bytes = bytes(buf)
     print(base64.b64encode(out_bytes).decode("ascii"))
     return 0
 
