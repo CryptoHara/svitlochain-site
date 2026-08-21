@@ -42,6 +42,11 @@ CosineAnnealingWarmRestarts, recency-weighted sampling) -- see
 EMMA/training/continuous_trainer.py's per-architecture _train_*_cycle
 methods, which this mirrors.
 
+2026-08-22: added 'mlp' -- the seventh (and primary) model, initially
+left out of the 2026-08-21 pass. Flat input like FT-Transformer, but
+single-task, with an OPTIONAL per-symbol embedding (sym_idx_b64) --
+EMMA/training/continuous_trainer.py's ContinuousTrainer._fit().
+
 Input envelope (stdin, JSON) -- ft_transformer (flat, multi-task):
 {
   "model_arch": "ft_transformer",
@@ -52,6 +57,17 @@ Input envelope (stdin, JSON) -- ft_transformer (flat, multi-task):
   "y_mag_b64": "<float32 bytes, shape [N]> (optional, zeros if absent)",
   "epochs": 5, "lr": 0.0002, "batch_size": 512,
   "warm_start_b64": "<optional: base64 torch.save(state_dict) bytes>"
+}
+
+Input envelope -- mlp (flat, single-task, optional symbol embedding):
+{
+  "model_arch": "mlp",
+  "input_size": 127, "hidden_size": 256, "num_symbols": 98, "embed_dim": 8,
+  "x_shape": [N, input_size], "x_b64": "<float32 bytes>",
+  "y_dir_b64": "<int64 bytes, shape [N]>",
+  "sym_idx_b64": "<int64 bytes, shape [N]> (optional, omitted if num_symbols=0)",
+  "epochs": 50, "lr": 0.001, "t0": 10, "t_mult": 2, "batch_size": 512,
+  "warm_start_b64": "<optional>"
 }
 
 Input envelope -- lstm/tcn/tft/mamba/cnn (sequence, single-task):
@@ -399,6 +415,55 @@ def build_model(cfg: dict):
             kernels=tuple(cfg.get('kernels', (3, 7, 15, 31))),
         )
 
+    if arch == 'mlp':
+        class _ResBlock(nn.Module):
+            def __init__(self, dim, dropout=0.3):
+                super().__init__()
+                self.net = nn.Sequential(
+                    nn.Linear(dim, dim), nn.BatchNorm1d(dim), nn.ReLU(), nn.Dropout(dropout),
+                    nn.Linear(dim, dim), nn.BatchNorm1d(dim),
+                )
+
+            def forward(self, x):
+                import torch.nn.functional as F
+                return F.relu(x + self.net(x))
+
+        class _PricePredictionModel(nn.Module):
+            """Mirrors EMMA/models/pytorch_model.py::PricePredictionModel."""
+
+            def __init__(self, input_size, hidden_size=256, num_classes=2,
+                         num_symbols=0, embed_dim=8):
+                super().__init__()
+                self.num_symbols = num_symbols
+                self.embed_dim = embed_dim
+                self.sym_embed = (
+                    nn.Embedding(num_symbols + 1, embed_dim) if num_symbols > 0 else None
+                )
+                eff_input = input_size + (embed_dim if num_symbols > 0 else 0)
+                self.input_proj = nn.Sequential(
+                    nn.Linear(eff_input, hidden_size), nn.BatchNorm1d(hidden_size), nn.ReLU(),
+                )
+                self.res_blocks = nn.Sequential(
+                    _ResBlock(hidden_size, dropout=0.3), _ResBlock(hidden_size, dropout=0.3),
+                )
+                self.classifier = nn.Sequential(
+                    nn.Linear(hidden_size, hidden_size // 2), nn.ReLU(), nn.Dropout(0.15),
+                    nn.Linear(hidden_size // 2, num_classes),
+                )
+
+            def forward(self, x, sym_idx=None):
+                if self.sym_embed is not None and sym_idx is not None:
+                    idx = sym_idx.clamp(0, self.num_symbols)
+                    x = torch.cat([x, self.sym_embed(idx)], dim=1)
+                x = self.input_proj(x)
+                x = self.res_blocks(x)
+                return self.classifier(x)
+
+        return _PricePredictionModel(
+            input_size=cfg['input_size'], hidden_size=cfg.get('hidden_size', 256),
+            num_symbols=cfg.get('num_symbols', 0), embed_dim=cfg.get('embed_dim', 8),
+        )
+
     raise ValueError(f'unsupported model_arch: {arch!r}')
 
 
@@ -524,6 +589,75 @@ def _train_single_task(cfg: dict, model) -> tuple[float, int]:
     return correct / max(total, 1), epochs
 
 
+def _train_mlp(cfg: dict, model) -> tuple[float, int]:
+    """Flat (N, features), single-task, with an OPTIONAL per-symbol
+    embedding (sym_idx) -- mirrors continuous_trainer.py::ContinuousTrainer
+    ._fit()'s FINAL training phase specifically (plain weighted
+    CrossEntropyLoss, not FocalLoss -- unlike the 5 sequence architectures
+    above, _fit()'s own final phase doesn't use focal loss either). Does
+    NOT reproduce _fit()'s walk-forward CV or ensemble-distillation soft
+    labels -- see _train_mlp_remote_cycle's docstring on the EMMA side for
+    why that's a deliberate simplification, not an oversight."""
+    import torch
+    from torch.utils.data import DataLoader, TensorDataset, WeightedRandomSampler
+
+    n, input_size = cfg['x_shape']
+    x_bytes = bytearray(base64.b64decode(cfg['x_b64']))
+    y_dir_bytes = bytearray(base64.b64decode(cfg['y_dir_b64']))
+    X = torch.frombuffer(x_bytes, dtype=torch.float32).clone().reshape(n, input_size)
+    y_dir = torch.frombuffer(y_dir_bytes, dtype=torch.int64).clone().reshape(n)
+
+    use_sym = bool(cfg.get('sym_idx_b64'))
+    if use_sym:
+        sym_bytes = bytearray(base64.b64decode(cfg['sym_idx_b64']))
+        sym_idx = torch.frombuffer(sym_bytes, dtype=torch.int64).clone().reshape(n)
+
+    epochs = int(cfg.get('epochs', 50))
+    lr = float(cfg.get('lr', 1e-3))
+    t0 = int(cfg.get('t0', 10))
+    t_mult = int(cfg.get('t_mult', 2))
+    batch_size = int(cfg.get('batch_size', 512))
+
+    n_sell = int((y_dir == 0).sum()); n_buy = int((y_dir == 1).sum()); tot = n_sell + n_buy
+    class_weights = torch.tensor(
+        [tot / (2.0 * n_sell + 1e-9), tot / (2.0 * n_buy + 1e-9)], dtype=torch.float32,
+    )
+
+    ds = TensorDataset(X, sym_idx, y_dir) if use_sym else TensorDataset(X, y_dir)
+    rw = torch.exp(torch.log(torch.tensor(3.0)) * torch.arange(n, dtype=torch.float32) / max(n - 1, 1))
+    sampler = WeightedRandomSampler(rw, num_samples=n, replacement=True)
+    dl = DataLoader(ds, batch_size=batch_size, sampler=sampler, drop_last=len(ds) > batch_size)
+
+    opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-4)
+    sch = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(opt, T_0=t0, T_mult=t_mult, eta_min=1e-5)
+    crit = torch.nn.CrossEntropyLoss(weight=class_weights, label_smoothing=0.05)
+
+    model.train()
+    correct = total = 0
+    for ep in range(1, epochs + 1):
+        correct = total = 0
+        for batch in dl:
+            opt.zero_grad()
+            if use_sym:
+                xb, sb, yb = batch
+                logits = model(xb, sym_idx=sb)
+            else:
+                xb, yb = batch
+                logits = model(xb)
+            loss = crit(logits, yb)
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            opt.step()
+            pred = logits.argmax(dim=1)
+            correct += (pred == yb).sum().item()
+            total += yb.size(0)
+        sch.step(ep)
+        acc = correct / max(total, 1)
+        print(f'epoch {ep}/{epochs}  train_acc={acc:.3f}', file=sys.stderr)
+
+    return correct / max(total, 1), epochs
+
+
 def main() -> int:
     # 2026-08-21: found live -- a real external provider (the same one
     # already fixed for svitlo_tensor_worker.py) has torch installed
@@ -539,7 +673,7 @@ def main() -> int:
 
     cfg = json.loads(sys.stdin.read())
     arch = cfg.get('model_arch')
-    if arch not in ('ft_transformer', 'lstm', 'tcn', 'tft', 'mamba', 'cnn'):
+    if arch not in ('ft_transformer', 'mlp', 'lstm', 'tcn', 'tft', 'mamba', 'cnn'):
         print(f"unsupported model_arch: {arch!r}", file=sys.stderr)
         return 1
 
@@ -556,6 +690,8 @@ def main() -> int:
     n = cfg['x_shape'][0]
     if arch == 'ft_transformer':
         train_acc, epochs_run = _train_ft_transformer(cfg, model)
+    elif arch == 'mlp':
+        train_acc, epochs_run = _train_mlp(cfg, model)
     else:
         train_acc, epochs_run = _train_single_task(cfg, model)
 
