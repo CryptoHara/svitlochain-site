@@ -484,7 +484,7 @@ class _FocalLoss:
         return (((1.0 - pt) ** self.gamma) * ce).mean()
 
 
-def _train_ft_transformer(cfg: dict, model) -> tuple[float, int]:
+def _train_ft_transformer(cfg: dict, model, device) -> tuple[float, int]:
     """Multi-task (dir_logits + mag_pred) training loop -- unchanged from
     before this file supported other architectures."""
     import torch
@@ -494,13 +494,13 @@ def _train_ft_transformer(cfg: dict, model) -> tuple[float, int]:
     n, input_size = cfg['x_shape']
     x_bytes = bytearray(base64.b64decode(cfg['x_b64']))
     y_dir_bytes = bytearray(base64.b64decode(cfg['y_dir_b64']))
-    X = torch.frombuffer(x_bytes, dtype=torch.float32).clone().reshape(n, input_size)
-    y_dir = torch.frombuffer(y_dir_bytes, dtype=torch.int64).clone().reshape(n)
+    X = torch.frombuffer(x_bytes, dtype=torch.float32).clone().reshape(n, input_size).to(device)
+    y_dir = torch.frombuffer(y_dir_bytes, dtype=torch.int64).clone().reshape(n).to(device)
     if cfg.get('y_mag_b64'):
         y_mag_bytes = bytearray(base64.b64decode(cfg['y_mag_b64']))
-        y_mag = torch.frombuffer(y_mag_bytes, dtype=torch.float32).clone().reshape(n)
+        y_mag = torch.frombuffer(y_mag_bytes, dtype=torch.float32).clone().reshape(n).to(device)
     else:
-        y_mag = torch.zeros(n, dtype=torch.float32)
+        y_mag = torch.zeros(n, dtype=torch.float32, device=device)
 
     epochs = int(cfg.get('epochs', 5))
     lr = float(cfg.get('lr', 2e-4))
@@ -532,7 +532,7 @@ def _train_ft_transformer(cfg: dict, model) -> tuple[float, int]:
     return correct / max(total, 1), epochs
 
 
-def _train_single_task(cfg: dict, model) -> tuple[float, int]:
+def _train_single_task(cfg: dict, model, device) -> tuple[float, int]:
     """Single-task (dir_logits only) training loop shared by lstm/tcn/tft/
     mamba/cnn -- mirrors the FocalLoss + class-weighted + recency-weighted-
     sampler + AdamW + CosineAnnealingWarmRestarts recipe every one of
@@ -543,8 +543,8 @@ def _train_single_task(cfg: dict, model) -> tuple[float, int]:
     n, seq_len, input_size = cfg['x_shape']
     x_bytes = bytearray(base64.b64decode(cfg['x_b64']))
     y_dir_bytes = bytearray(base64.b64decode(cfg['y_dir_b64']))
-    X = torch.frombuffer(x_bytes, dtype=torch.float32).clone().reshape(n, seq_len, input_size)
-    y_dir = torch.frombuffer(y_dir_bytes, dtype=torch.int64).clone().reshape(n)
+    X = torch.frombuffer(x_bytes, dtype=torch.float32).clone().reshape(n, seq_len, input_size).to(device)
+    y_dir = torch.frombuffer(y_dir_bytes, dtype=torch.int64).clone().reshape(n).to(device)
 
     epochs = int(cfg.get('epochs', 40))
     lr = float(cfg.get('lr', 1e-3))
@@ -554,7 +554,7 @@ def _train_single_task(cfg: dict, model) -> tuple[float, int]:
 
     n_sell = int((y_dir == 0).sum()); n_buy = int((y_dir == 1).sum()); tot = n_sell + n_buy
     class_weights = torch.tensor(
-        [tot / (2.0 * n_sell + 1e-9), tot / (2.0 * n_buy + 1e-9)], dtype=torch.float32,
+        [tot / (2.0 * n_sell + 1e-9), tot / (2.0 * n_buy + 1e-9)], dtype=torch.float32, device=device,
     )
 
     ds = TensorDataset(X, y_dir)
@@ -589,7 +589,7 @@ def _train_single_task(cfg: dict, model) -> tuple[float, int]:
     return correct / max(total, 1), epochs
 
 
-def _train_mlp(cfg: dict, model) -> tuple[float, int]:
+def _train_mlp(cfg: dict, model, device) -> tuple[float, int]:
     """Flat (N, features), single-task, with an OPTIONAL per-symbol
     embedding (sym_idx) -- mirrors continuous_trainer.py::ContinuousTrainer
     ._fit()'s FINAL training phase specifically (plain weighted
@@ -604,13 +604,13 @@ def _train_mlp(cfg: dict, model) -> tuple[float, int]:
     n, input_size = cfg['x_shape']
     x_bytes = bytearray(base64.b64decode(cfg['x_b64']))
     y_dir_bytes = bytearray(base64.b64decode(cfg['y_dir_b64']))
-    X = torch.frombuffer(x_bytes, dtype=torch.float32).clone().reshape(n, input_size)
-    y_dir = torch.frombuffer(y_dir_bytes, dtype=torch.int64).clone().reshape(n)
+    X = torch.frombuffer(x_bytes, dtype=torch.float32).clone().reshape(n, input_size).to(device)
+    y_dir = torch.frombuffer(y_dir_bytes, dtype=torch.int64).clone().reshape(n).to(device)
 
     use_sym = bool(cfg.get('sym_idx_b64'))
     if use_sym:
         sym_bytes = bytearray(base64.b64decode(cfg['sym_idx_b64']))
-        sym_idx = torch.frombuffer(sym_bytes, dtype=torch.int64).clone().reshape(n)
+        sym_idx = torch.frombuffer(sym_bytes, dtype=torch.int64).clone().reshape(n).to(device)
 
     epochs = int(cfg.get('epochs', 50))
     lr = float(cfg.get('lr', 1e-3))
@@ -620,7 +620,7 @@ def _train_mlp(cfg: dict, model) -> tuple[float, int]:
 
     n_sell = int((y_dir == 0).sum()); n_buy = int((y_dir == 1).sum()); tot = n_sell + n_buy
     class_weights = torch.tensor(
-        [tot / (2.0 * n_sell + 1e-9), tot / (2.0 * n_buy + 1e-9)], dtype=torch.float32,
+        [tot / (2.0 * n_sell + 1e-9), tot / (2.0 * n_buy + 1e-9)], dtype=torch.float32, device=device,
     )
 
     ds = TensorDataset(X, sym_idx, y_dir) if use_sym else TensorDataset(X, y_dir)
@@ -687,14 +687,34 @@ def main() -> int:
         except Exception as exc:
             print(f'warm_start load failed, training from scratch: {exc}', file=sys.stderr)
 
+    # 2026-08-23: found live -- this file never once called .cuda()/.to()
+    # anywhere, for any architecture. Every "remote training" job actually
+    # ran on CPU regardless of the provider's real GPU, silently -- no
+    # error, no crash, just training that's 10-50x+ slower than it should
+    # be. Invisible on the inference side (svitlo_tensor_worker.py has the
+    # same gap, but a single forward pass is cheap enough on CPU that
+    # nobody noticed), but for actual training -- 80 epochs over 30K
+    # samples -- this plausibly turned a job that should take minutes on
+    # a real GPU into one that takes hours on CPU, well past EMMA's own
+    # 25min client patience (REMOTE_POLL_GIVEUP_SEC) every single time.
+    # Matches everything observed live today: dispatch succeeds (node
+    # goes busy), the job neither completes nor fails within any
+    # reasonable window, and a since-expired orphaned job was still
+    # showing busy=true hours after submission -- consistent with a CPU-
+    # bound job still genuinely working, just far slower than assumed.
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print(f'training device: {device}', file=sys.stderr)
+    model = model.to(device)
+
     n = cfg['x_shape'][0]
     if arch == 'ft_transformer':
-        train_acc, epochs_run = _train_ft_transformer(cfg, model)
+        train_acc, epochs_run = _train_ft_transformer(cfg, model, device)
     elif arch == 'mlp':
-        train_acc, epochs_run = _train_mlp(cfg, model)
+        train_acc, epochs_run = _train_mlp(cfg, model, device)
     else:
-        train_acc, epochs_run = _train_single_task(cfg, model)
+        train_acc, epochs_run = _train_single_task(cfg, model, device)
 
+    model = model.to('cpu')
     buf = io.BytesIO()
     torch.save(model.state_dict(), buf)
     result = {
