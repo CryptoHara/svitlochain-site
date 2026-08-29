@@ -494,7 +494,15 @@ def _train_ft_transformer(cfg: dict, model, device) -> tuple[float, int]:
     n, input_size = cfg['x_shape']
     x_bytes = bytearray(base64.b64decode(cfg['x_b64']))
     y_dir_bytes = bytearray(base64.b64decode(cfg['y_dir_b64']))
-    X = torch.frombuffer(x_bytes, dtype=torch.float32).clone().reshape(n, input_size).to(device)
+    # 2026-08-29: x_dtype lets the sender halve the wire payload (float16
+    # instead of float32) -- see the matching comment at _train_single_task
+    # below, where this actually mattered (the 48x-larger seq-model
+    # payload was the one real correlate found between which architecture
+    # succeeded and which didn't). Immediate .float() upcast keeps every
+    # downstream op (loss, optimizer, etc.) running in the same fp32 this
+    # loop always used -- only the transport encoding changes.
+    x_dtype = torch.float16 if cfg.get('x_dtype') == 'float16' else torch.float32
+    X = torch.frombuffer(x_bytes, dtype=x_dtype).clone().reshape(n, input_size).float().to(device)
     y_dir = torch.frombuffer(y_dir_bytes, dtype=torch.int64).clone().reshape(n).to(device)
     if cfg.get('y_mag_b64'):
         y_mag_bytes = bytearray(base64.b64decode(cfg['y_mag_b64']))
@@ -543,7 +551,19 @@ def _train_single_task(cfg: dict, model, device) -> tuple[float, int]:
     n, seq_len, input_size = cfg['x_shape']
     x_bytes = bytearray(base64.b64decode(cfg['x_b64']))
     y_dir_bytes = bytearray(base64.b64decode(cfg['y_dir_b64']))
-    X = torch.frombuffer(x_bytes, dtype=torch.float32).clone().reshape(n, seq_len, input_size).to(device)
+    # 2026-08-29: found live -- the only remote job to ever ack+complete
+    # end-to-end (FT-Transformer) has a flat (N, features) X, ~8MB of
+    # base64 payload at its real 12K-sample size. This function's X is
+    # (N, seq_len, input_size) -- 48x larger per sample at seq_len=48 --
+    # so REMOTE_MAX_SEQ_SAMPLES=1000 (continuous_trainer.py) still lands
+    # around 32MB, and every attempt at that size has failed to ack within
+    # the orchestrator's 90s unconfirmed-assignment window (the client's
+    # own poll loop has to fully receive + parse the dispatch before it
+    # can even send the ack). x_dtype lets the sender halve that to ~16MB
+    # by transporting float16 instead of float32; .float() upcasts
+    # immediately so training itself is unaffected fp32 as before.
+    x_dtype = torch.float16 if cfg.get('x_dtype') == 'float16' else torch.float32
+    X = torch.frombuffer(x_bytes, dtype=x_dtype).clone().reshape(n, seq_len, input_size).float().to(device)
     y_dir = torch.frombuffer(y_dir_bytes, dtype=torch.int64).clone().reshape(n).to(device)
 
     epochs = int(cfg.get('epochs', 40))
@@ -604,7 +624,10 @@ def _train_mlp(cfg: dict, model, device) -> tuple[float, int]:
     n, input_size = cfg['x_shape']
     x_bytes = bytearray(base64.b64decode(cfg['x_b64']))
     y_dir_bytes = bytearray(base64.b64decode(cfg['y_dir_b64']))
-    X = torch.frombuffer(x_bytes, dtype=torch.float32).clone().reshape(n, input_size).to(device)
+    # 2026-08-29: same x_dtype halving as _train_ft_transformer/
+    # _train_single_task above -- see their comments.
+    x_dtype = torch.float16 if cfg.get('x_dtype') == 'float16' else torch.float32
+    X = torch.frombuffer(x_bytes, dtype=x_dtype).clone().reshape(n, input_size).float().to(device)
     y_dir = torch.frombuffer(y_dir_bytes, dtype=torch.int64).clone().reshape(n).to(device)
 
     use_sym = bool(cfg.get('sym_idx_b64'))
