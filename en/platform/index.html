@@ -96,9 +96,10 @@ try {
   <p class="lede">A lightweight daemon for running general compute jobs — LLM inference, image generation, speech-to-text, and tensor inference for AI training platforms — dispatched by Svitlo Chain's job orchestrator. This is a different tool from the Node Agent above: Node Agent serves LLM chat completions through its own backend, while svitlo-provider connects to the orchestrator's job-splitting/aggregation pipeline directly.</p>
   <div class="cta-row">
     <a href="/downloads/svitlo-provider-linux-x86_64" class="btn btn-primary">🐧 svitlo-provider — Linux (x86_64)</a>
+    <a href="/downloads/svitlo-provider-windows-x86_64.exe" class="btn btn-primary">🪟 svitlo-provider — Windows (x86_64)</a>
     <a href="/downloads/svitlo-wallet-linux-x86_64" class="btn btn-primary">🐧 svitlo-wallet — Linux (x86_64)</a>
   </div>
-  <p class="lede" style="margin-top:12px;font-size:.85em;opacity:.75;">macOS and Windows builds are coming soon. svitlo-provider needs a <em>provider keyfile</em> (plain secret key), not a regular encrypted wallet.json — a regular wallet.json <a href="/en/wallet/">from the wallet app</a> won't work directly here. Full setup:</p>
+  <p class="lede" style="margin-top:12px;font-size:.85em;opacity:.75;">macOS builds are coming soon; the Windows build requires Windows 10 or later. svitlo-provider needs a <em>provider keyfile</em> (plain secret key), not a regular encrypted wallet.json — a regular wallet.json <a href="/en/wallet/">from the wallet app</a> won't work directly here. Full setup (Linux shown; on Windows use <code>svitlo-provider-windows-x86_64.exe</code> and skip the <code>chmod</code> line):</p>
   <pre style="margin-top:8px;padding:14px 16px;border-radius:10px;overflow-x:auto;font-size:.82em;"><code>chmod +x svitlo-provider-linux-x86_64 svitlo-wallet-linux-x86_64
 
 # 1. Create a wallet (prompts for a password, shows a 24-word recovery

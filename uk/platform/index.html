@@ -81,9 +81,10 @@ try {
   <p class="lede">Легкий демон для виконання загальних compute-задач — LLM inference, генерація зображень, розпізнавання мовлення, tensor inference для платформ ШІ-тренування — розподілених оркестратором Svitlo Chain. Це інший інструмент, ніж Node Agent вище: Node Agent обслуговує LLM-чати через власний бекенд платформи, а svitlo-provider підключається напряму до конвеєра розбиття/агрегації задач оркестратора.</p>
   <div class="cta-row">
     <a href="/downloads/svitlo-provider-linux-x86_64" class="btn btn-primary">🐧 svitlo-provider — Linux (x86_64)</a>
+    <a href="/downloads/svitlo-provider-windows-x86_64.exe" class="btn btn-primary">🪟 svitlo-provider — Windows (x86_64)</a>
     <a href="/downloads/svitlo-wallet-linux-x86_64" class="btn btn-primary">🐧 svitlo-wallet — Linux (x86_64)</a>
   </div>
-  <p class="lede" style="margin-top:12px;font-size:.85em;opacity:.75;">macOS і Windows — незабаром. svitlo-provider потребує <em>provider keyfile</em> (простий секретний ключ), не звичайний зашифрований wallet.json — звичайний гаманець <a href="/uk/wallet/">з гаманець-застосунку</a> тут напряму не підійде. Повне налаштування:</p>
+  <p class="lede" style="margin-top:12px;font-size:.85em;opacity:.75;">macOS — незабаром; для Windows потрібна Windows 10 або новіша. svitlo-provider потребує <em>provider keyfile</em> (простий секретний ключ), не звичайний зашифрований wallet.json — звичайний гаманець <a href="/uk/wallet/">з гаманець-застосунку</a> тут напряму не підійде. Повне налаштування (показано для Linux; на Windows використовуй <code>svitlo-provider-windows-x86_64.exe</code> і пропусти рядок <code>chmod</code>):</p>
   <pre style="margin-top:8px;padding:14px 16px;border-radius:10px;overflow-x:auto;font-size:.82em;"><code>chmod +x svitlo-provider-linux-x86_64 svitlo-wallet-linux-x86_64
 
 # 1. Створити гаманець (запитає пароль, покаже 24-словну recovery-фразу
