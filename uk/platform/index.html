@@ -82,9 +82,10 @@ try {
   <div class="cta-row">
     <a href="/downloads/svitlo-provider-linux-x86_64" class="btn btn-primary">🐧 svitlo-provider — Linux (x86_64)</a>
     <a href="/downloads/svitlo-provider-windows-x86_64.exe" class="btn btn-primary">🪟 svitlo-provider — Windows (x86_64)</a>
+    <a href="/downloads/svitlo-provider-macos-universal" class="btn btn-primary">🍎 svitlo-provider — macOS (Apple Silicon + Intel)</a>
     <a href="/downloads/svitlo-wallet-linux-x86_64" class="btn btn-primary">🐧 svitlo-wallet — Linux (x86_64)</a>
   </div>
-  <p class="lede" style="margin-top:12px;font-size:.85em;opacity:.75;">macOS — незабаром; для Windows потрібна Windows 10 або новіша. svitlo-provider потребує <em>provider keyfile</em> (простий секретний ключ), не звичайний зашифрований wallet.json — звичайний гаманець <a href="/uk/wallet/">з гаманець-застосунку</a> тут напряму не підійде. Повне налаштування (показано для Linux; на Windows використовуй <code>svitlo-provider-windows-x86_64.exe</code> і пропусти рядок <code>chmod</code>):</p>
+  <p class="lede" style="margin-top:12px;font-size:.85em;opacity:.75;"><strong>macOS: автоматичне встановлення одним рядком</strong> — сам завантажує бінарник, налаштовує гаманець, встановлює Python/torch і реєструє автозапуск: <code>curl -fsSL https://www.svitlochain.com/downloads/install-provider-macos.sh | bash</code>. (Запускай саме через <code>curl</code>, а не через завантаження в браузері — у цього репозиторію ще немає платного сертифіката Apple Developer ID, тож файл, завантажений браузером, потрапить під карантин Gatekeeper; завантаження через <code>curl</code> цього не викликає.) Для Windows потрібна Windows 10 або новіша. svitlo-provider потребує <em>provider keyfile</em> (простий секретний ключ), не звичайний зашифрований wallet.json — звичайний гаманець <a href="/uk/wallet/">з гаманець-застосунку</a> тут напряму не підійде. Ручне налаштування для Linux/Windows (на macOS усе це робить інсталятор вище):</p>
   <pre style="margin-top:8px;padding:14px 16px;border-radius:10px;overflow-x:auto;font-size:.82em;"><code>chmod +x svitlo-provider-linux-x86_64 svitlo-wallet-linux-x86_64
 
 # 1. Створити гаманець (запитає пароль, покаже 24-словну recovery-фразу

@@ -83,8 +83,9 @@ try {
   <div class="cta-row">
     <a href="/downloads/svitlo-provider-linux-x86_64" class="btn btn-primary">🐧 Linux (x86_64) — Download</a>
     <a href="/downloads/svitlo-provider-windows-x86_64.exe" class="btn btn-primary">🪟 Windows (x86_64) — Download</a>
+    <a href="/downloads/svitlo-provider-macos-universal" class="btn btn-primary">🍎 macOS (Apple Silicon + Intel) — Download</a>
   </div>
-  <p class="lede" style="margin-top:12px;font-size:.85em;opacity:.75;">macOS builds are coming soon. Linux: <code>chmod +x svitlo-provider-linux-x86_64 && ./svitlo-provider-linux-x86_64 start --node https://rpc.svitlochain.com --wallet wallet.json</code>. Windows: <code>svitlo-provider-windows-x86_64.exe start --node https://rpc.svitlochain.com --wallet wallet.json</code> (requires Windows 10 or later) — both auto-detect your hardware, register with the orchestrator, and start polling for jobs. Run <code>detect</code> instead of <code>start</code> first to check what it sees on your machine.</p>
+  <p class="lede" style="margin-top:12px;font-size:.85em;opacity:.75;">macOS: one-line automatic install (fetches the binary, sets up a wallet, installs Python/torch, and registers it to start on login) — <code>curl -fsSL https://www.svitlochain.com/downloads/install-provider-macos.sh | bash</code>. Linux: <code>chmod +x svitlo-provider-linux-x86_64 && ./svitlo-provider-linux-x86_64 start --node https://rpc.svitlochain.com --wallet wallet.json</code>. Windows: <code>svitlo-provider-windows-x86_64.exe start --node https://rpc.svitlochain.com --wallet wallet.json</code> (requires Windows 10 or later) — all three auto-detect your hardware, register with the orchestrator, and start polling for jobs. Run <code>detect</code> instead of <code>start</code> first to check what it sees on your machine.</p>
 </div>
 
 <footer class="site-footer">
