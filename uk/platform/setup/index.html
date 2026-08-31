@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Встановлення svitlo-provider — Svitlo Chain</title>
+<meta name="description" content="Покрокова інструкція встановлення svitlo-provider для macOS, Linux і Windows — завантаження, гаманець, залежності, запуск як GPU compute-провайдера Svitlo Chain.">
+<link rel="canonical" href="https://www.svitlochain.com/uk/platform/setup/">
+<link rel="alternate" hreflang="en" href="https://www.svitlochain.com/en/platform/setup/">
+<link rel="alternate" hreflang="uk" href="https://www.svitlochain.com/uk/platform/setup/">
+<link rel="alternate" hreflang="x-default" href="https://www.svitlochain.com/platform/setup/">
+<link rel="stylesheet" href="/assets/platform.css">
+<script>
+try {
+  var t = localStorage.getItem('svitlo-theme');
+  if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+} catch (e) {}
+</script>
+</head>
+<body>
+
+<nav class="site-nav glass">
+  <a href="/uk/" class="brand"><img class="logo" src="/assets/images/logo.jpg" alt="Svitlo Chain">Svitlo<b>Chain</b></a>
+  <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" onclick="document.getElementById('nav-links').classList.toggle('open');this.setAttribute('aria-expanded', document.getElementById('nav-links').classList.contains('open'))">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div class="links" id="nav-links">
+    <a href="/uk/wallet/">Гаманець</a><a href="/uk/platform/" class="current">Платформа</a><a href="/uk/documentation/">Документація</a><div class="lang-switch" id="lang-switch">
+      <button type="button" onclick="document.getElementById('lang-switch').classList.toggle('open')">🇺🇦 UK <span aria-hidden="true">▾</span></button>
+      <ul><li><a href="/en/platform/setup/" class="">🇬🇧 English</a></li><li><a href="/uk/platform/setup/" class="current">🇺🇦 Українська</a></li></ul>
+    </div>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" onclick="window.__toggleTheme()"><span class="theme-icon-light">☀️</span><span class="theme-icon-dark">🌙</span></button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="eyebrow">Інструкція</div>
+  <h1>Встановлення svitlo-provider</h1>
+  <p class="lede">Перетвори вільну GPU (чи навіть CPU) на compute-провайдера Svitlo Chain. На цій сторінці — ті самі чотири етапи для кожної ОС: завантаження, гаманець, залежності, запуск — з точними командами для macOS, Linux і Windows. Що саме робить svitlo-provider — дивись на <a href="/uk/platform/">сторінці Платформи</a>.</p>
+</div>
+
+<div class="wrap">
+  <div class="timeline">
+    <div class="timeline-items">
+      <div><div class="when">Етап 1</div><h3>Завантаження</h3><p style="font-size:13.5px;margin-top:4px">Один файл під твою ОС — жодного інсталятора запускати не треба.</p></div>
+      <div><div class="when">Етап 2</div><h3>Гаманець</h3><p style="font-size:13.5px;margin-top:4px">Створюється provider-ключ — окремий простий секрет, не твій звичайний гаманець.</p></div>
+      <div><div class="when">Етап 3</div><h3>Залежності</h3><p style="font-size:13.5px;margin-top:4px">Python + PyTorch довантажуються під час встановлення — не входять у сам файл.</p></div>
+      <div><div class="when">Етап 4</div><h3>Запуск</h3><p style="font-size:13.5px;margin-top:4px">Реєстрація в оркестраторі, автовизначення заліза, початок прийому задач.</p></div>
+    </div>
+    <div class="timeline-track"><span class="pt" style="left:0%"></span><span class="pt" style="left:33.33333333333333%"></span><span class="pt" style="left:66.66666666666666%"></span><span class="pt" style="left:100%"></span></div>
+  </div>
+</div>
+
+<div class="wrap" style="padding-top:8px">
+  <div class="section-head"><div class="eyebrow">Обери ОС</div><h2>Інструкції для встановлення</h2></div>
+
+  <div class="card" style="margin-bottom:22px">
+    <span class="pill" style="margin-bottom:12px">🍎 macOS · Автоматично</span>
+    <h3>Apple Silicon і Intel — одна команда</h3>
+    <p style="margin:8px 0 0">Один рядок робить усі чотири етапи одразу: завантажує бінарник, створює provider-гаманець (запитає пароль просто в терміналі), встановлює PyTorch і реєструє <code>launchd</code>-агент, щоб провайдер стартував при вході в систему й перезапускався у разі падіння.</p>
+    <div class="code">curl -fsSL https://www.svitlochain.com/downloads/install-provider-macos.sh | bash</div>
+    <div class="callout" style="margin-top:14px">💡 Запускай саме через <code>curl</code> у Терміналі, а не завантажуючи файл браузером. У цього репозиторію ще немає платного сертифіката Apple Developer ID, тож файл, завантажений браузером, отримає мітку <code>com.apple.quarantine</code> і Gatekeeper відмовиться його запускати. Завантаження через <code>curl</code> такої мітки не ставить — тому один рядок повністю обходить цю проблему.</div>
+    <p style="margin-top:14px;font-size:13px;color:var(--ink-m)">Логи: <code>tail -f ~/.svitlo/logs/provider.log</code> &nbsp;·&nbsp; Зупинити: <code>launchctl unload ~/Library/LaunchAgents/com.svitlochain.provider.plist</code></p>
+  </div>
+
+  <div class="card" style="margin-bottom:22px">
+    <span class="pill" style="margin-bottom:12px">🐧 Linux · x86_64</span>
+    <h3>Вручну, чотири команди</h3>
+    <p style="margin:8px 0 0">Завантаж <a href="/downloads/svitlo-provider-linux-x86_64">svitlo-provider</a> і <a href="/downloads/svitlo-wallet-linux-x86_64">svitlo-wallet</a>, далі:</p>
+    <div class="code">chmod +x svitlo-provider-linux-x86_64 svitlo-wallet-linux-x86_64
+
+<span class="c1"># 1. Створити гаманець (запитає пароль, покаже 24-словну recovery-фразу</span>
+<span class="c1">#    ОДИН РАЗ — запиши її, вона ніде більше не зберігається й не показується)</span>
+./svitlo-wallet-linux-x86_64 keygen --output wallet.json
+
+<span class="c1"># 2. Експортувати у простий формат, який читає svitlo-provider</span>
+./svitlo-wallet-linux-x86_64 export-provider-key --wallet wallet.json --output provider-wallet.json
+
+<span class="c1"># 3. Перевірити, яке залізо бачить, і почати приймати задачі</span>
+./svitlo-provider-linux-x86_64 detect
+./svitlo-provider-linux-x86_64 start --node https://rpc.svitlochain.com --wallet provider-wallet.json</div>
+    <p style="margin-top:14px;font-size:13px;color:var(--ink-m)">Запусти під <code>systemd</code> (user-сервіс або звичайний <code>nohup</code>), якщо потрібно, щоб процес пережив вихід із сесії — готовий systemd-юніт у планах.</p>
+  </div>
+
+  <div class="card">
+    <span class="pill" style="margin-bottom:12px">🪟 Windows · x86_64 · Windows 10+</span>
+    <h3>Вручну, ті самі три кроки</h3>
+    <p style="margin:8px 0 0">Завантаж <a href="/downloads/svitlo-provider-windows-x86_64.exe">svitlo-provider-windows-x86_64.exe</a>. Windows-збірки <code>svitlo-wallet</code> поки немає, тож згенеруй <code>provider-wallet.json</code> на Linux чи macOS (див. відповідні вкладки) і перенеси його сюди, далі з PowerShell чи cmd:</p>
+    <div class="code">svitlo-provider-windows-x86_64.exe detect
+svitlo-provider-windows-x86_64.exe start --node https://rpc.svitlochain.com --wallet provider-wallet.json</div>
+    <p style="margin-top:14px;font-size:13px;color:var(--ink-m)">Потрібна Windows 10 або новіша — збірка таргетить <code>x86_64-pc-windows-msvc</code>, який вимагає Windows 10+ починаючи з Rust 1.78. Додай до Планувальника завдань (запуск при вході), якщо хочеш, щоб процес переживав перезавантаження без ручного старту.</p>
+  </div>
+</div>
+
+<div class="wrap" style="padding-top:8px">
+  <div class="section-head"><div class="eyebrow">Що далі</div><h2>Після запуску <code>start</code></h2></div>
+  <div class="grid grid-2" style="gap:22px 40px">
+    <div class="step">
+      <span class="arrow">→</span>
+      <div><h3>Залізо визначається автоматично</h3><p style="margin-top:4px">GPU backend (CUDA / ROCm / Apple MPS / лише CPU), об'єм VRAM і кількість ядер — без ручного налаштування. Запусти <code>detect</code> окремо, якщо просто хочеш побачити, що воно бачить.</p></div>
+    </div>
+    <div class="step">
+      <span class="arrow">→</span>
+      <div><h3>Реєстрація в оркестраторі</h3><p style="margin-top:4px">Твоя нода стає видимою для системи розподілу задач за адресою, переданою у <code>--node</code> — <code>https://rpc.svitlochain.com</code> для публічної мережі.</p></div>
+    </div>
+    <div class="step">
+      <span class="arrow">→</span>
+      <div><h3>Прийом і виконання задач</h3><p style="margin-top:4px">Inference, генерація зображень, розпізнавання мовлення чи tensor-тренування розподіляються на твою ноду, коли вона відповідає вимогам і вільна.</p></div>
+    </div>
+    <div class="step">
+      <span class="arrow">→</span>
+      <div><h3>Виплати в SVIT, on-chain</h3><p style="margin-top:4px">Кожна виконана задача криптографічно верифікується й автоматично оплачується на твій provider-гаманець — без ручних інвойсів.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" style="padding-top:8px;padding-bottom:56px">
+  <div class="section-head"><div class="eyebrow">Питання</div><h2>FAQ</h2></div>
+  <div class="card glass" style="padding:8px 26px">
+    <div class="faq-item">
+      <h3>Навіщо потрібні Python і PyTorch?</h3>
+      <p style="margin-top:8px">Сам бінарник провайдера написаний на Rust, але реальне тренування/inference моделей виконує невеликий Python-скрипт-воркер (теж довантажується автоматично) — саме PyTorch виконує обчислення на GPU. Він встановлюється через <code>pip</code>, а не входить у файл, щоб завантаження лишалось на кілька мегабайт, а не гігабайт, і щоб ти завжди отримував PyTorch, підібраний під твою конкретну конфігурацію CUDA/ROCm/MPS.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Provider-гаманець — це те саме, що мій звичайний гаманець Svitlo?</h3>
+      <p style="margin-top:8px">Ні — <code>svitlo-provider</code> потребує <em>provider keyfile</em> (простий секретний ключ), а не зашифрований <code>wallet.json</code> твого звичайного гаманця. <code>svitlo-wallet export-provider-key</code> робить такий ключ зі звичайного гаманця, або macOS-інсталятор створює обидва одразу. Тримай <code>provider-wallet.json</code> приватно — це твій підписуючий ключ.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Як зупинити чи видалити?</h3>
+      <p style="margin-top:8px">macOS: <code>launchctl unload ~/Library/LaunchAgents/com.svitlochain.provider.plist</code>, потім видали <code>~/.svitlo</code> і файл <code>.plist</code> для повного видалення. Linux/Windows: зупини процес (<kbd>Ctrl+C</kbd> або як там ти його запустив) і видали бінарник та файли гаманця.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Де подивитись логи?</h3>
+      <p style="margin-top:8px">macOS (інсталятор): <code>~/.svitlo/logs/provider.log</code>. Linux/Windows: туди, куди перенаправив stdout/stderr під час запуску — за замовчуванням процес пише в консоль.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Чи можна підключити до власної ноди замість публічної мережі?</h3>
+      <p style="margin-top:8px">Так — передай URL своєї ноди у <code>--node</code> замість <code>https://rpc.svitlochain.com</code>.</p>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <span>© 2026 Svitlo Chain.</span>
+  <span><a href="/uk/">Головна</a> · <a href="/uk/platform/">Платформа</a> · <a href="/uk/wallet/">Гаманець</a> · <a href="/uk/documentation/">Документація</a></span>
+</footer>
+
+<script>
+document.addEventListener('click', function(e) {
+  const sw = document.getElementById('lang-switch');
+  if (sw && !sw.contains(e.target)) sw.classList.remove('open');
+  const nav = document.getElementById('nav-links');
+  const toggle = document.getElementById('nav-toggle');
+  if (nav && nav.classList.contains('open') && !nav.contains(e.target) && !toggle.contains(e.target)) {
+    nav.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+});
+window.__toggleTheme = function() {
+  var cur = document.documentElement.getAttribute('data-theme');
+  var isDark = cur ? cur === 'dark' : window.matchMedia('(prefers-color-scheme:dark)').matches;
+  var next = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('svitlo-theme', next); } catch (e) {}
+};
+try { localStorage.setItem('svitlo-lang', 'uk'); } catch (e) {}
+</script>
+</body>
+</html>

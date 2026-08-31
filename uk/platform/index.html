@@ -85,21 +85,7 @@ try {
     <a href="/downloads/svitlo-provider-macos-universal" class="btn btn-primary">🍎 svitlo-provider — macOS (Apple Silicon + Intel)</a>
     <a href="/downloads/svitlo-wallet-linux-x86_64" class="btn btn-primary">🐧 svitlo-wallet — Linux (x86_64)</a>
   </div>
-  <p class="lede" style="margin-top:12px;font-size:.85em;opacity:.75;"><strong>macOS: автоматичне встановлення одним рядком</strong> — сам завантажує бінарник, налаштовує гаманець, встановлює Python/torch і реєструє автозапуск: <code>curl -fsSL https://www.svitlochain.com/downloads/install-provider-macos.sh | bash</code>. (Запускай саме через <code>curl</code>, а не через завантаження в браузері — у цього репозиторію ще немає платного сертифіката Apple Developer ID, тож файл, завантажений браузером, потрапить під карантин Gatekeeper; завантаження через <code>curl</code> цього не викликає.) Для Windows потрібна Windows 10 або новіша. svitlo-provider потребує <em>provider keyfile</em> (простий секретний ключ), не звичайний зашифрований wallet.json — звичайний гаманець <a href="/uk/wallet/">з гаманець-застосунку</a> тут напряму не підійде. Ручне налаштування для Linux/Windows (на macOS усе це робить інсталятор вище):</p>
-  <pre style="margin-top:8px;padding:14px 16px;border-radius:10px;overflow-x:auto;font-size:.82em;"><code>chmod +x svitlo-provider-linux-x86_64 svitlo-wallet-linux-x86_64
-
-# 1. Створити гаманець (запитає пароль, покаже 24-словну recovery-фразу
-#    ОДИН РАЗ — запиши її, вона ніде більше не зберігається й не показується)
-./svitlo-wallet-linux-x86_64 keygen --output wallet.json
-
-# 2. Експортувати у простий формат, який читає svitlo-provider
-#    (provider-wallet.json, права 600 автоматично — тримай приватно,
-#    це твій підписуючий ключ)
-./svitlo-wallet-linux-x86_64 export-provider-key --wallet wallet.json --output provider-wallet.json
-
-# 3. Перевірити, яке залізо бачить, і почати приймати задачі
-./svitlo-provider-linux-x86_64 detect
-./svitlo-provider-linux-x86_64 start --node https://rpc.svitlochain.com --wallet provider-wallet.json</code></pre>
+  <p class="lede" style="margin-top:12px;font-size:.85em;opacity:.75;"><strong>macOS: автоматичне встановлення одним рядком</strong> — сам завантажує бінарник, налаштовує гаманець, встановлює Python/torch і реєструє автозапуск: <code>curl -fsSL https://www.svitlochain.com/downloads/install-provider-macos.sh | bash</code>. Для Linux і Windows потрібно кілька команд вручну (svitlo-provider потребує <em>provider keyfile</em>, не звичайний зашифрований wallet.json — гаманець <a href="/uk/wallet/">з гаманець-застосунку</a> тут напряму не підійде). Повна інструкція для всіх трьох ОС, крок за кроком: <a href="/uk/platform/setup/">Встановлення svitlo-provider →</a></p>
 </div>
 
 <div class="grid-3">

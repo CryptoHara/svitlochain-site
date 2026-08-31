@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Install svitlo-provider — Svitlo Chain</title>
+<meta name="description" content="Step-by-step setup guide for svitlo-provider on macOS, Linux, and Windows — download, wallet, dependencies, and running as a GPU compute provider on Svitlo Chain.">
+<link rel="canonical" href="https://www.svitlochain.com/en/platform/setup/">
+<link rel="alternate" hreflang="en" href="https://www.svitlochain.com/en/platform/setup/">
+<link rel="alternate" hreflang="uk" href="https://www.svitlochain.com/uk/platform/setup/">
+<link rel="alternate" hreflang="x-default" href="https://www.svitlochain.com/platform/setup/">
+<link rel="stylesheet" href="/assets/platform.css">
+<script>
+try {
+  var t = localStorage.getItem('svitlo-theme');
+  if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+} catch (e) {}
+</script>
+</head>
+<body>
+
+<nav class="site-nav glass">
+  <a href="/en/" class="brand"><img class="logo" src="/assets/images/logo.jpg" alt="Svitlo Chain">Svitlo<b>Chain</b></a>
+  <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" onclick="document.getElementById('nav-links').classList.toggle('open');this.setAttribute('aria-expanded', document.getElementById('nav-links').classList.contains('open'))">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div class="links" id="nav-links">
+    <a href="/en/wallet/">Wallet</a><a href="/en/platform/" class="current">Platform</a><a href="/en/documentation/">Documentation</a><div class="lang-switch" id="lang-switch">
+      <button type="button" onclick="document.getElementById('lang-switch').classList.toggle('open')">🇬🇧 EN <span aria-hidden="true">▾</span></button>
+      <ul><li><a href="/en/platform/setup/" class="current">🇬🇧 English</a></li><li><a href="/uk/platform/setup/" class="">🇺🇦 Українська</a></li></ul>
+    </div>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" onclick="window.__toggleTheme()"><span class="theme-icon-light">☀️</span><span class="theme-icon-dark">🌙</span></button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="eyebrow">Setup guide</div>
+  <h1>Install svitlo-provider</h1>
+  <p class="lede">Turn a spare GPU (or CPU) into a Svitlo Chain compute provider. This page walks through the same four stages on every OS — download, wallet, dependencies, running — with the exact commands for macOS, Linux, and Windows. See the <a href="/en/platform/">Platform page</a> for what svitlo-provider actually does.</p>
+</div>
+
+<div class="wrap">
+  <div class="timeline">
+    <div class="timeline-items">
+      <div><div class="when">Stage 1</div><h3>Download</h3><p style="font-size:13.5px;margin-top:4px">Grab the binary for your OS — one file, no installer to run first.</p></div>
+      <div><div class="when">Stage 2</div><h3>Wallet</h3><p style="font-size:13.5px;margin-top:4px">Create a provider signing key — a plain secret, separate from your regular wallet.</p></div>
+      <div><div class="when">Stage 3</div><h3>Dependencies</h3><p style="font-size:13.5px;margin-top:4px">Python + PyTorch, fetched at install time — not bundled into the download.</p></div>
+      <div><div class="when">Stage 4</div><h3>Running</h3><p style="font-size:13.5px;margin-top:4px">Registers with the orchestrator, auto-detects your hardware, starts polling for jobs.</p></div>
+    </div>
+    <div class="timeline-track"><span class="pt" style="left:0%"></span><span class="pt" style="left:33.33333333333333%"></span><span class="pt" style="left:66.66666666666666%"></span><span class="pt" style="left:100%"></span></div>
+  </div>
+</div>
+
+<div class="wrap" style="padding-top:8px">
+  <div class="section-head"><div class="eyebrow">Choose your OS</div><h2>Setup instructions</h2></div>
+
+  <div class="card" style="margin-bottom:22px">
+    <span class="pill" style="margin-bottom:12px">🍎 macOS · Automatic</span>
+    <h3>Apple Silicon &amp; Intel — one command</h3>
+    <p style="margin:8px 0 0">A single line handles every stage above: it downloads the binary, creates your provider wallet (prompting for a password right there in the terminal), installs PyTorch, and registers a <code>launchd</code> agent so the provider starts on login and restarts if it ever crashes.</p>
+    <div class="code">curl -fsSL https://www.svitlochain.com/downloads/install-provider-macos.sh | bash</div>
+    <div class="callout" style="margin-top:14px">💡 Run this from Terminal via <code>curl</code>, not by downloading the file in a browser first. This repo doesn't yet hold a paid Apple Developer ID certificate, so a browser download gets tagged <code>com.apple.quarantine</code> and Gatekeeper refuses to run it. A <code>curl</code> fetch never sets that tag, so the one-liner sidesteps the problem entirely.</div>
+    <p style="margin-top:14px;font-size:13px;color:var(--ink-m)">Logs: <code>tail -f ~/.svitlo/logs/provider.log</code> &nbsp;·&nbsp; Stop: <code>launchctl unload ~/Library/LaunchAgents/com.svitlochain.provider.plist</code></p>
+  </div>
+
+  <div class="card" style="margin-bottom:22px">
+    <span class="pill" style="margin-bottom:12px">🐧 Linux · x86_64</span>
+    <h3>Manual, four commands</h3>
+    <p style="margin:8px 0 0">Download <a href="/downloads/svitlo-provider-linux-x86_64">svitlo-provider</a> and <a href="/downloads/svitlo-wallet-linux-x86_64">svitlo-wallet</a>, then:</p>
+    <div class="code">chmod +x svitlo-provider-linux-x86_64 svitlo-wallet-linux-x86_64
+
+<span class="c1"># 1. Create a wallet (prompts for a password, shows a 24-word recovery</span>
+<span class="c1">#    phrase ONCE -- write it down, it's never stored or shown again)</span>
+./svitlo-wallet-linux-x86_64 keygen --output wallet.json
+
+<span class="c1"># 2. Export it into the plain-secret format svitlo-provider reads</span>
+./svitlo-wallet-linux-x86_64 export-provider-key --wallet wallet.json --output provider-wallet.json
+
+<span class="c1"># 3. Check what hardware it sees, then start polling for jobs</span>
+./svitlo-provider-linux-x86_64 detect
+./svitlo-provider-linux-x86_64 start --node https://rpc.svitlochain.com --wallet provider-wallet.json</div>
+    <p style="margin-top:14px;font-size:13px;color:var(--ink-m)">Run it under <code>systemd</code> (a user service or a plain <code>nohup</code>) if you want it to survive a logout — a packaged service unit is on the roadmap.</p>
+  </div>
+
+  <div class="card">
+    <span class="pill" style="margin-bottom:12px">🪟 Windows · x86_64 · Windows 10+</span>
+    <h3>Manual, same three steps</h3>
+    <p style="margin:8px 0 0">Download <a href="/downloads/svitlo-provider-windows-x86_64.exe">svitlo-provider-windows-x86_64.exe</a>. There's no Windows <code>svitlo-wallet</code> build yet, so generate your <code>provider-wallet.json</code> on a Linux or macOS machine first (see those tabs) and copy it over, then from PowerShell or cmd:</p>
+    <div class="code">svitlo-provider-windows-x86_64.exe detect
+svitlo-provider-windows-x86_64.exe start --node https://rpc.svitlochain.com --wallet provider-wallet.json</div>
+    <p style="margin-top:14px;font-size:13px;color:var(--ink-m)">Requires Windows 10 or later — the build targets <code>x86_64-pc-windows-msvc</code>, which needs Windows 10+ since Rust 1.78. Register it in Task Scheduler (run on login) if you want it to survive a reboot without you starting it by hand.</p>
+  </div>
+</div>
+
+<div class="wrap" style="padding-top:8px">
+  <div class="section-head"><div class="eyebrow">What happens next</div><h2>After you run <code>start</code></h2></div>
+  <div class="grid grid-2" style="gap:22px 40px">
+    <div class="step">
+      <span class="arrow">→</span>
+      <div><h3>Hardware is detected automatically</h3><p style="margin-top:4px">GPU backend (CUDA / ROCm / Apple MPS / CPU-only), VRAM, and core count — no manual configuration needed. Run <code>detect</code> on its own first if you just want to see what it reports.</p></div>
+    </div>
+    <div class="step">
+      <span class="arrow">→</span>
+      <div><h3>It registers with the orchestrator</h3><p style="margin-top:4px">Your node becomes visible to the job-matching system at the <code>--node</code> address you passed — <code>https://rpc.svitlochain.com</code> for the public network.</p></div>
+    </div>
+    <div class="step">
+      <span class="arrow">→</span>
+      <div><h3>It polls for jobs and executes them</h3><p style="margin-top:4px">Inference, image generation, speech-to-text, or tensor-training jobs get dispatched to your node when it matches the requirements and is free.</p></div>
+    </div>
+    <div class="step">
+      <span class="arrow">→</span>
+      <div><h3>Earnings settle in SVIT, on-chain</h3><p style="margin-top:4px">Every completed job is cryptographically verified and paid out to your provider wallet automatically — no manual invoicing.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" style="padding-top:8px;padding-bottom:56px">
+  <div class="section-head"><div class="eyebrow">Questions</div><h2>FAQ</h2></div>
+  <div class="card glass" style="padding:8px 26px">
+    <div class="faq-item">
+      <h3>Why does it need Python and PyTorch?</h3>
+      <p style="margin-top:8px">The provider binary is Rust, but the actual model-training/inference work runs through a small companion Python worker script (also downloaded automatically) — PyTorch is what does the real GPU math. It's fetched via <code>pip</code> rather than bundled so the download stays a few megabytes instead of several gigabytes, and so you always get a PyTorch build matched to your own CUDA/ROCm/MPS setup.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is my provider wallet the same as my regular Svitlo wallet?</h3>
+      <p style="margin-top:8px">No — <code>svitlo-provider</code> needs a <em>provider keyfile</em> (a plain secret key), not the encrypted <code>wallet.json</code> your everyday wallet uses. <code>svitlo-wallet export-provider-key</code> derives one from a regular wallet, or the macOS installer creates both for you in one pass. Keep <code>provider-wallet.json</code> private — it's your signing key.</p>
+    </div>
+    <div class="faq-item">
+      <h3>How do I stop or uninstall it?</h3>
+      <p style="margin-top:8px">macOS: <code>launchctl unload ~/Library/LaunchAgents/com.svitlochain.provider.plist</code>, then delete <code>~/.svitlo</code> and the <code>.plist</code> file to remove it fully. Linux/Windows: stop the running process (<kbd>Ctrl+C</kbd>, or however you're supervising it) and delete the binary and wallet files.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Where are the logs?</h3>
+      <p style="margin-top:8px">macOS (installer): <code>~/.svitlo/logs/provider.log</code>. Linux/Windows: whatever you redirected stdout/stderr to when you launched it — the process logs to the console by default.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can I point it at a node I run myself instead of the public network?</h3>
+      <p style="margin-top:8px">Yes — pass your own node's URL to <code>--node</code> instead of <code>https://rpc.svitlochain.com</code>.</p>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <span>© 2026 Svitlo Chain.</span>
+  <span><a href="/">Home</a> · <a href="/en/platform/">Platform</a> · <a href="/en/wallet/">Wallet</a> · <a href="/en/documentation/">Documentation</a></span>
+</footer>
+
+<script>
+document.addEventListener('click', function(e) {
+  const sw = document.getElementById('lang-switch');
+  if (sw && !sw.contains(e.target)) sw.classList.remove('open');
+  const nav = document.getElementById('nav-links');
+  const toggle = document.getElementById('nav-toggle');
+  if (nav && nav.classList.contains('open') && !nav.contains(e.target) && !toggle.contains(e.target)) {
+    nav.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+});
+window.__toggleTheme = function() {
+  var cur = document.documentElement.getAttribute('data-theme');
+  var isDark = cur ? cur === 'dark' : window.matchMedia('(prefers-color-scheme:dark)').matches;
+  var next = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('svitlo-theme', next); } catch (e) {}
+};
+try { localStorage.setItem('svitlo-lang', 'en'); } catch (e) {}
+</script>
+</body>
+</html>

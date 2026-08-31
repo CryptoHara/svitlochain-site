@@ -100,21 +100,7 @@ try {
     <a href="/downloads/svitlo-provider-macos-universal" class="btn btn-primary">🍎 svitlo-provider — macOS (Apple Silicon + Intel)</a>
     <a href="/downloads/svitlo-wallet-linux-x86_64" class="btn btn-primary">🐧 svitlo-wallet — Linux (x86_64)</a>
   </div>
-  <p class="lede" style="margin-top:12px;font-size:.85em;opacity:.75;"><strong>macOS: one-line automatic install</strong> — handles the download, wallet setup, Python/torch dependency, and auto-start for you: <code>curl -fsSL https://www.svitlochain.com/downloads/install-provider-macos.sh | bash</code>. (Run it via <code>curl</code>, not a browser download — this repo doesn't have a paid Apple Developer ID certificate yet, so a browser-downloaded copy gets quarantined by Gatekeeper; a <code>curl</code> fetch doesn't trigger that.) The Windows build requires Windows 10 or later. svitlo-provider needs a <em>provider keyfile</em> (plain secret key), not a regular encrypted wallet.json — a regular wallet.json <a href="/en/wallet/">from the wallet app</a> won't work directly here. Manual setup on Linux/Windows (macOS: the installer above does this for you):</p>
-  <pre style="margin-top:8px;padding:14px 16px;border-radius:10px;overflow-x:auto;font-size:.82em;"><code>chmod +x svitlo-provider-linux-x86_64 svitlo-wallet-linux-x86_64
-
-# 1. Create a wallet (prompts for a password, shows a 24-word recovery
-#    phrase ONCE -- write it down, it's never stored or shown again)
-./svitlo-wallet-linux-x86_64 keygen --output wallet.json
-
-# 2. Export it into the plain-secret format svitlo-provider reads
-#    (provider-wallet.json, chmod 600 automatically -- keep it private,
-#    it's your signing key)
-./svitlo-wallet-linux-x86_64 export-provider-key --wallet wallet.json --output provider-wallet.json
-
-# 3. Check what hardware it sees, then start polling for jobs
-./svitlo-provider-linux-x86_64 detect
-./svitlo-provider-linux-x86_64 start --node https://rpc.svitlochain.com --wallet provider-wallet.json</code></pre>
+  <p class="lede" style="margin-top:12px;font-size:.85em;opacity:.75;"><strong>macOS: one-line automatic install</strong> — handles the download, wallet setup, Python/torch dependency, and auto-start for you: <code>curl -fsSL https://www.svitlochain.com/downloads/install-provider-macos.sh | bash</code>. Linux and Windows need a few manual commands (svitlo-provider needs a <em>provider keyfile</em>, not a regular encrypted wallet.json — a wallet.json <a href="/en/wallet/">from the wallet app</a> won't work directly here). Full walkthrough for all three OSes, with what to expect at each step: <a href="/en/platform/setup/">Install svitlo-provider →</a></p>
 </div>
 
 <footer class="site-footer">
