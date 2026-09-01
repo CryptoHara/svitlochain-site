@@ -50,9 +50,17 @@ chmod +x "$BIN_DIR/svitlo-provider"
 ok "svitlo-provider installed"
 
 info "Downloading worker scripts..."
-curl -fsSL "$DOWNLOAD_BASE/svitlo_train_worker.py" -o "$BIN_DIR/svitlo_train_worker.py"
 curl -fsSL "$DOWNLOAD_BASE/svitlo_tensor_worker.py" -o "$BIN_DIR/svitlo_tensor_worker.py"
-ok "Worker scripts installed"
+ok "Inference worker installed (svitlo_tensor_worker.py)"
+
+# 2026-09-01: svitlo_train_worker.py access is now restricted to approved
+# testers (was a public download here) -- don't silently fetch the
+# access-restricted placeholder text as if it were the real script, that
+# would just fail confusingly later when svitlo-provider tries to run it
+# as Python. Skip it and tell the operator how to actually get it.
+warn "svitlo_train_worker.py (remote TRAINING support) is tester-access only now."
+info "Inference jobs work fine without it. For training access, request it at"
+info "https://www.svitlochain.com/downloads/request-access/"
 
 PROVIDER_WALLET="$BIN_DIR/provider-wallet.json"
 if [[ ! -f "$PROVIDER_WALLET" ]]; then
