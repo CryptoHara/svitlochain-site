@@ -59,8 +59,8 @@ ok "Inference worker installed (svitlo_tensor_worker.py)"
 # would just fail confusingly later when svitlo-provider tries to run it
 # as Python. Skip it and tell the operator how to actually get it.
 warn "svitlo_train_worker.py (remote TRAINING support) is tester-access only now."
-info "Inference jobs work fine without it. For training access, request it at"
-info "https://www.svitlochain.com/downloads/request-access/"
+info "Inference jobs work fine without it. Training access is invite-only --"
+info "if you have an account, download it at https://api.svitlochain.com/gated/login"
 
 PROVIDER_WALLET="$BIN_DIR/provider-wallet.json"
 if [[ ! -f "$PROVIDER_WALLET" ]]; then

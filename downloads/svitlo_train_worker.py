@@ -1,21 +1,21 @@
-Access to svitlo_train_worker.py is currently restricted to approved
-testers.
+Access to svitlo_train_worker.py is restricted to approved testers.
 
 This script contains proprietary model-training logic. Public access
 has been closed while the underlying technology moves toward patent
 filing — public disclosure before filing can permanently forfeit
 patent rights in most jurisdictions outside the US.
 
-If you are part of our testing group, request access here:
-https://www.svitlochain.com/downloads/request-access/
-(reviews a confidentiality notice, then emails us your agreement — we
-grant access manually). Everyone else: thanks for your interest — this
-will not be publicly available again until we've made a decision on IP
-protection.
+Testing group membership is by invitation only. If you were invited,
+you should have a personal invite link (https://api.svitlochain.com/gated/invite/...)
+— use that to set up your account, or if you already have one, log in
+at https://api.svitlochain.com/gated/login to download the file.
+
+Not part of the testing group? Thanks for your interest — this isn't
+self-service; reach out to the team if you'd like to be considered.
 
 ---
 
-Доступ до svitlo_train_worker.py тимчасово обмежено затвердженими
+Доступ до svitlo_train_worker.py обмежено затвердженими
 тестувальниками.
 
 Цей скрипт містить власну логіку тренування моделей. Публічний доступ
@@ -23,9 +23,12 @@ protection.
 розкриття до подання заявки може незворотно позбавити права на
 патент у більшості юрисдикцій поза межами США.
 
-Якщо ви входите до нашої тестової групи — запросіть доступ тут:
-https://www.svitlochain.com/downloads/request-access/
-(там короткий огляд угоди про конфіденційність, після чого форма
-надішле нам вашу згоду на email — доступ надаємо вручну). Усім іншим:
-дякуємо за інтерес — файл не буде публічно доступний, поки не буде
-ухвалено рішення щодо захисту інтелектуальної власності.
+Членство в тестовій групі — лише за запрошенням. Якщо вас запросили,
+у вас має бути персональне посилання-запрошення
+(https://api.svitlochain.com/gated/invite/...) — використайте його для
+створення акаунту, або, якщо акаунт уже є, увійдіть на
+https://api.svitlochain.com/gated/login щоб завантажити файл.
+
+Не входите до тестової групи? Дякуємо за інтерес — це не
+самообслуговування, зверніться до команди, якщо хочете розглянути
+можливість участі.

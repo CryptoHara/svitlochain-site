@@ -116,7 +116,7 @@ svitlo-provider-windows-x86_64.exe start --node https://rpc.svitlochain.com --wa
   <div class="card glass" style="padding:8px 26px">
     <div class="faq-item">
       <h3>Why does it need Python and PyTorch?</h3>
-      <p style="margin-top:8px">The provider binary is Rust, but the actual model work runs through a small companion Python worker script — PyTorch is what does the real GPU math. It's fetched via <code>pip</code> rather than bundled so the download stays a few megabytes instead of several gigabytes, and so you always get a PyTorch build matched to your own CUDA/ROCm/MPS setup. The inference worker downloads automatically; the training worker is currently limited to approved testers (<a href="/downloads/request-access/">request access here</a>) while the underlying model tech moves toward patent filing.</p>
+      <p style="margin-top:8px">The provider binary is Rust, but the actual model work runs through a small companion Python worker script — PyTorch is what does the real GPU math. It's fetched via <code>pip</code> rather than bundled so the download stays a few megabytes instead of several gigabytes, and so you always get a PyTorch build matched to your own CUDA/ROCm/MPS setup. The inference worker downloads automatically; the training worker is currently limited to approved testers (invite-only — <a href="https://api.svitlochain.com/gated/login">log in</a> if you have an account) while the underlying model tech moves toward patent filing.</p>
     </div>
     <div class="faq-item">
       <h3>Is my provider wallet the same as my regular Svitlo wallet?</h3>

@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Request Training-Worker Access — Svitlo Chain</title>
-<meta name="description" content="Request tester access to svitlo_train_worker.py — requires reviewing and agreeing to a confidentiality notice.">
+<title>Training-Worker Access — Svitlo Chain</title>
+<meta name="description" content="svitlo_train_worker.py access is invite-only for approved testers.">
 <link rel="canonical" href="https://www.svitlochain.com/downloads/request-access/">
 <link rel="stylesheet" href="/assets/platform.css">
 <script>
@@ -25,41 +25,17 @@ try {
 </nav>
 
 <div class="hero">
-  <div class="eyebrow">Tester access · restricted</div>
-  <h1>Request access to svitlo_train_worker.py</h1>
-  <p class="lede">This script contains proprietary model-training logic and is currently limited to approved testers while the underlying technology moves toward patent filing. Read the notice below, fill in your details, and submit — this opens an email to us with your agreement; access is granted manually after review.</p>
+  <div class="eyebrow">Tester access · invite-only</div>
+  <h1>svitlo_train_worker.py access</h1>
+  <p class="lede">This script contains proprietary model-training logic and is limited to approved testers while the underlying technology moves toward patent filing — not a self-service download.</p>
 </div>
 
-<div class="wrap" style="padding-bottom:8px">
+<div class="wrap" style="padding-bottom:56px">
   <div class="card glass" style="padding:26px 30px">
-    <h3 style="margin-bottom:14px">Confidentiality &amp; Liability Notice</h3>
-    <div id="nda-text" style="font-size:13.5px;line-height:1.7;color:var(--ink-m);max-height:340px;overflow-y:auto;padding-right:8px;border-bottom:1px solid var(--bd);padding-bottom:16px;margin-bottom:16px">
-      <p><strong>1. What you're getting access to.</strong> <code>svitlo_train_worker.py</code> and any related materials we send you contain confidential, proprietary information about Svitlo Chain's and EMMA's model-training architecture ("the Confidential Information"), including but not limited to model designs, hyperparameters, training procedures, and source code.</p>
-      <p><strong>2. Non-disclosure.</strong> By requesting and accepting access, you agree not to copy, publish, redistribute, reverse-engineer for the purpose of redistribution, or otherwise disclose the Confidential Information, in whole or in part, to any third party, in any form, without our prior written consent. This obligation survives indefinitely and is not limited by the duration of your testing participation.</p>
-      <p><strong>3. Permitted use.</strong> You may use the Confidential Information solely to operate a Svitlo Chain compute-provider node as part of the approved testing group, for the purpose of testing and providing feedback. Any other use — including but not limited to building a competing product, filing your own patent application referencing this material, or public disclosure of any kind — is strictly prohibited.</p>
-      <p><strong>4. Liability for breach.</strong> You acknowledge that unauthorized disclosure of the Confidential Information may cause severe and irreparable harm, including the permanent loss of patent rights in jurisdictions that require absolute novelty. In the event of a breach of this notice, you may be held legally liable for resulting damages, which given the nature of patent-eligibility loss could be substantial, in addition to any other remedies available at law, including injunctive relief and, where applicable, referral for criminal liability under the laws of the relevant jurisdiction.</p>
-      <p><strong>5. Your information.</strong> The name and email you submit below are recorded, together with the timestamp of your request, as evidence of your agreement to this notice.</p>
-      <p style="margin-top:16px;padding-top:12px;border-top:1px solid var(--bd);font-size:12px">⚠️ This notice is a plain-language placeholder pending review by qualified legal counsel. It is provided to make expectations clear before you receive access, not as a substitute for a lawyer-drafted agreement.</p>
-    </div>
-
-    <form id="access-form" onsubmit="return submitRequest(event)">
-      <div style="margin-bottom:14px">
-        <label for="f-name" style="display:block;font-size:12.5px;font-weight:700;margin-bottom:6px">Full name</label>
-        <input id="f-name" type="text" required style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--bd2);background:var(--s1);color:var(--ink);font-size:14px">
-      </div>
-      <div style="margin-bottom:14px">
-        <label for="f-email" style="display:block;font-size:12.5px;font-weight:700;margin-bottom:6px">Email address</label>
-        <input id="f-email" type="email" required style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--bd2);background:var(--s1);color:var(--ink);font-size:14px">
-      </div>
-      <div style="margin-bottom:18px">
-        <label style="display:flex;gap:10px;align-items:flex-start;font-size:13.5px;cursor:pointer">
-          <input id="f-agree" type="checkbox" required style="margin-top:3px">
-          <span>I have read and agree to the Confidentiality &amp; Liability Notice above, including the liability for breach described in Section 4.</span>
-        </label>
-      </div>
-      <button type="submit" class="btn btn-primary">Request access →</button>
-      <p style="margin-top:12px;font-size:12.5px;color:var(--ink-m)">This opens your email client with a prefilled message to <code>svitlochain@gmail.com</code> — sending it is what records your agreement. We review each request manually and reply directly with access.</p>
-    </form>
+    <h3>Already have an invite?</h3>
+    <p style="margin-top:8px">Use the personal link you were sent to set up your account (you'll review and agree to a confidentiality notice as part of that), or if you've already done that, <a href="https://api.svitlochain.com/gated/login">log in here</a> to download the file.</p>
+    <h3 style="margin-top:24px">Not part of the testing group yet?</h3>
+    <p style="margin-top:8px">Membership is by invitation, granted directly by the team on a case-by-case basis. If you'd like to be considered, reach out via <a href="/support/">support</a>.</p>
   </div>
 </div>
 
@@ -69,25 +45,6 @@ try {
 </footer>
 
 <script>
-function submitRequest(e) {
-  e.preventDefault();
-  var name = document.getElementById('f-name').value.trim();
-  var email = document.getElementById('f-email').value.trim();
-  var agree = document.getElementById('f-agree').checked;
-  if (!name || !email || !agree) return false;
-  var subject = 'Training-worker access request — ' + name;
-  var body =
-    'Name: ' + name + '\n' +
-    'Email: ' + email + '\n' +
-    'Timestamp: ' + new Date().toISOString() + '\n\n' +
-    'I have read and agree to the Confidentiality & Liability Notice at ' +
-    'https://www.svitlochain.com/downloads/request-access/ , including the ' +
-    'liability for breach described in Section 4.\n\n' +
-    'AGREE';
-  window.location.href = 'mailto:svitlochain@gmail.com?subject=' +
-    encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-  return false;
-}
 window.__toggleTheme = function() {
   var cur = document.documentElement.getAttribute('data-theme');
   var isDark = cur ? cur === 'dark' : window.matchMedia('(prefers-color-scheme:dark)').matches;
