@@ -85,7 +85,15 @@ try {
   <div class="card">
     <span class="pill" style="margin-bottom:12px">🪟 Windows · x86_64 · Windows 10+</span>
     <h3>Вручну, ті самі три кроки</h3>
-    <p style="margin:8px 0 0">Завантаж <a href="/downloads/svitlo-provider-windows-x86_64.exe">svitlo-provider-windows-x86_64.exe</a>. Windows-збірки <code>svitlo-wallet</code> поки немає, тож згенеруй <code>provider-wallet.json</code> на Linux чи macOS (див. відповідні вкладки) і перенеси його сюди, далі з PowerShell чи cmd:</p>
+    <p style="margin:8px 0 0">Завантаж <a href="/downloads/svitlo-provider-windows-x86_64.exe">svitlo-provider-windows-x86_64.exe</a>. Windows-збірки <code>svitlo-wallet</code> поки немає, тож згенеруй <code>provider-wallet.json</code> на Linux чи macOS (див. відповідні вкладки) і перенеси його сюди.</p>
+    <p style="margin-top:14px">Python + PyTorch не входять у комплект — постав їх спочатку (PowerShell):</p>
+    <div class="code">curl -o python-installer.exe https://www.python.org/ftp/python/3.12.7/python-3.12.7-amd64.exe
+.\python-installer.exe /quiet InstallAllUsers=0 PrependPath=1</div>
+    <p style="margin-top:10px;font-size:13px;color:var(--ink-m)">Після цього відкрий <strong>нове</strong> вікно PowerShell — PATH оновлюється лише в свіжій сесії — і перевір <code>python --version</code>. Якщо замість версії виводить повідомлення-переадресацію на Microsoft Store — заважає вбудований "App Execution Alias": виконай <code>Get-AppxPackage *PythonSoftwareFoundation* | Remove-AppxPackage</code> і відкрий ще одне нове вікно.</p>
+    <div class="code">python -m pip install torch --index-url https://download.pytorch.org/whl/cu128</div>
+    <p style="margin-top:10px;font-size:13px;color:var(--ink-m)">Якщо в тебе відеокарта серії RTX 50 (Blackwell) — використовуй саме <code>cu128</code>, не <code>cu121</code>: старіша збірка CUDA встановлюється без помилок, але її ядра не підтримують новішу архітектуру, тож GPU мовчки просто ніколи не використовується. Перевір командою:</p>
+    <div class="code">python -c "import torch; x=torch.randn(2000,2000,device='cuda'); print((x@x).shape, x.device)"</div>
+    <p style="margin-top:10px;font-size:13px;color:var(--ink-m)">Має вивести <code>torch.Size([2000, 2000]) cuda:0</code> без попереджень про сумісність. Далі, з того самого вікна:</p>
     <div class="code">svitlo-provider-windows-x86_64.exe detect
 svitlo-provider-windows-x86_64.exe start --node https://rpc.svitlochain.com --wallet provider-wallet.json</div>
     <p style="margin-top:14px;font-size:13px;color:var(--ink-m)">Потрібна Windows 10 або новіша — збірка таргетить <code>x86_64-pc-windows-msvc</code>, який вимагає Windows 10+ починаючи з Rust 1.78. Додай до Планувальника завдань (запуск при вході), якщо хочеш, щоб процес переживав перезавантаження без ручного старту.</p>
