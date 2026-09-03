@@ -80,20 +80,11 @@ try {
   </div>
 
   <div class="card">
-    <span class="pill" style="margin-bottom:12px">🪟 Windows · x86_64 · Windows 10+</span>
-    <h3>Manual, same three steps</h3>
-    <p style="margin:8px 0 0">Download <a href="/downloads/svitlo-provider-windows-x86_64.exe">svitlo-provider-windows-x86_64.exe</a>. There's no Windows <code>svitlo-wallet</code> build yet, so generate your <code>provider-wallet.json</code> on a Linux or macOS machine first (see those tabs) and copy it over.</p>
-    <p style="margin-top:14px">Python + PyTorch aren't bundled — install them first (PowerShell):</p>
-    <div class="code">curl -o python-installer.exe https://www.python.org/ftp/python/3.12.7/python-3.12.7-amd64.exe
-.\python-installer.exe /quiet InstallAllUsers=0 PrependPath=1</div>
-    <p style="margin-top:10px;font-size:13px;color:var(--ink-m)">Open a <strong>new</strong> PowerShell window afterward — PATH only refreshes in a fresh shell — then confirm with <code>python --version</code>. If it instead prints a Microsoft Store redirect message, the pre-installed "App Execution Alias" is still shadowing it: run <code>Get-AppxPackage *PythonSoftwareFoundation* | Remove-AppxPackage</code> and open yet another new window.</p>
-    <div class="code">python -m pip install torch --index-url https://download.pytorch.org/whl/cu128</div>
-    <p style="margin-top:10px;font-size:13px;color:var(--ink-m)">Use <code>cu128</code> (not <code>cu121</code>) if you're on an RTX 50-series (Blackwell) card — an older CUDA build installs without error but its kernels don't cover the newer architecture, so it silently never actually uses the GPU. Verify with:</p>
-    <div class="code">python -c "import torch; x=torch.randn(2000,2000,device='cuda'); print((x@x).shape, x.device)"</div>
-    <p style="margin-top:10px;font-size:13px;color:var(--ink-m)">Should print <code>torch.Size([2000, 2000]) cuda:0</code> with no compatibility warning. Then, from the same window:</p>
-    <div class="code">svitlo-provider-windows-x86_64.exe detect
-svitlo-provider-windows-x86_64.exe start --node https://rpc.svitlochain.com --wallet provider-wallet.json</div>
-    <p style="margin-top:14px;font-size:13px;color:var(--ink-m)">Requires Windows 10 or later — the build targets <code>x86_64-pc-windows-msvc</code>, which needs Windows 10+ since Rust 1.78. Register it in Task Scheduler (run on login) if you want it to survive a reboot without you starting it by hand.</p>
+    <span class="pill" style="margin-bottom:12px">🪟 Windows · x86_64 · Windows 10+ · Automatic</span>
+    <h3>One command — PowerShell</h3>
+    <p style="margin:8px 0 0">Handles every stage above: downloads the binary, installs Python + PyTorch (CUDA 12.8, covers RTX 50-series/Blackwell too) if not already present, creates your provider wallet (prompting for a password right there in the terminal), adds the Windows Defender exclusion this binary needs to reach the network at all, and registers a Scheduled Task so it starts on login and restarts if it ever crashes.</p>
+    <div class="code">irm https://www.svitlochain.com/downloads/install-provider-windows.ps1 | iex</div>
+    <p style="margin-top:14px;font-size:13px;color:var(--ink-m)">Run from a normal (non-Administrator) PowerShell window. Logs: <code>Get-Content -Wait ~\.svitlo\logs\provider.log</code> &nbsp;·&nbsp; Stop: <code>Stop-ScheduledTask -TaskName SvitloProvider</code></p>
   </div>
 </div>
 
