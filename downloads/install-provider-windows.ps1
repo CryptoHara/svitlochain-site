@@ -58,12 +58,52 @@ if (-not (Get-Command curl.exe -ErrorAction SilentlyContinue)) {
 
 $DownloadBase = "https://www.svitlochain.com/downloads"
 $NodeUrl      = if ($env:SVITLO_NODE_URL) { $env:SVITLO_NODE_URL } else { "https://rpc.svitlochain.com" }
+# 2026-09-04 (security review): $NodeUrl is environment-controlled and later
+# gets written into a generated .cmd file that a Scheduled Task executes
+# unattended -- an unvalidated value there is a command-injection vector
+# (e.g. SVITLO_NODE_URL = 'https://x & del /f /q C:\Users' would run the
+# second command too, since batch splits on unescaped `&`). Restrict to
+# exactly what a real node URL looks like -- scheme + host, nothing a
+# batch-file interpreter treats specially -- before it's used for anything.
+if ($NodeUrl -notmatch '^https://[a-zA-Z0-9.-]+(?::[0-9]{1,5})?/?$') {
+    Die "SVITLO_NODE_URL doesn't look like a plain https://host[:port] URL: $NodeUrl"
+}
 $InstallDir   = "$env:USERPROFILE\.svitlo"
 $BinDir       = "$InstallDir\bin"
 $LogDir       = "$InstallDir\logs"
 $TaskName     = "SvitloProvider"
 
 New-Item -ItemType Directory -Force -Path $BinDir, $LogDir | Out-Null
+
+# 2026-09-04 (security review): no binary this script fetches is
+# checksummed or code-signed yet -- same trust model the existing macOS
+# installer already relies on (a straight `curl.exe -fsSL ... | -o path`
+# with no verification afterward), and true supply-chain protection would
+# need either a signing certificate (not configured for these binaries)
+# or a hash channel independent of the server the binary itself comes
+# from (a hash published alongside it on the same host only catches
+# transit corruption, not a compromised origin). What THIS function adds
+# is real, if partial: every .exe download is checked for the "MZ" PE
+# header and a plausible minimum size before anything is allowed to run
+# it -- this reliably catches the actually-common failure mode (a
+# truncated download, or an HTML error/redirect page saved in place of
+# the real binary because of a network hiccup or a stale/broken URL),
+# which a raw curl exit-code check alone does not.
+function Get-VerifiedExe($url, $outPath, $minBytes = 100000) {
+    curl.exe -fsSL $url -o $outPath
+    if (-not (Test-Path $outPath)) {
+        Die "Download produced no file: $url"
+    }
+    $bytes = [System.IO.File]::ReadAllBytes($outPath)
+    if ($bytes.Length -lt $minBytes) {
+        Remove-Item $outPath -ErrorAction SilentlyContinue
+        Die "Downloaded file is implausibly small ($($bytes.Length) bytes) -- likely a truncated download or an error page, not the real binary: $url"
+    }
+    if ($bytes[0] -ne 0x4D -or $bytes[1] -ne 0x5A) {
+        Remove-Item $outPath -ErrorAction SilentlyContinue
+        Die "Downloaded file is not a valid Windows executable (missing MZ header) -- got something other than the real binary: $url"
+    }
+}
 
 # 2026-09-03: the socket-permission failure (os error 10013) that blocked
 # every first run on Alik's machine went away entirely once Windows
@@ -88,7 +128,7 @@ try {
 }
 
 Info "Downloading svitlo-provider..."
-curl.exe -fsSL "$DownloadBase/svitlo-provider-windows-x86_64.exe" -o "$BinDir\svitlo-provider.exe"
+Get-VerifiedExe "$DownloadBase/svitlo-provider-windows-x86_64.exe" "$BinDir\svitlo-provider.exe"
 Ok "svitlo-provider installed"
 
 Info "Downloading inference worker script..."
@@ -129,7 +169,7 @@ if (-not $python -or (& python -c "print(1)" 2>$null) -ne "1") {
     # too, not just "missing entirely".
     Info "Installing Python 3.12..."
     $pyInstaller = "$env:TEMP\python-installer.exe"
-    curl.exe -fsSL "https://www.python.org/ftp/python/3.12.7/python-3.12.7-amd64.exe" -o $pyInstaller
+    Get-VerifiedExe "https://www.python.org/ftp/python/3.12.7/python-3.12.7-amd64.exe" $pyInstaller
     Start-Process -FilePath $pyInstaller -ArgumentList "/quiet InstallAllUsers=0 PrependPath=1" -Wait
     Remove-Item $pyInstaller -ErrorAction SilentlyContinue
     Refresh-Path
@@ -148,7 +188,7 @@ Ok "torch ready"
 $ProviderWallet = "$BinDir\provider-wallet.json"
 if (-not (Test-Path $ProviderWallet)) {
     Info "No provider wallet found -- creating one now."
-    curl.exe -fsSL "$DownloadBase/svitlo-wallet-windows-x86_64.exe" -o "$BinDir\svitlo-wallet.exe"
+    Get-VerifiedExe "$DownloadBase/svitlo-wallet-windows-x86_64.exe" "$BinDir\svitlo-wallet.exe"
     Warn "You'll be prompted for a NEW password (encrypts wallet.json) and"
     Warn "shown a 24-word recovery phrase ONCE -- write it down."
     & "$BinDir\svitlo-wallet.exe" keygen --output "$InstallDir\wallet.json"
@@ -176,7 +216,7 @@ if ($existing) {
 $launcherPath = "$BinDir\run-provider.cmd"
 @"
 @echo off
-"$BinDir\svitlo-provider.exe" start --node $NodeUrl --wallet "$ProviderWallet" >> "$LogDir\provider.log" 2>&1
+"$BinDir\svitlo-provider.exe" start --node "$NodeUrl" --wallet "$ProviderWallet" >> "$LogDir\provider.log" 2>&1
 "@ | Out-File -FilePath $launcherPath -Encoding ascii
 $action = New-ScheduledTaskAction -Execute $launcherPath -WorkingDirectory $BinDir
 $trigger = New-ScheduledTaskTrigger -AtLogOn
