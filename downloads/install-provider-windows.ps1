@@ -222,8 +222,15 @@ $action = New-ScheduledTaskAction -Execute $launcherPath -WorkingDirectory $BinD
 $trigger = New-ScheduledTaskTrigger -AtLogOn
 $settings = New-ScheduledTaskSettingsSet `
     -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries `
-    -RestartCount 999 -RestartInterval (New-TimeSpan -Seconds 30) `
+    -RestartCount 999 -RestartInterval (New-TimeSpan -Minutes 1) `
     -ExecutionTimeLimit (New-TimeSpan -Seconds 0)  # no time limit -- this runs indefinitely
+# 2026-09-05 (real incident, live, Admin's fresh install): the original
+# -RestartInterval (New-TimeSpan -Seconds 30) failed EVERY install with
+# "XML-код задачи содержит значение в неправильном формате" / HRESULT
+# 0x80041318 -- Task Scheduler's RestartInterval has an undocumented-in-
+# error-message floor of 1 minute; anything finer (like the 30s this
+# installer's own log message advertises) is rejected by the task engine
+# at registration time, not merely rounded. 1 minute is the real minimum.
 
 Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger -Settings $settings `
     -Description "Svitlo compute provider daemon (GPU marketplace)" | Out-Null
