@@ -2,6 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- Real gap found live (2026-08-30, GSC "Duplicate without user-selected
+     canonical" notification): this is the live wallet app shell, not
+     marketing content -- its HTML is identical regardless of the
+     ?theme=/&lang= handoff query params other pages link in with (see the
+     continuity script below), which reads to Google as endless duplicate
+     URLs of the same page with no canonical signal at all (this file had
+     none, and isn't in sitemap.xml either). noindex is the correct fix,
+     not a canonical -- an app shell shouldn't rank in search results. -->
+<meta name="robots" content="noindex, follow">
 <script>
 // Cross-app theme/language continuity: svitlochain.com's own pages link
 // here with ?lang=&theme= set to whatever the visitor already chose there

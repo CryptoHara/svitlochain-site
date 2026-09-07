@@ -71,6 +71,15 @@ for (const page of PAGE_GROUPS) {
 // 4. Standalone singles with no per-language variants.
 injectTags('privacy/index.html', urlFor(['privacy']), null);
 injectTags('support/index.html', urlFor(['support']), null);
+injectTags('downloads/request-access/index.html', urlFor(['downloads', 'request-access']), null);
+
+// Note: app/index.html (the live wallet SPA) is deliberately never listed
+// here or in sitemap.xml -- it carries its own `noindex` meta tag instead
+// of a canonical (added directly, not by this script, since it's hand-
+// maintained outside the templated content pipeline -- see its own
+// comment). An app shell shouldn't rank in search results at all, and a
+// canonical wouldn't stop Google from indexing query-param variants of
+// the same shell the way noindex does.
 
 // --- sitemap.xml -----------------------------------------------------------
 const uniqueUrls = [...new Set(sitemapUrls)].sort();
