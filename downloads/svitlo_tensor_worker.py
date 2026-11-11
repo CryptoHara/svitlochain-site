@@ -7,9 +7,10 @@ now requires the same approval up front, at download time.
 If you were approved, log in at https://api.svitlochain.com/gated/login
 to download this file (and the rest of the provider software).
 
-Not part of the approved group yet? Reach out via /support/ with your
-hardware (GPU model + VRAM) and availability -- membership is reviewed
-case-by-case, it isn't self-service.
+Not part of the approved group yet? Both GPU and CPU-only nodes are
+supported. Reach out via /support/ with your hardware (GPU model + VRAM,
+or CPU model + RAM if CPU-only) and availability -- membership is
+reviewed case-by-case, it isn't self-service.
 
 ---
 
@@ -24,6 +25,7 @@ case-by-case, it isn't self-service.
 https://api.svitlochain.com/gated/login щоб завантажити цей файл (і решту
 провайдерського софтверу).
 
-Ще не в затвердженій групі? Напишіть через /support/ з інформацією про
-своє обладнання (модель GPU + VRAM) і доступність — членство розглядається
-індивідуально, це не самообслуговування.
+Ще не в затвердженій групі? Підтримуються і GPU, і CPU-only ноди.
+Напишіть через /support/ з інформацією про своє обладнання (модель GPU +
+VRAM, або модель CPU + RAM, якщо без GPU) і доступність — членство
+розглядається індивідуально, це не самообслуговування.
